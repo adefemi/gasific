@@ -1,4 +1,4 @@
-@import '../../components/styles/theme.scss';
+@import './theme.scss';
 
 .femi-controller{
   font-family: $primary-font;
@@ -10,7 +10,7 @@
   }
 
   .rt-td{
-    overflow: unset;
+    overflow: unset
   }
 
   .ck-content{
