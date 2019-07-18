@@ -1,0 +1,12 @@
+@import "../../../styles/theme";
+
+.GoogleLogin{
+  color: $primary-color;
+  background: $white-color !important;
+  padding: 10px;
+  border: 1px solid $primary-color;
+
+  &:focus,&:active {
+    border: 1px solid $primary-color !important;
+  }
+}
