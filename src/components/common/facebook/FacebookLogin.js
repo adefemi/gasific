@@ -23,7 +23,7 @@ const AppFacebookLogin = props => {
         <Button
           style={{
             backgroundColor: "#3C5A99",
-            padding: "10px"
+            border: "0"
           }}
           className={props.className}
           icon={<AppIcon name={"facebook"} />}

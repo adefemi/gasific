@@ -6,15 +6,27 @@ import { NavLink } from "react-router-dom";
 
 function AuthLayout(props) {
   return (
-    <div>
-      <h1>Gasific</h1>
-      <div className="max-width-600 centralized">
-        <div className="heading">
+    <div className="container">
+      <div className="fixed-brand">Gasific</div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <div className="max-width-500">
+        <div className="heading primary-text">
           Welcome Back, Please login to your account
         </div>
         <div className="dflex">
-          <AppFacebookLogin callback={() => null} />
-          <AppGoogleLogin clientId={""} onSuccess={() => null} />
+          <AppFacebookLogin
+            buttonText="Login with facebook"
+            callback={() => null}
+          />
+          <div style={{ width: "50px" }} />
+          <AppGoogleLogin
+            buttonText="Login with google"
+            clientId={""}
+            onSuccess={() => null}
+          />
         </div>
         <div className="auth-seperator">OR</div>
         <form action="">
@@ -27,7 +39,11 @@ function AuthLayout(props) {
           <Button block>Login</Button>
         </form>
         <br />
-        You don't have an account yet! <NavLink to="/">Sign Up</NavLink>
+        <div className="text-center">
+          <span className="text-info">
+            You don't have an account yet! <NavLink to="/">Sign Up</NavLink>
+          </span>
+        </div>
         {props.children}
       </div>
     </div>

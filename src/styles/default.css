@@ -67,9 +67,29 @@ a {
   width: 100%;
 }
 
-.heading {
+.container {
+  padding: 0 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.fixed-brand {
+  position: absolute;
+  top: 20px;
+  left: 20px;
   font-size: 20px;
+  font-weight: bold;
+  color: #2f5dce;
+}
+
+.heading {
+  font-size: 18px;
   margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.text-info {
+  font-size: 14px;
 }
 
 .max-width-1400 {
@@ -79,6 +99,11 @@ a {
 
 .max-width-600 {
   max-width: 600px;
+  margin: 0 auto;
+}
+
+.max-width-500 {
+  max-width: 500px;
   margin: 0 auto;
 }
 
