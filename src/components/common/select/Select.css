@@ -60,18 +60,18 @@
   display: block;
 }
 .select-control .select-button:focus, .select-control .select-button:focus-within {
-  border-color: #36C4CE;
-  box-shadow: 0 5px 10px rgba(54, 196, 206, 0.3);
+  border-color: #2f5dce;
+  box-shadow: 0 5px 10px rgba(47, 93, 206, 0.3);
 }
 .select-control .select-button:hover {
-  border-color: #36C4CE;
+  border-color: #2f5dce;
 }
 .select-control .select-button.secondary:hover {
-  border-color: #023054;
+  border-color: #845cc3;
 }
 .select-control .select-button.secondary:focus-within {
-  border-color: #023054;
-  box-shadow: 0 5px 10px rgba(2, 48, 84, 0.3);
+  border-color: #845cc3;
+  box-shadow: 0 5px 10px rgba(132, 92, 195, 0.3);
 }
 .select-control .select-button.disabled:hover,
 .select-control .select-button.disabled:focus {
@@ -125,7 +125,7 @@
 }
 .select-control ul li:hover {
   cursor: pointer;
-  background-color: #023054;
+  background-color: #845cc3;
   color: #ffffff;
 }
 .select-control ul.closed {

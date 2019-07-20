@@ -1,12 +1,12 @@
 import React from "react";
 import { ContextProvider } from "./stateManagement/contextProvider";
-import Test from "./pages/testPage";
 import "./styles/default.css";
+import Router from "./router";
 
 function App() {
   return (
     <ContextProvider>
-      <Test />
+      <Router />
     </ContextProvider>
   );
 }

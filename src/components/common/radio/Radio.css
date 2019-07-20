@@ -20,7 +20,7 @@
   top: 0;
   width: 18px;
   height: 18px;
-  border: 2px solid #2eb3bd;
+  border: 2px solid #2a54b9;
   border-radius: 100%;
   background: transparent;
 }
@@ -28,7 +28,7 @@
   content: "";
   width: 10px;
   height: 10px;
-  background: #36C4CE;
+  background: #2f5dce;
   position: absolute;
   top: 6px;
   left: 6px;
@@ -60,7 +60,7 @@
   top: 0;
   width: 18px;
   height: 18px;
-  border: 2px solid #74d6dd;
+  border: 2px solid #6c8ddd;
   border-radius: 100%;
   background: transparent;
 }
@@ -68,7 +68,7 @@
   content: "";
   width: 10px;
   height: 10px;
-  background: #36C4CE;
+  background: #2f5dce;
   position: absolute;
   top: 6px;
   left: 6px;
@@ -98,7 +98,7 @@
   content: "";
   width: 10px;
   height: 10px;
-  background: #5fd0d8;
+  background: #577dd9;
   position: absolute;
   top: 6px;
   left: 6px;

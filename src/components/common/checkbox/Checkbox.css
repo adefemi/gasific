@@ -21,7 +21,7 @@
   width: 20px;
   height: 20px;
   border: none;
-  background: #88dce2;
+  background: #819de2;
 }
 .Checkbox[type=checkbox]:checked + label:after {
   content: "";
@@ -62,7 +62,7 @@
   width: 20px;
   height: 20px;
   border: none;
-  background: #88dce2;
+  background: #819de2;
 }
 .Checkbox[type=checkbox]:not(:checked) + label:after {
   content: "";
