@@ -1,11 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import logo from "../../assets/logos/logo5.png";
 
 function AuthLayout(props) {
   return (
     <div className="container">
       <NavLink to="/" className="fixed-brand">
-        Gasific
+        <img src={logo} height="40px" alt="" />
       </NavLink>
       <br />
       <br />

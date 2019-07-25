@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AppIcon from "../../common/icons/Icon";
 import { NavLink } from "react-router-dom";
+import logo from "../../../assets/logos/logo7.png";
 
 const menuItem = [
   {
@@ -49,7 +50,9 @@ function SideBar(props) {
   return (
     <div className="sideBar">
       <div>
-        <div className="brand">Gasific</div>
+        <div className="brand">
+          <img src={logo} height="40px" alt="" />
+        </div>
         <ul>
           {menuItem.map((item, key) => (
             <NavLink to={item.link} key={key}>
