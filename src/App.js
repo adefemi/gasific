@@ -3,12 +3,15 @@ import { ContextProvider } from "./stateManagement/contextProvider";
 import "./styles/default.css";
 import Router from "./router";
 
-function App() {
+
+
+class App extends React.Component{
+  render(){
   return (
     <ContextProvider>
       <Router />
     </ContextProvider>
   );
-}
+}}
 
 export default App;
