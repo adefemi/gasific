@@ -85,6 +85,9 @@
   left: 0;
   right: 0;
 }
+.dashboard-main .mainContainer .contentMain .ant-pagination, .dashboard-main .mainContainer .contentMain .ant-table-pagination {
+  padding: 0 20px;
+}
 
 .navbar {
   position: fixed;

@@ -94,6 +94,9 @@
       left: 0;
       right: 0;
 
+      .ant-pagination, .ant-table-pagination{
+        padding: 0 20px;
+      }
 
     }
   }
