@@ -9,7 +9,11 @@ function DashboardMain(props) {
       <SideBar {...props} />
       <div className="mainContainer">
         <NavBar {...props} />
-        <div className="contentMain">{props.children}</div>
+        <div className="contentMain">
+          {props.children}
+          <br />
+          <br />
+        </div>
       </div>
     </div>
   );
