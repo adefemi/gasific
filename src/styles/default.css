@@ -521,5 +521,10 @@ a {
     display: none !important;
   }
 }
+.summaryLlist {
+  border-right-style: groove;
+  border-right-width: 1px;
+  border-right-color: #e5e6f0ee;
+}
 
 /*# sourceMappingURL=default.css.map */
