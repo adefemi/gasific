@@ -8,16 +8,25 @@
   border-radius: 10px;
 }
 .card-main .card-heading {
-  padding: 15px;
+  padding: 5px;
+  padding-left: 10px;
+  border-bottom: 1px solid #e6e6e6;
+  background-color: #e6e6e6;
+  font-size: 16px;
+  font-weight: 500;
+}
+/* .card-main .card-heading span {
+  color: #845cc3;
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(16, 16, 16, 0.1);
+} */
+
+.card-main .card-heading-small {
+  padding: 10px;
   border-bottom: 1px solid #e6e6e6;
   font-size: 16px;
   font-weight: 500;
 }
-.card-main .card-heading span {
-  color: #023054;
-  margin-left: 10px;
-  padding-left: 10px;
-  border-left: 1px solid rgba(16, 16, 16, 0.1);
-}
-
 /*# sourceMappingURL=Card.css.map */
+

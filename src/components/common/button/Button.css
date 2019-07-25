@@ -1,12 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 .btn-main {
-  background: #36C4CE;
+  background: #2f5dce;
 }
 
 .btn {
   font-family: "Roboto", sans-serif;
   background: transparent;
-  border-radius: 4px;
   padding: 8px 20px;
   color: white;
   border: none;
@@ -39,62 +38,62 @@
 .btn-sml:focus.primary,
 .btn-sml:active.primary,
 .btn.primary {
-  background: #36C4CE;
-  border: 2px solid #36C4CE;
+  background: #2f5dce;
+  border: 2px solid #2f5dce;
 }
 .btn:focus.primary:hover,
 .btn:active.primary:hover,
 .btn-sml:focus.primary:hover,
 .btn-sml:active.primary:hover,
 .btn.primary:hover {
-  background: #2eb3bd;
-  border-color: #2eb3bd;
+  background: #2a54b9;
+  border-color: #2a54b9;
 }
 .btn:focus.primary.outlined,
 .btn:active.primary.outlined,
 .btn-sml:focus.primary.outlined,
 .btn-sml:active.primary.outlined,
 .btn.primary.outlined {
-  border: 2px solid #36C4CE;
-  color: #36C4CE;
+  border: 2px solid #2f5dce;
+  color: #2f5dce;
 }
 .btn:focus.primary.outlined:hover,
 .btn:active.primary.outlined:hover,
 .btn-sml:focus.primary.outlined:hover,
 .btn-sml:active.primary.outlined:hover,
 .btn.primary.outlined:hover {
-  background: #36C4CE;
+  background: #2f5dce;
 }
 .btn:focus.secondary,
 .btn:active.secondary,
 .btn-sml:focus.secondary,
 .btn-sml:active.secondary,
 .btn.secondary {
-  background: #023054;
-  border: 2px solid #023054;
+  background: #845cc3;
+  border: 2px solid #845cc3;
 }
 .btn:focus.secondary:hover,
 .btn:active.secondary:hover,
 .btn-sml:focus.secondary:hover,
 .btn-sml:active.secondary:hover,
 .btn.secondary:hover {
-  background: #01223b;
-  border-color: #01223b;
+  background: #7649bc;
+  border-color: #7649bc;
 }
 .btn:focus.secondary.outlined,
 .btn:active.secondary.outlined,
 .btn-sml:focus.secondary.outlined,
 .btn-sml:active.secondary.outlined,
 .btn.secondary.outlined {
-  border: 2px solid #023054;
-  color: #023054;
+  border: 2px solid #845cc3;
+  color: #845cc3;
 }
 .btn:focus.secondary.outlined:hover,
 .btn:active.secondary.outlined:hover,
 .btn-sml:focus.secondary.outlined:hover,
 .btn-sml:active.secondary.outlined:hover,
 .btn.secondary.outlined:hover {
-  background: #023054;
+  background: #845cc3;
 }
 .btn:focus.danger,
 .btn:active.danger,

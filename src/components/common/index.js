@@ -9,6 +9,5 @@ export { Spinner } from "./spinner";
 export { TextAreaField } from "./textarea";
 export { FormGroup } from "./formGroup";
 export { Notification } from "./notification";
-export { Upload } from "./fileUpload";
 export { DropDown } from "./dropdown";
 export { Modal } from "./modal";

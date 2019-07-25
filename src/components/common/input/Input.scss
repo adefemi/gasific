@@ -30,12 +30,10 @@
   .input-field {
     width: 100%;
     height: 40px;
-    border: 1px solid darken($white-color, 10%);
+    border: 2px solid darken($white-color, 10%);
     overflow: hidden;
     display: flex;
     align-items: center;
-    box-sizing: border-box;
-    border-radius: 4px;
     position: relative;
     transition: .5s ease;
 
@@ -50,12 +48,11 @@
     }
 
     &:hover {
-      border-color: $primary-color;
+      border-color: lighten($primary-color, 20%);
     }
 
     &:focus-within {
       border-color: $primary-color;
-      box-shadow: 0 5px 10px rgba($primary-color, 0.3);
     }
   }
 
