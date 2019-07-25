@@ -3,8 +3,14 @@
       border-top-width: 1px;
       border-top-color: #e6e6e6;
       padding: 20px;
+      display: flex;
   }
   
+  .summary-no{
+    padding: 20px;
+    display: flex;
+   
+  }
   .fin-service{
     width: 25px;
     padding-left: 15px;
@@ -19,6 +25,7 @@
   }
   
   .security-text{
+    text-align: right;
     padding-left: 20px;
     font-size: .6875rem;
     color:    #4a4a4a;
@@ -47,6 +54,10 @@
   .brec{
     font-size: .75rem;
     padding-top: 50px;
+  }
+
+  .brecv1{
+    font-size: .75rem;
   }
   
   .brep{

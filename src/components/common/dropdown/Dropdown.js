@@ -4,6 +4,7 @@ import shortID from "shortid";
 import { hasClass, addClass, removeClass } from "../select/Select";
 import { hasSomeParentTheClass } from "../../utils/helper";
 import propTypes from "prop-types";
+import {Icon} from "../icons/index"
 
 const proptypes = {
   dropDownWidth: propTypes.string,
@@ -105,7 +106,7 @@ class DropDown extends Component {
             ref={ref => (this.dropDownUlRef = ref)}
             className="dropdown-ul"
           >
-            {this.getOptions()}
+            {this.getOptions()} <Icon type = "feather" name = {this.state.iconanimate}/>
           </ul>
         </div>
       </React.Fragment>

@@ -3,7 +3,7 @@ import { Route, BrowserRouter, Switch } from "react-router-dom";
 import Register from "./pages/AuthPage/register";
 import Login from "./pages/AuthPage/login";
 import Test from "./pages/testPage";
-import Summary from "./pages/summary";
+import Summary from "./pages/summary/summary";
 
 function Router(props) {
   return (
