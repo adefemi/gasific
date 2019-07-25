@@ -1,12 +1,13 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Jura&display=swap");
 .GoogleLogin {
-  color: #36C4CE;
+  color: #1F96F5;
   background: #ffffff !important;
   padding: 10px;
-  border: 1px solid #36C4CE;
+  border: 1px solid #1F96F5;
 }
 .GoogleLogin:focus, .GoogleLogin:active {
-  border: 1px solid #36C4CE !important;
+  border: 1px solid #1F96F5 !important;
 }
 
 /*# sourceMappingURL=GoogleLogin.css.map */

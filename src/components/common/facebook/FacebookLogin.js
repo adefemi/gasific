@@ -1,8 +1,8 @@
 import React from "react";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import PropTypes from "prop-types";
-
-import { Icon, Button } from "../common";
+import { Button } from "../button";
+import AppIcon from "../icons/Icon";
 
 const propTypes = {
   appId: PropTypes.string,
@@ -23,10 +23,10 @@ const AppFacebookLogin = props => {
         <Button
           style={{
             backgroundColor: "#3C5A99",
-            padding: "10px"
+            border: "0"
           }}
           className={props.className}
-          icon={<Icon name={"facebook"} />}
+          icon={<AppIcon name={"facebook"} />}
           onClick={renderProps.onClick}
           block
         >

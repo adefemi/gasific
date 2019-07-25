@@ -1,26 +1,22 @@
 import React, { useContext } from "react";
-import { MainContext } from "../stateManagement/contextProvider";
-import { SET_USER_DATA } from "../stateManagement/reducers/reducerActions";
+import { NavLink } from "react-router-dom";
 
 const Test = props => {
-  const {
-    state: { user },
-    dispatch
-  } = useContext(MainContext);
-
-  const onClickControl = () => {
-    dispatch({
-      type: SET_USER_DATA,
-      payload: user ? (user.userData += 1) : 1
-    });
-  };
-
   return (
     <div>
-      count: {user ? user.userData : 0}
+      <h3>Quick Links</h3>
+      <NavLink to="/login">Login Screen</NavLink>
       <br />
+      <NavLink to="/register">Register Screen</NavLink>
       <br />
-      <button onClick={onClickControl}>Add number</button>
+      <NavLink to="/forgot-password">Forgot password Screen</NavLink>
+      <br />
+      <NavLink to="/verification">Verification Screen</NavLink>
+      <br />
+      <NavLink to="/delivery">Delivery Screen</NavLink>
+      <br />
+      <NavLink to="/dashboard">Dashboard</NavLink>
+      <br />
     </div>
   );
 };

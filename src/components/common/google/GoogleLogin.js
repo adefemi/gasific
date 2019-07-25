@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { GoogleLogin } from "react-google-login";
 
-import { Icon, Button } from "../common";
+import { Button } from "../button";
+import AppIcon from "../icons/Icon";
 
 import "./GoogleLogin.css";
 
@@ -22,8 +23,9 @@ const AppGoogleLogin = props => {
       cookiePolicy={"single_host_origin"}
       render={renderProps => (
         <Button
+          style={{ border: "1px solid #c3c3c3" }}
           className={`GoogleLogin ${props.className}`}
-          icon={<Icon style={{ color: "#DB4437" }} name={"google"} />}
+          icon={<AppIcon style={{ color: "#DB4437" }} name={"google"} />}
           onClick={renderProps.onClick}
           block
         >
