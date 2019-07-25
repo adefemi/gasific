@@ -1,13 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Card } from "../../components/common/card";
-import { Button, FormGroup, Input } from "../../components/common";
+import {
+  Button,
+  FormGroup,
+  Input,
+  Notification
+} from "../../components/common";
+import logo from "../../assets/logos/logo5.png";
 
 function Verify(props) {
+  const [submit, setSubmit] = useState(false);
+  const [deliveryData, setDeliveryData] = useState({});
+
+  const onSubmit = e => {
+    e.preventDefault();
+    setSubmit(true);
+    setTimeout(() => {
+      setSubmit(false);
+      Notification.bubble({
+        type: "success",
+        content: "Whats left now is to place you hardware on you Gas Cylinder",
+        title: "Process Completed"
+      });
+      props.history.push("/dashboard/user");
+    }, 2000);
+  };
+
+  const onChange = e => {
+    setDeliveryData({
+      ...deliveryData,
+      [e.target.name]: e.target.value
+    });
+  };
   return (
     <div className="container" style={{ backgroundColor: "#f5f5f5" }}>
       <NavLink to="/" className="fixed-brand">
-        Gasific
+        <img src={logo} height="40px" alt="" />
       </NavLink>
 
       <div
@@ -28,12 +57,21 @@ function Verify(props) {
                 </small>
               </div>
 
-              <form action="">
+              <form onSubmit={onSubmit}>
                 <FormGroup>
-                  <Input placeholder="Enter ssid" />
+                  <Input
+                    placeholder="Enter ssid"
+                    required
+                    name="ssid"
+                    value={deliveryData.ssid || ""}
+                    type="text"
+                    onChange={onChange}
+                  />
                 </FormGroup>
 
-                <Button>Submit</Button>
+                <Button type="submit" disabled={submit} loading={submit}>
+                  Submit
+                </Button>
               </form>
             </div>
           </Card>

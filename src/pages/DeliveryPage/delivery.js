@@ -1,41 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Card } from "../../components/common/card";
-import { Button, FormGroup, Input } from "../../components/common";
+import {
+  Button,
+  FormGroup,
+  Input,
+  Notification
+} from "../../components/common";
+import logo from "../../assets/logos/logo5.png";
 
 function Delivery(props) {
+  const [submit, setSubmit] = useState(false);
+  const [deliveryData, setDeliveryData] = useState({});
+
+  const onSubmit = e => {
+    e.preventDefault();
+    setSubmit(true);
+    setTimeout(() => {
+      setSubmit(false);
+      Notification.bubble({
+        type: "success",
+        content: "Payment successful"
+      });
+      props.history.push("/verification");
+    }, 2000);
+  };
+
+  const onChange = e => {
+    setDeliveryData({
+      ...deliveryData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   return (
     <div className="container" style={{ backgroundColor: "#f5f5f5" }}>
       <NavLink to="/" className="fixed-brand">
-        Gasific
+        <img src={logo} height="40px" alt="" />
       </NavLink>
 
       <div
         className="center-content-main max-width-1400"
         style={{ paddingTop: "50px" }}
       >
-        <div className="grid-2-v" style={{ width: "100%" }}>
+        <form
+          onSubmit={onSubmit}
+          className="grid-2-v"
+          style={{ width: "100%" }}
+        >
           <Card style={{ width: "100%" }}>
             <div className="padding-20">
               <div className="heading">Delivery Information</div>
-              <form action="">
-                <FormGroup title="Home Address">
-                  <Input />
+
+              <FormGroup title="Home Address">
+                <Input
+                  required
+                  name="address"
+                  value={deliveryData.address || ""}
+                  type="text"
+                  onChange={onChange}
+                />
+              </FormGroup>
+              <div className="grid-2">
+                <FormGroup title="City">
+                  <Input
+                    required
+                    name="city"
+                    value={deliveryData.city || ""}
+                    type="text"
+                    onChange={onChange}
+                  />
                 </FormGroup>
-                <div className="grid-2">
-                  <FormGroup title="City">
-                    <Input />
-                  </FormGroup>
-                  <FormGroup title="State">
-                    <Input />
-                  </FormGroup>
-                </div>
-                <div className="grid-2">
-                  <FormGroup title="Referral/Discount Code">
-                    <Input />
-                  </FormGroup>
-                </div>
-              </form>
+                <FormGroup title="State">
+                  <Input
+                    required
+                    name="state"
+                    value={deliveryData.state || ""}
+                    type="text"
+                    onChange={onChange}
+                  />
+                </FormGroup>
+              </div>
+              <div className="grid-2">
+                <FormGroup title="Referral/Discount Code">
+                  <Input
+                    name="referral"
+                    value={deliveryData.referral || ""}
+                    type="text"
+                    onChange={onChange}
+                  />
+                </FormGroup>
+              </div>
             </div>
           </Card>
           <Card style={{ width: "100%" }}>
@@ -75,10 +130,12 @@ function Delivery(props) {
                 <div className="black-text bolder-text font-18">N6,700.00</div>
               </div>
               <br />
-              <Button block>Place Order</Button>
+              <Button block type="submit" loading={submit} disabled={submit}>
+                Place Order
+              </Button>
             </div>
           </Card>
-        </div>
+        </form>
       </div>
     </div>
   );

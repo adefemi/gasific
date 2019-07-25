@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import { FormGroup, Input, Button } from "../../components/common";
 import AppFacebookLogin from "../../components/common/facebook/FacebookLogin";
 import AppGoogleLogin from "../../components/common/google/GoogleLogin";
 import { NavLink } from "react-router-dom";
+import { Notification } from "../../components/common";
 
 function Login(props) {
+  const [submit, setSubmit] = useState(false);
+  const [loginData, setLoginData] = useState({});
+
+  const onSubmit = e => {
+    e.preventDefault();
+    setSubmit(true);
+    setTimeout(() => {
+      setSubmit(false);
+      Notification.bubble({
+        type: "success",
+        content: "Login successful"
+      });
+      props.history.push("/delivery");
+    }, 2000);
+  };
+
+  const onChange = e => {
+    setLoginData({
+      ...loginData,
+      [e.target.name]: e.target.value
+    });
+  };
   return (
     <AuthLayout>
       <div className="heading primary-text">
@@ -24,19 +47,33 @@ function Login(props) {
         />
       </div>
       <div className="auth-seperator">OR</div>
-      <form action="">
+      <form onSubmit={onSubmit}>
         <FormGroup title="Email Address">
-          <Input />
+          <Input
+            required
+            name="email"
+            value={loginData.email || ""}
+            type="email"
+            onChange={onChange}
+          />
         </FormGroup>
         <FormGroup title="Password">
-          <Input />
+          <Input
+            required
+            name="password"
+            value={loginData.password || ""}
+            type="password"
+            onChange={onChange}
+          />
         </FormGroup>
         <div className="dflex justify-between">
           <div />
           <NavLink to={"/forgot-password"}>Forgot Password</NavLink>
         </div>
         <br />
-        <Button block>Login</Button>
+        <Button loading={submit} disabled={submit} type="submit" block>
+          Login
+        </Button>
       </form>
       <br />
       <div className="text-center">
