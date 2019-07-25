@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 .input-control {
   position: relative;
+  width: 100%;
 }
 .input-control > * {
   font-family: "Roboto", sans-serif;
@@ -39,10 +40,10 @@
   padding-right: 10px;
 }
 .input-control .input-field:hover {
-  border-color: #819de2;
+  border-color: #81c4f9;
 }
 .input-control .input-field:focus-within {
-  border-color: #2f5dce;
+  border-color: #1F96F5;
 }
 .input-control .input-field.disabled:hover,
 .input-control .input-field.disabled:focus {
@@ -50,11 +51,11 @@
   box-shadow: none !important;
 }
 .input-control .input-field.secondary:hover {
-  border-color: #845cc3;
+  border-color: #fb9678;
 }
 .input-control .input-field.secondary:focus-within {
-  border-color: #845cc3;
-  box-shadow: 0 5px 10px rgba(132, 92, 195, 0.3);
+  border-color: #fb9678;
+  box-shadow: 0 5px 10px rgba(251, 150, 120, 0.3);
 }
 .input-control input {
   display: block;

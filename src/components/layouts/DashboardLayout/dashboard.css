@@ -1,0 +1,122 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
+.sideBar {
+  position: fixed;
+  width: 250px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: #1F96F5;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.sideBar .brand {
+  text-align: center;
+  padding: 15px 20px;
+  box-sizing: border-box;
+  font-size: 25px;
+  font-weight: 600;
+  color: white;
+}
+.sideBar .support {
+  margin: 20px auto;
+  text-align: center;
+  padding: 15px 20px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  width: 100px;
+  background-color: #054476;
+  border-radius: 40px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sideBar .support .icon {
+  margin-right: 5px;
+}
+.sideBar ul {
+  padding: 0;
+  margin: 0;
+  margin-top: 80px;
+}
+.sideBar ul li {
+  list-style: none;
+  display: flex;
+  padding: 15px 20px;
+  font-weight: 500;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  transition: 0.5s ease;
+  border-left: 2px solid transparent;
+}
+.sideBar ul li .icon {
+  margin-right: 20px;
+}
+.sideBar ul li:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.sideBar ul li.active {
+  border-color: #fb9678;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-main {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #F4FAFF;
+}
+.dashboard-main .mainContainer {
+  position: fixed;
+  left: 250px;
+  bottom: 0;
+  top: 0;
+  right: 0;
+}
+.dashboard-main .mainContainer .contentMain {
+  position: absolute;
+  top: 100px;
+  padding: 20px;
+  box-sizing: border-box;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.navbar {
+  position: absolute;
+  height: 100px;
+  left: 0;
+  right: 0;
+  background-color: #F4FAFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+.navbar .search_input {
+  height: 30px;
+}
+.navbar .search_input input {
+  background-color: #F4FAFF;
+}
+
+.img-con {
+  margin: 0 10px;
+  width: 50px;
+  height: 50px;
+  background-color: #e3e3e3;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.img-con img {
+  width: 100%;
+  height: 100%;
+}
+
+/*# sourceMappingURL=dashboard.css.map */

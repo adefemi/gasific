@@ -18,20 +18,20 @@ textarea {
 }
 
 textarea:not(.textarea-error):hover {
-  border-color: #2f5dce;
+  border-color: #1F96F5;
 }
 
 textarea:not(.textarea-error):focus {
-  border-color: #2f5dce;
-  box-shadow: 0 5px 10px rgba(47, 93, 206, 0.3);
+  border-color: #1F96F5;
+  box-shadow: 0 5px 10px rgba(31, 150, 245, 0.3);
 }
 
 textarea.secondary:hover {
-  border-color: #845cc3;
+  border-color: #fb9678;
 }
 textarea.secondary:focus {
-  border-color: #845cc3;
-  box-shadow: 0 5px 10px rgba(132, 92, 195, 0.3);
+  border-color: #fb9678;
+  box-shadow: 0 5px 10px rgba(251, 150, 120, 0.3);
 }
 
 textarea:disabled:hover {
