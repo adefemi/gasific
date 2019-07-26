@@ -98,7 +98,7 @@ class Summary extends React.Component {
                                 </div>
                                 <div style = {{ paddingTop: "3rem", width: "20%"}}>
 {/* quantity increaser and decreaser will use state to change value */}
-                                    <card  style = {{boxShadow: "0 0px 2px grey", borderRadius: "3px", width: "6rem", height: "2rem", top: "3rem", display: "flex", textAlign: "center"}}>
+                                    <card  style = {{boxShadow: "0 0px 2px grey", borderRadius: "3px", width: "6rem", height: "1.5rem", top: "3rem", display: "flex", textAlign: "center"}}>
                                         <a style = {{width: "2rem", borderRightStyle: "solid", borderRightWidth: "1px",  borderRightColor: "#e6e6e6", textAlign: "center"}} onClick = {e => this.reducer()}><Icon type = "feather" name = "minus" /></a>
                                         <span style = {{width: "2rem", borderRightStyle: "solid", borderRightWidth: "1px",  borderRightColor: "#e6e6e6"}}>
                                         {this.state.productQuantity}
