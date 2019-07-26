@@ -10,7 +10,7 @@ import basic from "./images/basic2.png"
 import premium from "./images/premium.png"
 import platinum from "./images/platinum.png"
 import { SmallCard } from "../../components/common/card/Card";
-import { card } from "react-icons-kit/ionicons";
+// import { card } from "react-icons-kit/ionicons";
 
 const opt = [{value: 0, content: "Basic"},{value: 1, content: "Premium"}, {value: 2, content: "Platinum"}]
 const basicImage = basic;
@@ -99,11 +99,11 @@ class Summary extends React.Component {
                                 <div style = {{ paddingTop: "3rem", width: "20%"}}>
 {/* quantity increaser and decreaser will use state to change value */}
                                     <card  style = {{boxShadow: "0 0px 2px grey", borderRadius: "3px", width: "6rem", height: "2rem", top: "3rem", display: "flex", textAlign: "center"}}>
-                                        <a style = {{width: "2rem", borderRightStyle: "solid", borderRightWidth: "1px",  borderRightColor: "#e6e6e6", textAlign: "center"}} onClick = {e => this.reducer()}><Icon type = {"feather"} name = "minus" /></a>
+                                        <a style = {{width: "2rem", borderRightStyle: "solid", borderRightWidth: "1px",  borderRightColor: "#e6e6e6", textAlign: "center"}} onClick = {e => this.reducer()}><Icon type = "feather" name = "minus" /></a>
                                         <span style = {{width: "2rem", borderRightStyle: "solid", borderRightWidth: "1px",  borderRightColor: "#e6e6e6"}}>
                                         {this.state.productQuantity}
                                         </span>
-                                        <a  style = {{textAlign: "center", width: "2rem"}} onClick = {e => this.adder()}><Icon type = {"feather"} name = "plus" /></a>
+                                        <a  style = {{textAlign: "center", width: "2rem"}} onClick = {e => this.adder()}><Icon type = "feather" name = "plus" /></a>
                                     </card> 
                                 </div>
                                 <div style = {{textAlign: "right", paddingTop: "3rem", fontWeight: "bold", fontSize: "1rem", width: "15%"}}>    
@@ -120,7 +120,7 @@ class Summary extends React.Component {
                         paddingLeft: "20px",
                        
                     }}>
-                        <SmallCard style={{borderRadius: "3px"}}  heading = {<div style = {{display: "flex"}}>Checkout<div style = {{textAlign: "right", width: "100%"}}>{this.state.productQuantity} items</div></div>}>
+                        <Card style={{borderRadius: "3px"}}  heading = {<div style = {{display: "flex", padding: "10px", borderBottom: "1px", type: "solid" , borderColor: "#e6e6e6", fontSize: "16px", fontWeight:  "500"}}>Checkout<div style = {{textAlign: "right", width: "100%"}}>{this.state.productQuantity} items</div></div>}>
                             
                             <div className = "summary-no">
                                 <div className = "brecv1">
@@ -171,7 +171,7 @@ class Summary extends React.Component {
                               <img className="lock-icon" src = {lock} alt = "fin-service"/>
                               <span className= "security-text">Transactions are 100% Safe and Secure</span>
                             </div>
-                        </SmallCard>
+                        </Card>
                     </div>
                 </div>
           
