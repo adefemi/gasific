@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Jura&display=swap");
 .Checkbox[type=checkbox]:checked {
   position: absolute;
   left: -9999px;
@@ -21,7 +22,7 @@
   width: 20px;
   height: 20px;
   border: none;
-  background: #819de2;
+  background: #81c4f9;
 }
 .Checkbox[type=checkbox]:checked + label:after {
   content: "";
@@ -62,7 +63,7 @@
   width: 20px;
   height: 20px;
   border: none;
-  background: #819de2;
+  background: #81c4f9;
 }
 .Checkbox[type=checkbox]:not(:checked) + label:after {
   content: "";

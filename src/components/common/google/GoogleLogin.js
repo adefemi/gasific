@@ -23,6 +23,7 @@ const AppGoogleLogin = props => {
       cookiePolicy={"single_host_origin"}
       render={renderProps => (
         <Button
+          style={{ border: "1px solid #c3c3c3" }}
           className={`GoogleLogin ${props.className}`}
           icon={<AppIcon style={{ color: "#DB4437" }} name={"google"} />}
           onClick={renderProps.onClick}
