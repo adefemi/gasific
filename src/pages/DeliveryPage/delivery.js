@@ -7,7 +7,7 @@ import {
   Input,
   Notification
 } from "../../components/common";
-import logo from "../../assets/logos/logo5.png";
+import logo from "../../assets/logos/logo1.png";
 
 function Delivery(props) {
   const [submit, setSubmit] = useState(false);

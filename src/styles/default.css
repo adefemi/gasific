@@ -6,7 +6,7 @@ body {
   margin: 0;
   position: relative;
   box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
 }
 
 a {
@@ -66,7 +66,7 @@ a {
 }
 .card-style-1 .left .main {
   font-size: 30px;
-  font-family: "Jura", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
 }
 .card-style-1 .right {
   display: flex;
@@ -79,7 +79,7 @@ a {
 }
 
 .card-count {
-  font-family: "Jura", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
   font-size: 30px;
   color: #666666;
   font-weight: 500;
@@ -90,14 +90,14 @@ a {
 }
 
 .style-font {
-  font-family: "Montserrat", sans-serif;
+  font-family: "adineue PRO Cyr Bold Web", sans-serif;
 }
 
 .auth-seperator {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: "adineue PRO Cyr Bold Web", sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -317,7 +317,7 @@ a {
   margin-bottom: 20px !important;
 }
 .form-wrap .form-group label {
-  font-family: "Montserrat", sans-serif;
+  font-family: "adineue PRO Cyr Bold Web", sans-serif;
   font-size: 13px !important;
   padding: 10px 0;
   display: inline-block;
