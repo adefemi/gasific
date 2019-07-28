@@ -7,7 +7,7 @@ import ForgotPassword from "./pages/AuthPage/forgotPassword";
 import Delivery from "./pages/DeliveryPage/delivery";
 import Verify from "./pages/VerificationPage/verify";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import Summary from "./pages/summary/summary"
+import Summary from "./pages/summary/summary";
 
 function Router(props) {
   return (

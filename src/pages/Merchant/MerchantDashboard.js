@@ -91,14 +91,54 @@ function MerchantDashboard(props) {
       </div>
       <br />
       <div className="grid-auto">
-        <Card heading="Total Users">
+        <Card
+          heading="Total Users"
+          style={{ backgroundColor: "#00b894", color: "#ffffff" }}
+        >
           <div className="padding-20 dflex justify-center align-center card-count-container">
-            <div className="card-count">48</div>
+            <div style={{ color: "#ffffff" }} className="card-count">
+              48
+            </div>
           </div>
         </Card>
-        <Card heading="Total Revenue">
+        <Card
+          heading="Total Active Users"
+          style={{ backgroundColor: "#e84393", color: "#ffffff" }}
+        >
           <div className="padding-20 dflex justify-center align-center card-count-container">
-            <div className="card-count">₦23,000.00</div>
+            <div style={{ color: "#ffffff" }} className="card-count">
+              13
+            </div>
+          </div>
+        </Card>
+        <Card
+          heading="Total Revenue (Present Month)"
+          style={{ backgroundColor: "#0984e3", color: "#ffffff" }}
+        >
+          <div className="padding-20 dflex justify-center align-center card-count-container">
+            <div style={{ color: "#ffffff" }} className="card-count">
+              ₦13,000.00
+            </div>
+          </div>
+        </Card>
+        <Card
+          heading="Total Revenue (Present Quarter)"
+          style={{ backgroundColor: "#a29bfe", color: "#ffffff" }}
+        >
+          <div className="padding-20 dflex justify-center align-center card-count-container">
+            <div style={{ color: "#ffffff" }} className="card-count">
+              ₦160,250.00
+            </div>
+          </div>
+        </Card>
+        <Card
+          heading="Total Revenue (Present Annual)"
+          style={{ backgroundColor: "#fd79a8", color: "#ffffff" }}
+        >
+          <div className="padding-20 dflex justify-center align-center card-count-container">
+            <div style={{ color: "#ffffff" }} className="card-count">
+              ₦1,138,100.00
+            </div>
           </div>
         </Card>
       </div>

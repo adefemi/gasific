@@ -8,6 +8,17 @@ import {
   Notification
 } from "../../components/common";
 import logo from "../../assets/logos/logo1.png";
+import Slider from "react-slick";
+
+const settings = {
+  dots: true,
+  infinite: true,
+  autoplay: true,
+  speed: 300,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  arrows: false
+};
 
 function Verify(props) {
   const [submit, setSubmit] = useState(false);
@@ -43,8 +54,8 @@ function Verify(props) {
         className="center-content-main max-width-1400"
         style={{ paddingTop: "50px" }}
       >
-        <div className="max-width-600">
-          <Card style={{ width: "100%" }} heading="Hardware Information">
+        <div className="max-width-1000 grid-2-v">
+          <Card heading="Hardware Information">
             <div className="padding-20">
               <div className="heading">
                 Please provide your hardware SSID
@@ -73,6 +84,24 @@ function Verify(props) {
                   Submit
                 </Button>
               </form>
+            </div>
+          </Card>
+          <Card>
+            <div className="padding-10" style={{ width: 300 }}>
+              <h3>Setup Information</h3>
+              <Slider {...settings}>
+                {[1, 2, 3].map((i, ind) => {
+                  return (
+                    <div className={"banner-con"} key={ind}>
+                      <img
+                        src={""}
+                        alt=""
+                        style={{ backgroundImage: `url("${logo}")` }}
+                      />
+                    </div>
+                  );
+                })}
+              </Slider>
             </div>
           </Card>
         </div>

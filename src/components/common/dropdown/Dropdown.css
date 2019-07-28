@@ -13,6 +13,7 @@
 .dropdown-main ul {
   position: absolute;
   width: 100px;
+  border-radius: 10px;
   background: #ffffff;
   padding: 0;
   margin: 0;
@@ -25,6 +26,7 @@
   opacity: 0;
   z-index: 10;
   visibility: hidden;
+  transform: translateY(-20%);
   transition: 0.5s ease;
   /* width */
   /* Handle */
@@ -39,16 +41,21 @@
 .dropdown-main ul li {
   list-style: none;
   text-align: center;
-  font-family: "adineue PRO Cyr Bold Web", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
   font-weight: 600;
   color: #2E2E2E;
   font-size: 14px;
-  padding: 12px 20px;
+  padding: 10px 20px;
   box-sizing: border-box;
   cursor: pointer;
+  transition: 0.3s ease;
+}
+.dropdown-main ul li:hover {
+  background-color: rgba(31, 150, 245, 0.1);
 }
 
 .dropdown-main.open ul {
+  transform: translateY(0);
   opacity: 1;
   visibility: visible;
 }
