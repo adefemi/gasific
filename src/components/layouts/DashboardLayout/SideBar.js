@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AppIcon from "../../common/icons/Icon";
 import { NavLink } from "react-router-dom";
-import logo from "../../../assets/logos/logo7.png";
+import logo from "../../../assets/logos/logo1.png";
 
 const menuItem = [
   {

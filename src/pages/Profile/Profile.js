@@ -1,7 +1,87 @@
 import React, { useState } from "react";
-import { Button, Card, FormGroup, Input } from "../../components/common";
-import { Tag } from "antd";
+import {
+  Button,
+  Card,
+  FormGroup,
+  Input,
+  Select
+} from "../../components/common";
+import { Divider, Table, Tag } from "antd";
 import userAvatar from "../../assets/sub.png";
+
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    render: text => <a href="javascript:;">{text}</a>
+  },
+  {
+    title: "Age",
+    dataIndex: "age",
+    key: "age"
+  },
+  {
+    title: "Address",
+    dataIndex: "address",
+    key: "address"
+  },
+  {
+    title: "Tags",
+    key: "tags",
+    dataIndex: "tags",
+    render: tags => (
+      <span>
+        {tags.map(tag => {
+          let color = tag.length > 5 ? "geekblue" : "green";
+          if (tag === "loser") {
+            color = "volcano";
+          }
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </span>
+    )
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (text, record) => (
+      <span>
+        <a href="javascript:;">Invite {record.name}</a>
+        <Divider type="vertical" />
+        <a href="javascript:;">Delete</a>
+      </span>
+    )
+  }
+];
+
+const data = [
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+    tags: ["nice", "developer"]
+  },
+  {
+    key: "2",
+    name: "Jim Green",
+    age: 42,
+    address: "London No. 1 Lake Park",
+    tags: ["loser"]
+  },
+  {
+    key: "3",
+    name: "Joe Black",
+    age: 32,
+    address: "Sidney No. 1 Lake Park",
+    tags: ["cool", "teacher"]
+  }
+];
 
 function Profile(props) {
   const [activeTab, setActiveTab] = useState(1);
@@ -47,11 +127,17 @@ function Profile(props) {
               className={`${activeTab === 1 && "active"}`}
               onClick={() => setActiveTab(1)}
             >
-              Edit Info
+              Basic Info
             </li>
             <li
               className={`${activeTab === 2 && "active"}`}
               onClick={() => setActiveTab(2)}
+            >
+              User KYC
+            </li>
+            <li
+              className={`${activeTab === 3 && "active"}`}
+              onClick={() => setActiveTab(3)}
             >
               Change Password
             </li>
@@ -67,9 +153,33 @@ function Profile(props) {
               className={`tab-item ${activeTab === 2 && "active"}`}
               id={"tab-category"}
             >
+              <UserKYC />
+            </div>
+            <div
+              className={`tab-item ${activeTab === 3 && "active"}`}
+              id={"tab-category"}
+            >
               <ChangePassword />
             </div>
           </div>
+        </Card>
+      </div>
+      <br />
+      <br />
+      <div>
+        {" "}
+        <div className="dflex align-center justify-between">
+          <div className="dashboard-heading-2">User Activities</div>
+          <Select style={{ width: "250px" }}>
+            <Select.Option value="All">All</Select.Option>
+            <Select.Option value="Pending">Pending</Select.Option>
+            <Select.Option value="Failed">Failed</Select.Option>
+            <Select.Option value="Success">Success</Select.Option>
+          </Select>
+        </div>
+        <br />
+        <Card>
+          <Table dataSource={data} columns={columns} />
         </Card>
       </div>
     </div>
@@ -101,6 +211,28 @@ const UserInfo = props => {
         </FormGroup>
         <FormGroup title="State">
           <Input />
+        </FormGroup>
+      </div>
+      <br />
+      <Button>Update</Button>
+    </form>
+  );
+};
+
+const UserKYC = props => {
+  return (
+    <form action="">
+      <div className="grid-2 grid-s-mobile-0">
+        <FormGroup title="Referral Code">
+          <Input />
+        </FormGroup>
+        <FormGroup title="Gas Cylinder Code">
+          <Input />
+        </FormGroup>
+      </div>
+      <div className="grid-2 grid-s-mobile-0">
+        <FormGroup title="Family/home size">
+          <Input type="email" />
         </FormGroup>
       </div>
       <br />

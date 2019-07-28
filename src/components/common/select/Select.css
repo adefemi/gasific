@@ -27,7 +27,7 @@
   border: 1px solid #e6e6e6;
   outline: none;
   background-color: #ffffff;
-  border-radius: 2px;
+  border-radius: 10px;
   padding: 0 10px;
   box-sizing: border-box;
   transition: 0.3s ease;
@@ -38,7 +38,7 @@
   height: 100%;
   outline: none;
   border: none;
-  font-family: "Montserrat", sans-serif;
+  font-family: "adineue PRO Cyr Bold Web", sans-serif;
   cursor: pointer;
   color: transparent !important;
   text-shadow: 0 0 0 #101010;
@@ -80,7 +80,7 @@
   box-shadow: none !important;
 }
 .select-control > * {
-  font-family: "Roboto", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
 }
 .select-control .select-error-text {
   margin-top: 5px;
@@ -122,7 +122,7 @@
   display: block;
   padding: 12px 10px;
   font-size: 14px;
-  font-family: "Roboto", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
 }
 .select-control ul li:hover {
   cursor: pointer;
