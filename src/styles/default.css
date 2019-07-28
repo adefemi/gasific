@@ -9,6 +9,7 @@ body {
   position: relative;
   box-sizing: border-box;
   font-family: "adineue PRO Cyr Light Web", sans-serif;
+  font-weight: 500;
 }
 
 a {
