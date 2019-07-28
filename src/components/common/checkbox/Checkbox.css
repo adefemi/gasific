@@ -5,7 +5,7 @@
   left: -9999px;
 }
 .Checkbox[type=checkbox]:checked + label {
-  font-family: "Roboto", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
   font-size: 16px;
   position: relative;
   padding-left: 28px;
@@ -46,7 +46,7 @@
   left: -9999px;
 }
 .Checkbox[type=checkbox]:not(:checked) + label {
-  font-family: "Roboto", sans-serif;
+  font-family: "adineue PRO Cyr Light Web", sans-serif;
   font-size: 16px;
   position: relative;
   padding-left: 28px;

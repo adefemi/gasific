@@ -169,6 +169,7 @@ function UserDashboard(props) {
         <Card heading="Gas Gauge">
           <div className="padding-20 dflex justify-center align-center">
             <img src={gasUsage} height="100%" />
+            <div className="guage-percentage">50%</div>
           </div>
         </Card>
       </div>

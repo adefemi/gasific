@@ -5,7 +5,7 @@
 }
 
 .btn {
-    font-family: $primary-font;
+    font-family: $secondary-font;
     background: transparent;
     padding: 8px 20px;
     color: white;
@@ -15,6 +15,7 @@
     align-items: center !important;
     justify-content: center !important;
     box-sizing: border-box;
+    border-radius: 30px;
 }
 
 .disabled {

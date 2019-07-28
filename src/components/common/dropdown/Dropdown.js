@@ -4,13 +4,15 @@ import shortID from "shortid";
 import { hasClass, addClass, removeClass } from "../select/Select";
 import { hasSomeParentTheClass } from "../../utils/helper";
 import propTypes from "prop-types";
+import AppIcon from "../icons/Icon";
 
 const proptypes = {
   dropDownWidth: propTypes.string,
   active: propTypes.any.isRequired,
   options: propTypes.arrayOf(propTypes.object).isRequired,
   onChange: propTypes.func.isRequired,
-  staticContent: propTypes.bool
+  staticContent: propTypes.bool,
+  dropLogo: propTypes.bool
 };
 
 class DropDown extends Component {
@@ -94,11 +96,18 @@ class DropDown extends Component {
           onClick={() => this.toggleDropDown(this.dropDownID)}
           className="dropdown-main"
         >
-          {this.props.static ? (
-            <div className="dropdown-content">{this.props.children}</div>
-          ) : (
-            this.getActive()
-          )}
+          <div className="dflex align-center">
+            {this.props.static ? (
+              <div className="dropdown-content">{this.props.children}</div>
+            ) : (
+              this.getActive()
+            )}
+            {this.props.dropLogo && (
+              <span style={{ marginTop: "-3px" }}>
+                <AppIcon name="chevronDown" type="feather" />
+              </span>
+            )}
+          </div>
           <ul
             style={{ width: this.props.dropDownWidth }}
             id={this.dropDownUlID}
@@ -117,7 +126,8 @@ DropDown.propTypes = proptypes;
 
 DropDown.defaultProps = {
   dropDownWidth: "100px",
-  staticContent: false
+  staticContent: false,
+  dropLogo: false
 };
 
 export default DropDown;

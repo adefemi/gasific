@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/logos/logo5.png";
+import logo from "../../assets/logos/logo1.png";
 
 function AuthLayout(props) {
   return (

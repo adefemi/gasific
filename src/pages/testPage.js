@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const Test = props => {
   return (
     <div>
-      <NavLink to="/login">
+      <NavLink to="/summary">
         <h2 className="link-btn">Simulate</h2>
       </NavLink>
       <br />
@@ -12,6 +12,8 @@ const Test = props => {
       <br />
       <br />
       <h3>Quick Links</h3>
+      <NavLink to="/summary">Summary Page</NavLink>
+      <br />
       <NavLink to="/login">Login Screen</NavLink>
       <br />
       <NavLink to="/register">Register Screen</NavLink>

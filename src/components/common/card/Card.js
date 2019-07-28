@@ -23,7 +23,7 @@ Card.propTypes = {
 
 Card.defaultProps = {
   style: {},
-  round: false
+  round: true
 };
 
 export default Card;
