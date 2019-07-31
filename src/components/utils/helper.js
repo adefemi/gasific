@@ -166,7 +166,7 @@ export function numberWithCommas(n, separator = ",") {
     .join("");
 
   // Put the decimals back and output the formatted number
-  return parseFloat(`${num}${decimals}`).toFixed(2);
+  return `${num}${decimals}`;
 }
 
 export function isDescendant(parent, child) {

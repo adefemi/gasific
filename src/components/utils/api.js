@@ -6,4 +6,3 @@ export const assingHardwareURl = baseUrl + `hardware/assign`;
 export const passwordUrl = (type = "") => baseUrl + `password/${type}`;
 export const hardwareUrl = (type = "") => baseUrl + `hardware${type}`;
 export const baseURL = (type = "") => baseUrl + type;
-

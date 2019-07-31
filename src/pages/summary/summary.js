@@ -8,7 +8,11 @@ import lock from "./images/lock.ico";
 import basic from "./images/saphire.jpg";
 import premium from "./images/onyx1.jpg";
 import platinum from "./images/gold.jpg";
-import { numberWithCommas, axiosFunc } from "../../components/utils/helper";
+import {
+  numberWithCommas,
+  axiosFunc,
+  errorHandler
+} from "../../components/utils/helper";
 import logo from "../../assets/logos/logo1.png";
 import { NavLink } from "react-router-dom";
 import { getPlanUrl } from "../../components/utils/api";
@@ -48,13 +52,16 @@ class Summary extends React.Component {
     if (status) {
       this.setState({ availablePlans: data.data.data.plans });
       // let plans = data.data.data.plans
-      console.log("my plans are", this.state.availablePlans);
       this.setState({
+        plan_id: this.state.availablePlans[1].id,
         name: this.state.availablePlans[1].name,
         price: this.state.availablePlans[1].price
       });
     } else {
-      console.log("i did not get plans", data);
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(data)
+      });
     }
   };
 
@@ -71,23 +78,31 @@ class Summary extends React.Component {
   productChanger = active => {
     if (active.value === 1) {
       this.setState({
+        plan_id: this.state.availablePlans[0].id,
         name: this.state.availablePlans[0].name,
         image: premiumImage,
         price: this.state.availablePlans[0].price
       });
     } else if (active.value === 2) {
       this.setState({
+        plan_id: this.state.availablePlans[2].id,
         image: platinumImage,
         name: this.state.availablePlans[2].name,
         price: this.state.availablePlans[2].price
       });
     } else {
       this.setState({
+        plan_id: this.state.availablePlans[1].id,
         image: basicImage,
         name: this.state.availablePlans[1].name,
         price: this.state.availablePlans[1].price
       });
     }
+  };
+
+  onSubmit = () => {
+    localStorage.setItem("gas_plan", this.state.plan_id);
+    this.props.history.push("/login");
   };
 
   render() {
@@ -271,11 +286,9 @@ class Summary extends React.Component {
                   Excluding delivery charges
                 </div>
                 <p />
-                <NavLink to="login">
-                  <Button block color={"success"}>
-                    Continue to Checkout
-                  </Button>
-                </NavLink>
+                <Button block color={"success"} onClick={this.onSubmit}>
+                  Continue to Checkout
+                </Button>
               </div>
 
               <div className="divider" />

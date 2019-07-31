@@ -13,6 +13,9 @@ import { authUrl } from "../../components/utils/api";
 function Register(props) {
   const [submit, setSubmit] = useState(false);
   const [registerData, setRegisterData] = useState({});
+  if (!localStorage.getItem("gas_plan")) {
+    props.history.push("/");
+  }
 
   const onChange = e => {
     setRegisterData({
@@ -57,7 +60,7 @@ function Register(props) {
       email: registerData.email,
       password: registerData.password,
       name: `${registerData.firstName} ${registerData.lastName}`,
-      plan_id: 2,
+      plan_id: localStorage.getItem("gas_plan"),
       callback_url: "http://web2.gasific.ng/confirm"
       // phoneNumber: registerData.phoneNumber
     };
