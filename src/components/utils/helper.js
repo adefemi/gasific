@@ -53,11 +53,15 @@ export const errorHandler = err => {
 
   let errorData = err.response.data;
   let stringData = "";
-
-  for (let key in errorData) {
-    if (errorData.hasOwnProperty(key)) {
-      stringData += `${errorData[key]} \n`;
+  if (errorData.data) {
+    errorData = errorData.data.error;
+    for (let key in errorData) {
+      if (errorData.hasOwnProperty(key)) {
+        stringData += `${key}: ${errorData[key]} <br/>`;
+      }
     }
+  } else {
+    stringData = errorData.message;
   }
 
   return stringData;
