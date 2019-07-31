@@ -25,12 +25,12 @@ const settings = {
 function Verify(props) {
   const [submit, setSubmit] = useState(false);
   const [deliveryData, setDeliveryData] = useState({});
-  console.log("ssid", deliveryData)
+  console.log("ssid", deliveryData);
 
   const onSubmit = e => {
     e.preventDefault();
     setSubmit(true);
-    sendSsid(deliveryData.ssid)
+    sendSsid(deliveryData.ssid);
   };
 
   const onChange = e => {
@@ -41,9 +41,9 @@ function Verify(props) {
   };
 
   // sending hardware SSID
-  const sendSsid = (hardSsid) => {
-    axiosFunc("POST", assingHardwareURl, {ssid: hardSsid},  "yes", onAssigned )
-  }
+  const sendSsid = hardSsid => {
+    axiosFunc("POST", assingHardwareURl, { ssid: hardSsid }, "yes", onAssigned);
+  };
 
   // callback for assigned hardware
   const onAssigned = () => {
@@ -53,10 +53,9 @@ function Verify(props) {
       content: "Whats left now is to place you hardware on you Gas Cylinder",
       title: "Process Completed"
     });
-   
-  
+
     props.history.push("/dashboard/user");
-  }
+  };
 
   return (
     <div className="container" style={{ backgroundColor: "#f5f5f5" }}>

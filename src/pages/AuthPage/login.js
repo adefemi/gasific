@@ -13,6 +13,10 @@ function Login(props) {
   const [submit, setSubmit] = useState(false);
   const [loginData, setLoginData] = useState({});
 
+  if (!localStorage.getItem("gas_plan")) {
+    props.history.push("/");
+  }
+
   const onLoginCompleted = (status, payload) => {
     setSubmit(false);
     if (status) {
