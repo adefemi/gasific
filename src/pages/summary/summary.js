@@ -5,27 +5,64 @@ import verve from "./images/verve2.png";
 import master from "./images/mastercard-icon-png-5a3556c6e81b34.5328243515134450629507.jpg";
 import visa from "./images/visa3.png";
 import lock from "./images/lock.ico";
-import basic from "./images/basic2.png";
-import premium from "./images/premium.png";
-import platinum from "./images/platinum.png";
-import { numberWithCommas } from "../../components/utils/helper";
+import basic from "./images/saphire.jpg";
+import premium from "./images/onyx1.jpg";
+import platinum from "./images/gold.jpg";
+import {
+  numberWithCommas,
+  axiosFunc,
+  errorHandler
+} from "../../components/utils/helper";
 import logo from "../../assets/logos/logo1.png";
 import { NavLink } from "react-router-dom";
+import { getPlanUrl } from "../../components/utils/api";
 
 const opt = [
-  { value: 0, content: "Basic" },
-  { value: 1, content: "Premium" },
-  { value: 2, content: "Platinum" }
+  { value: 0, content: "Onyx" },
+  { value: 1, content: "Sapphire" },
+  { value: 2, content: "Gold" }
 ];
-const basicImage = basic;
-const premiumImage = premium;
+const basicImage = premium;
+const premiumImage = basic;
 const platinumImage = platinum;
 class Summary extends React.Component {
-  state = {
-    image: basicImage,
-    name: "Basic product",
-    productQuantity: 1,
-    price: 99000
+  constructor(props) {
+    super(props);
+    this.state = {
+      image: basicImage,
+      name: "",
+      productQuantity: 1,
+      price: 0,
+      availablePlans: []
+    };
+  }
+
+  // for when components mount
+  componentDidMount() {
+    this.getPlans();
+  }
+
+  // function to get plans
+  getPlans() {
+    axiosFunc("GET", getPlanUrl, {}, {}, this.onGetPlans);
+  }
+
+  // callback for getting plans
+  onGetPlans = (status, data) => {
+    if (status) {
+      this.setState({ availablePlans: data.data.data.plans });
+      // let plans = data.data.data.plans
+      this.setState({
+        plan_id: this.state.availablePlans[1].id,
+        name: this.state.availablePlans[1].name,
+        price: this.state.availablePlans[1].price
+      });
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(data)
+      });
+    }
   };
 
   adder() {
@@ -41,19 +78,31 @@ class Summary extends React.Component {
   productChanger = active => {
     if (active.value === 1) {
       this.setState({
-        name: "Premium Product",
+        plan_id: this.state.availablePlans[0].id,
+        name: this.state.availablePlans[0].name,
         image: premiumImage,
-        price: 150000
+        price: this.state.availablePlans[0].price
       });
     } else if (active.value === 2) {
       this.setState({
+        plan_id: this.state.availablePlans[2].id,
         image: platinumImage,
-        name: "Platinum Product",
-        price: 299000
+        name: this.state.availablePlans[2].name,
+        price: this.state.availablePlans[2].price
       });
     } else {
-      this.setState({ image: basicImage, name: "Basic Product", price: 99000 });
+      this.setState({
+        plan_id: this.state.availablePlans[1].id,
+        image: basicImage,
+        name: this.state.availablePlans[1].name,
+        price: this.state.availablePlans[1].price
+      });
     }
+  };
+
+  onSubmit = () => {
+    localStorage.setItem("gas_plan", this.state.plan_id);
+    this.props.history.push("/login");
   };
 
   render() {
@@ -176,7 +225,7 @@ class Summary extends React.Component {
                     className="dflex justify-center align-center flex-d-v"
                     style={{ flex: 1 }}
                   >
-                    ₦ {this.state.price} <br />
+                    ₦ {numberWithCommas(this.state.price)} <br />
                     <span
                       style={{
                         color: "#bbb",
@@ -184,7 +233,8 @@ class Summary extends React.Component {
                         fontSize: ".7rem"
                       }}
                     >
-                      ₦ {this.state.price} x {this.state.productQuantity}
+                      ₦ {numberWithCommas(this.state.price)} x{" "}
+                      {this.state.productQuantity}
                     </span>
                   </div>
                 </div>
@@ -236,11 +286,9 @@ class Summary extends React.Component {
                   Excluding delivery charges
                 </div>
                 <p />
-                <NavLink to="login">
-                  <Button block color={"success"}>
-                    Continue to Checkout
-                  </Button>
-                </NavLink>
+                <Button block color={"success"} onClick={this.onSubmit}>
+                  Continue to Checkout
+                </Button>
               </div>
 
               <div className="divider" />

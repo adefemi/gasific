@@ -1,17 +1,70 @@
-export const errorHandler = ({ graphQLErrors, networkError }) => {
-  let messageString = "";
-  if (graphQLErrors) {
-    graphQLErrors.map(({ message }, i) => {
-      messageString += `${message}<br />`;
-      return true;
-    });
+import Axios from "axios";
+import { USERTOKEN } from "./data";
+
+export const axiosFunc = (
+  method,
+  url,
+  data,
+  headers,
+  callback,
+  type = null
+) => {
+  let header = headers;
+  if (headers === "yes") {
+    header = { Authorization: `Bearer ${localStorage.getItem(USERTOKEN)}` };
+  }
+  Axios({
+    method,
+    url,
+    data,
+    headers: header
+  }).then(
+    res => {
+      callback(true, res, type);
+    },
+    err => {
+      callback(false, err, type);
+    }
+  );
+};
+
+export const axiosMed = (method, url, data, headers) => {
+  let header = headers;
+  if (headers === "yes") {
+    header = { Authorization: `Bearer ${localStorage.getItem(USERTOKEN)}` };
   }
 
-  if (networkError) {
-    messageString += networkError;
+  return Axios({
+    method,
+    url,
+    data,
+    headers: header
+  });
+};
+
+export const errorHandler = err => {
+  if (!err.response) {
+    return err.message;
   }
 
-  return messageString.replace(/{|}|'|\[|\]/g, "");
+  if (err.code === "ECONNABORTED") {
+    return "Connection timeout...";
+  }
+
+  let errorData = err.response.data;
+  let stringData = "";
+  if (errorData.data) {
+    errorData = errorData.data.error;
+    for (let key in errorData) {
+      if (errorData.hasOwnProperty(key)) {
+        stringData += `${key}: ${errorData[key]} <br/>`;
+      }
+    }
+  } else {
+    stringData = errorData.message;
+  }
+
+  return stringData;
 };
 
 export const randomIDGenerator = length => {

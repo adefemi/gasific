@@ -4,11 +4,11 @@ import { NavLink } from "react-router-dom";
 import logo from "../../../assets/logos/logo1.png";
 
 const menuItem = [
-  {
-    link: "/dashboard/merchant",
-    name: "Merchant Dashboard",
-    icon: <AppIcon name="home" type="feather" size={20} />
-  },
+  // {
+  //   link: "/dashboard/merchant",
+  //   name: "Merchant Dashboard",
+  //   icon: <AppIcon name="home" type="feather" size={20} />
+  // },
   {
     link: "/dashboard/user",
     name: "User Dashboard",

@@ -5,22 +5,37 @@ import AppFacebookLogin from "../../components/common/facebook/FacebookLogin";
 import AppGoogleLogin from "../../components/common/google/GoogleLogin";
 import { NavLink } from "react-router-dom";
 import { Notification } from "../../components/common";
+import { axiosFunc, errorHandler } from "../../components/utils/helper";
+import { authUrl } from "../../components/utils/api";
+import { USERDATA, USERTOKEN } from "../../components/utils/data";
 
 function Login(props) {
   const [submit, setSubmit] = useState(false);
   const [loginData, setLoginData] = useState({});
 
+  if (!localStorage.getItem("gas_plan")) {
+    props.history.push("/");
+  }
+
+  const onLoginCompleted = (status, payload) => {
+    setSubmit(false);
+    if (status) {
+      let activeData = payload.data.data;
+      localStorage.setItem(USERTOKEN, activeData.access_token);
+      localStorage.setItem(USERDATA, JSON.stringify(activeData.user));
+      props.history.push("/dashboard/user");
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(payload)
+      });
+    }
+  };
+
   const onSubmit = e => {
     e.preventDefault();
     setSubmit(true);
-    setTimeout(() => {
-      setSubmit(false);
-      Notification.bubble({
-        type: "success",
-        content: "Login successful"
-      });
-      props.history.push("/delivery");
-    }, 2000);
+    axiosFunc("post", authUrl("login"), loginData, null, onLoginCompleted);
   };
 
   const onChange = e => {

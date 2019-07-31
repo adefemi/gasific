@@ -1,3 +1,2 @@
-export const SITETITTLE = "WHERE-TO-BE";
-export const USERTOKEN = "wb_token";
-export const USERDATA = "wb_user";
+export const USERTOKEN = process.env.REACT_APP_USERTOKEN;
+export const USERDATA = process.env.REACT_APP_USERDATA;
