@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import { USERTOKEN, USERDATA, providerUrl, productUrl } from "../utils/data";
-import { Spinner } from "../../components/common";
 import { axiosFunc } from "../utils/helper";
 
 const AuthController = component => {

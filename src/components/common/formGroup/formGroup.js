@@ -12,7 +12,7 @@ const FormGroup = props => {
 };
 
 FormGroup.propTypes = {
-  title: Proptypes.string,
+  title: Proptypes.any,
   className: Proptypes.string,
   style: Proptypes.string
 };

@@ -53,11 +53,15 @@ export const errorHandler = err => {
 
   let errorData = err.response.data;
   let stringData = "";
-
-  for (let key in errorData) {
-    if (errorData.hasOwnProperty(key)) {
-      stringData += `${errorData[key]} \n`;
+  if (errorData.data) {
+    errorData = errorData.data.error;
+    for (let key in errorData) {
+      if (errorData.hasOwnProperty(key)) {
+        stringData += `${key}: ${errorData[key]} <br/>`;
+      }
     }
+  } else {
+    stringData = errorData.message;
   }
 
   return stringData;
@@ -162,7 +166,7 @@ export function numberWithCommas(n, separator = ",") {
     .join("");
 
   // Put the decimals back and output the formatted number
-  return `${num}${decimals}`;
+  return parseFloat(`${num}${decimals}`).toFixed(2);
 }
 
 export function isDescendant(parent, child) {

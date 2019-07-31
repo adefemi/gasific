@@ -7,17 +7,23 @@ import { NavLink } from "react-router-dom";
 import { Notification } from "../../components/common";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
 import { authUrl } from "../../components/utils/api";
+import { USERDATA, USERTOKEN } from "../../components/utils/data";
 
 function Login(props) {
   const [submit, setSubmit] = useState(false);
   const [loginData, setLoginData] = useState({});
 
   const onLoginCompleted = (status, payload) => {
+    setSubmit(false);
     if (status) {
+      let activeData = payload.data.data;
+      localStorage.setItem(USERTOKEN, activeData.access_token);
+      localStorage.setItem(USERDATA, JSON.stringify(activeData.user));
+      props.history.push("/dashboard/user");
     } else {
       Notification.bubble({
         type: "error",
-        content: errorHandler()
+        content: errorHandler(payload)
       });
     }
   };
@@ -26,14 +32,6 @@ function Login(props) {
     e.preventDefault();
     setSubmit(true);
     axiosFunc("post", authUrl("login"), loginData, null, onLoginCompleted);
-    setTimeout(() => {
-      setSubmit(false);
-      Notification.bubble({
-        type: "success",
-        content: "Login successful"
-      });
-      props.history.push("/delivery");
-    }, 2000);
   };
 
   const onChange = e => {

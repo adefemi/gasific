@@ -22,40 +22,41 @@ const basicImage = premium;
 const premiumImage = basic;
 const platinumImage = platinum;
 class Summary extends React.Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-    image: basicImage,
-    name: "",
-    productQuantity: 1,
-    price: 0,
-    availablePlans: []
-  };}
-
+      image: basicImage,
+      name: "",
+      productQuantity: 1,
+      price: 0,
+      availablePlans: []
+    };
+  }
 
   // for when components mount
-  componentDidMount(){
-    this.getPlans()
+  componentDidMount() {
+    this.getPlans();
   }
 
-
-  // function to get plans 
-  getPlans(){
-    axiosFunc("GET", getPlanUrl, {}, {}, this.onGetPlans)
+  // function to get plans
+  getPlans() {
+    axiosFunc("GET", getPlanUrl, {}, {}, this.onGetPlans);
   }
-  
-  // callback for getting plans 
+
+  // callback for getting plans
   onGetPlans = (status, data) => {
-    if(status){
-      this.setState({availablePlans: data.data.data.plans});
+    if (status) {
+      this.setState({ availablePlans: data.data.data.plans });
       // let plans = data.data.data.plans
-      console.log("my plans are", this.state.availablePlans)
-      this.setState({name: this.state.availablePlans[1].name, price: this.state.availablePlans[1].price})
+      console.log("my plans are", this.state.availablePlans);
+      this.setState({
+        name: this.state.availablePlans[1].name,
+        price: this.state.availablePlans[1].price
+      });
+    } else {
+      console.log("i did not get plans", data);
     }
-    else{
-      console.log("i did not get plans", data)
-    }
-  }
+  };
 
   adder() {
     this.setState({ productQuantity: this.state.productQuantity + 1 });
@@ -81,7 +82,11 @@ class Summary extends React.Component {
         price: this.state.availablePlans[2].price
       });
     } else {
-      this.setState({ image: basicImage, name: this.state.availablePlans[1].name, price: this.state.availablePlans[1].price });
+      this.setState({
+        image: basicImage,
+        name: this.state.availablePlans[1].name,
+        price: this.state.availablePlans[1].price
+      });
     }
   };
 
@@ -205,7 +210,7 @@ class Summary extends React.Component {
                     className="dflex justify-center align-center flex-d-v"
                     style={{ flex: 1 }}
                   >
-                    ₦ {this.state.price} <br />
+                    ₦ {numberWithCommas(this.state.price)} <br />
                     <span
                       style={{
                         color: "#bbb",
@@ -213,7 +218,8 @@ class Summary extends React.Component {
                         fontSize: ".7rem"
                       }}
                     >
-                      ₦ {this.state.price} x {this.state.productQuantity}
+                      ₦ {numberWithCommas(this.state.price)} x{" "}
+                      {this.state.productQuantity}
                     </span>
                   </div>
                 </div>

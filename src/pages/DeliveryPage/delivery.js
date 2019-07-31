@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Card } from "../../components/common/card";
 import { Switch } from "antd";
@@ -6,14 +6,29 @@ import {
   Button,
   FormGroup,
   Input,
-  Notification
+  Notification,
+  Spinner
 } from "../../components/common";
 import logo from "../../assets/logos/logo1.png";
+import { USERDATA } from "../../components/utils/data";
+import {
+  axiosFunc,
+  errorHandler,
+  numberWithCommas
+} from "../../components/utils/helper";
+import { baseURL } from "../../components/utils/api";
 
 function Delivery(props) {
   const [submit, setSubmit] = useState(false);
   const [deliveryData, setDeliveryData] = useState({});
   const [referralSwitch, setReferralSwitch] = useState(true);
+  const [memberShip] = useState(1200);
+  const [total, setTotal] = useState(0);
+  const userData = JSON.parse(localStorage.getItem(USERDATA));
+  const [plan, setPlan] = useState({
+    fetching: true,
+    data: null
+  });
 
   const onSubmit = e => {
     e.preventDefault();
@@ -45,7 +60,7 @@ function Delivery(props) {
     var handler = window.PaystackPop.setup({
       key: "pk_test_3f76b7ddac49c6e97f490292425c14708df96c68",
       email: "customer@email.com",
-      amount: 10000,
+      amount: total * 100,
       currency: "NGN",
       ref: "" + Math.floor(Math.random() * 1000000000 + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
       metadata: {
@@ -66,6 +81,32 @@ function Delivery(props) {
     });
     handler.openIframe();
   };
+
+  const onGetPlans = (status, payload) => {
+    if (status) {
+      let data = payload.data.data.plans;
+
+      if (data.length) {
+        data = data.filter(
+          item => item.id.toString() === userData.plan_id.toString()
+        )[0];
+      }
+      setPlan({
+        data,
+        fetching: false
+      });
+      setTotal(data.price + memberShip);
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(payload)
+      });
+    }
+  };
+
+  useEffect(() => {
+    axiosFunc("get", baseURL("plans"), null, "yes", onGetPlans);
+  }, []);
 
   return (
     <div className="container" style={{ backgroundColor: "#f5f5f5" }}>
@@ -138,49 +179,62 @@ function Delivery(props) {
               </div>
             </div>
           </Card>
+
           <Card style={{ width: "100%" }}>
-            <div className="padding-20">
-              <div className="heading">Order Summary</div>
-              <br />
-              <div className="black-text bolder-text font-14">Email</div>
-              <small>email@email.com</small>
-              <br />
-              <br />
-
-              <div className="black-text bolder-text font-14">Membership</div>
-              <small>Sapphire (Quarterly)</small>
-              <br />
-              <br />
-
-              <div className="black-text bolder-text font-14">Full name</div>
-              <small>Firstname Lastname</small>
-              <br />
-              <br />
-              <br />
-              <div className="dflex justify-between align-center">
-                <div className="font-14">Membership</div>
-                <div className="black-text bolder-text font-14">N1,200.00</div>
+            {plan.fetching ? (
+              <div className="padding-20">
+                <Spinner color="#666" />
               </div>
-              <div className="dflex justify-between align-center">
-                <div className="font-14">Device Price</div>
-                <div className="black-text bolder-text font-14">N5,500.00</div>
-              </div>
-              {referralSwitch && (
+            ) : (
+              <div className="padding-20">
+                <div className="heading">Order Summary</div>
+                <br />
+                <div className="black-text bolder-text font-14">Email</div>
+                <small>{userData.email}</small>
+                <br />
+                <br />
+
+                <div className="black-text bolder-text font-14">Membership</div>
+                <small>{plan.data.name}</small>
+                <br />
+                <br />
+
+                <div className="black-text bolder-text font-14">Full name</div>
+                <small>{userData.name}</small>
+                <br />
+                <br />
+                <br />
                 <div className="dflex justify-between align-center">
-                  <div className="font-14">Discount</div>
-                  <div className="black-text bolder-text font-14">-N0.00</div>
+                  <div className="font-14">Membership</div>
+                  <div className="black-text bolder-text font-14">
+                    ₦{numberWithCommas(memberShip)}
+                  </div>
                 </div>
-              )}
-              <br />
-              <div className="dflex justify-between align-center">
-                <div className="black-text bolder-text font-18">Total</div>
-                <div className="black-text bolder-text font-18">N6,700.00</div>
+                <div className="dflex justify-between align-center">
+                  <div className="font-14">Device Price</div>
+                  <div className="black-text bolder-text font-14">
+                    ₦{numberWithCommas(plan.data.price)}
+                  </div>
+                </div>
+                {referralSwitch && (
+                  <div className="dflex justify-between align-center">
+                    <div className="font-14">Discount</div>
+                    <div className="black-text bolder-text font-14">-₦0.00</div>
+                  </div>
+                )}
+                <br />
+                <div className="dflex justify-between align-center">
+                  <div className="black-text bolder-text font-18">Total</div>
+                  <div className="black-text bolder-text font-18">
+                    ₦{numberWithCommas(total)}
+                  </div>
+                </div>
+                <br />
+                <Button block type="submit" loading={submit} disabled={submit}>
+                  Place Order
+                </Button>
               </div>
-              <br />
-              <Button block type="submit" loading={submit} disabled={submit}>
-                Place Order
-              </Button>
-            </div>
+            )}
           </Card>
         </form>
       </div>
