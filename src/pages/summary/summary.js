@@ -5,28 +5,57 @@ import verve from "./images/verve2.png";
 import master from "./images/mastercard-icon-png-5a3556c6e81b34.5328243515134450629507.jpg";
 import visa from "./images/visa3.png";
 import lock from "./images/lock.ico";
-import basic from "./images/basic2.png";
-import premium from "./images/premium.png";
-import platinum from "./images/platinum.png";
-import { numberWithCommas } from "../../components/utils/helper";
+import basic from "./images/saphire.jpg";
+import premium from "./images/onyx1.jpg";
+import platinum from "./images/gold.jpg";
+import { numberWithCommas, axiosFunc } from "../../components/utils/helper";
 import logo from "../../assets/logos/logo1.png";
 import { NavLink } from "react-router-dom";
+import { getPlanUrl } from "../../components/utils/api";
 
 const opt = [
-  { value: 0, content: "Basic" },
-  { value: 1, content: "Premium" },
-  { value: 2, content: "Platinum" }
+  { value: 0, content: "Onyx" },
+  { value: 1, content: "Sapphire" },
+  { value: 2, content: "Gold" }
 ];
-const basicImage = basic;
-const premiumImage = premium;
+const basicImage = premium;
+const premiumImage = basic;
 const platinumImage = platinum;
 class Summary extends React.Component {
-  state = {
+  constructor(props){
+    super(props)
+    this.state = {
     image: basicImage,
-    name: "Basic product",
+    name: "",
     productQuantity: 1,
-    price: 99000
-  };
+    price: 0,
+    availablePlans: []
+  };}
+
+
+  // for when components mount
+  componentDidMount(){
+    this.getPlans()
+  }
+
+
+  // function to get plans 
+  getPlans(){
+    axiosFunc("GET", getPlanUrl, {}, {}, this.onGetPlans)
+  }
+  
+  // callback for getting plans 
+  onGetPlans = (status, data) => {
+    if(status){
+      this.setState({availablePlans: data.data.data.plans});
+      // let plans = data.data.data.plans
+      console.log("my plans are", this.state.availablePlans)
+      this.setState({name: this.state.availablePlans[1].name, price: this.state.availablePlans[1].price})
+    }
+    else{
+      console.log("i did not get plans", data)
+    }
+  }
 
   adder() {
     this.setState({ productQuantity: this.state.productQuantity + 1 });
@@ -41,18 +70,18 @@ class Summary extends React.Component {
   productChanger = active => {
     if (active.value === 1) {
       this.setState({
-        name: "Premium Product",
+        name: this.state.availablePlans[0].name,
         image: premiumImage,
-        price: 150000
+        price: this.state.availablePlans[0].price
       });
     } else if (active.value === 2) {
       this.setState({
         image: platinumImage,
-        name: "Platinum Product",
-        price: 299000
+        name: this.state.availablePlans[2].name,
+        price: this.state.availablePlans[2].price
       });
     } else {
-      this.setState({ image: basicImage, name: "Basic Product", price: 99000 });
+      this.setState({ image: basicImage, name: this.state.availablePlans[1].name, price: this.state.availablePlans[1].price });
     }
   };
 
