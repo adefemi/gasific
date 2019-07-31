@@ -42,20 +42,25 @@ export const axiosMed = (method, url, data, headers) => {
   });
 };
 
-export const errorHandler = ({ graphQLErrors, networkError }) => {
-  let messageString = "";
-  if (graphQLErrors) {
-    graphQLErrors.map(({ message }, i) => {
-      messageString += `${message}<br />`;
-      return true;
-    });
+export const errorHandler = err => {
+  if (!err.response) {
+    return err.message;
   }
 
-  if (networkError) {
-    messageString += networkError;
+  if (err.code === "ECONNABORTED") {
+    return "Connection timeout...";
   }
 
-  return messageString.replace(/{|}|'|\[|\]/g, "");
+  let errorData = err.response.data;
+  let stringData = "";
+
+  for (let key in errorData) {
+    if (errorData.hasOwnProperty(key)) {
+      stringData += `${errorData[key]} \n`;
+    }
+  }
+
+  return stringData;
 };
 
 export const randomIDGenerator = length => {

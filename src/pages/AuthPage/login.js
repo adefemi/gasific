@@ -5,15 +5,27 @@ import AppFacebookLogin from "../../components/common/facebook/FacebookLogin";
 import AppGoogleLogin from "../../components/common/google/GoogleLogin";
 import { NavLink } from "react-router-dom";
 import { Notification } from "../../components/common";
+import { axiosFunc, errorHandler } from "../../components/utils/helper";
+import { authUrl } from "../../components/utils/api";
 
 function Login(props) {
   const [submit, setSubmit] = useState(false);
   const [loginData, setLoginData] = useState({});
 
+  const onLoginCompleted = (status, payload) => {
+    if (status) {
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler()
+      });
+    }
+  };
+
   const onSubmit = e => {
     e.preventDefault();
     setSubmit(true);
-    axios;
+    axiosFunc("post", authUrl("login"), loginData, null, onLoginCompleted);
     setTimeout(() => {
       setSubmit(false);
       Notification.bubble({
