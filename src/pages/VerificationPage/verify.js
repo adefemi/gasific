@@ -9,6 +9,8 @@ import {
 } from "../../components/common";
 import logo from "../../assets/logos/logo1.png";
 import Slider from "react-slick";
+import { assingHardwareURl } from "../../components/utils/api";
+import { axiosFunc } from "../../components/utils/helper";
 
 const settings = {
   dots: true,
@@ -23,19 +25,12 @@ const settings = {
 function Verify(props) {
   const [submit, setSubmit] = useState(false);
   const [deliveryData, setDeliveryData] = useState({});
+  console.log("ssid", deliveryData)
 
   const onSubmit = e => {
     e.preventDefault();
     setSubmit(true);
-    setTimeout(() => {
-      setSubmit(false);
-      Notification.bubble({
-        type: "success",
-        content: "Whats left now is to place you hardware on you Gas Cylinder",
-        title: "Process Completed"
-      });
-      props.history.push("/dashboard/user");
-    }, 2000);
+    sendSsid(deliveryData.ssid)
   };
 
   const onChange = e => {
@@ -44,6 +39,25 @@ function Verify(props) {
       [e.target.name]: e.target.value
     });
   };
+
+  // sending hardware SSID
+  const sendSsid = (hardSsid) => {
+    axiosFunc("POST", assingHardwareURl, {ssid: hardSsid},  "yes", onAssigned )
+  }
+
+  // callback for assigned hardware
+  const onAssigned = () => {
+    setSubmit(false);
+    Notification.bubble({
+      type: "success",
+      content: "Whats left now is to place you hardware on you Gas Cylinder",
+      title: "Process Completed"
+    });
+   
+  
+    props.history.push("/dashboard/user");
+  }
+
   return (
     <div className="container" style={{ backgroundColor: "#f5f5f5" }}>
       <NavLink to="/" className="fixed-brand">
