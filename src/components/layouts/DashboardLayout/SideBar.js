@@ -64,18 +64,6 @@ function SideBar(props) {
           ))}
         </ul>
       </div>
-
-      <div className="support">
-        <div>
-          <AppIcon
-            className="icon"
-            name="messageCircle"
-            type="feather"
-            size={25}
-          />
-        </div>
-        Support
-      </div>
     </div>
   );
 }
