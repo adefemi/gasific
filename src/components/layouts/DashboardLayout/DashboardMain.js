@@ -2,6 +2,7 @@ import React from "react";
 import "./dashboard.css";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
+import { withRouter } from "react-router";
 
 function DashboardMain(props) {
   return (
@@ -19,4 +20,4 @@ function DashboardMain(props) {
   );
 }
 
-export default DashboardMain;
+export default withRouter(DashboardMain);

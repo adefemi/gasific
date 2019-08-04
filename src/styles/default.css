@@ -258,6 +258,7 @@ a {
   width: fit-content;
   background: none;
   color: #1F96F5;
+  cursor: pointer;
 }
 
 .flex-no-wrap {
