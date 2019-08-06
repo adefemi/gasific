@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { USERTOKEN } from "./data";
+import countryCheck from "country-state-city";
 
 export const axiosFunc = (
   method,
@@ -199,3 +200,27 @@ export function validateFileInput(file, exts) {
     fileName
   );
 }
+
+export let states = [];
+
+export const getAllStates = (countryName, shouldReturn = false) => {
+  let allCountries = countryCheck.getAllCountries();
+  let activeCountry = allCountries.filter(
+    country => country.name.toLowerCase() === countryName.toLowerCase()
+  )[0];
+  let allStates = countryCheck.getStatesOfCountry(activeCountry.id.toString());
+  let stateArray = [];
+
+  allStates.map(state => {
+    stateArray.push({
+      name: state.name,
+      value: state.name.toLowerCase()
+    });
+    return null;
+  });
+  states = stateArray;
+
+  if (shouldReturn) {
+    return stateArray;
+  }
+};

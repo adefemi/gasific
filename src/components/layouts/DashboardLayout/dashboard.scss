@@ -1,5 +1,24 @@
 @import "../../../styles/theme";
 
+.help-card{
+  height: 200px;
+  cursor: pointer;
+  &>*{
+    color: #999999;
+  }
+
+  &:hover{
+    &>*{
+      color: $primary-color;
+    }
+  }
+
+  .help-text{
+    margin-top: 20px;
+    font-size: 20px;
+  }
+}
+
 .sideBar{
   position: fixed;
   width: 250px;
@@ -18,7 +37,8 @@
     font-size: 25px;
     font-weight: 600;
     color: white;
-    background-color: $white-color;
+    background-color: $back-color;
+    border-top: 5px solid $primary-color;
   }
 
   .support{
@@ -138,11 +158,34 @@
   justify-content: space-between;
   box-sizing: border-box;
   padding: 0 20px;
+  border-top: 5px solid $primary-color;
 
   .search_input{
     height: 30px;
     input{
       background-color: $back-color;
+    }
+  }
+
+  .battery-guage{
+    width: 60px;
+    height: 60px;
+    margin-left: 20px;
+    position: relative;
+
+    img{
+      width: 100%;
+      transform: rotateZ(90deg);
+      margin-top: 7px;
+      //height: 100%;
+    }
+
+    .guage-meter{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 11px;
+      transform: translate(-50%, -50%);
     }
   }
 }

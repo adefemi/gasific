@@ -419,6 +419,7 @@ a{
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-gap: 1em;
+  width: 100%;
 
   @media screen and (max-width: 600px) {
     grid-template-columns: 1fr;

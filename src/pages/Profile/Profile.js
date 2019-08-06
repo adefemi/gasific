@@ -234,6 +234,16 @@ const UserKYC = props => {
         <FormGroup title="Family/home size">
           <Input type="email" />
         </FormGroup>
+        <FormGroup title="Gas Cylinder Code (Size)">
+          <Select>
+            <Select.Option value={5}>5kg</Select.Option>
+            <Select.Option value={12}>12kg</Select.Option>
+            <Select.Option value={25}>25kg</Select.Option>
+            <Select.Option value={50}>50kg</Select.Option>
+            <Select.Option value={75}>75kg</Select.Option>
+            <Select.Option value={100}>100kg</Select.Option>
+          </Select>
+        </FormGroup>
       </div>
       <br />
       <Button>Update</Button>

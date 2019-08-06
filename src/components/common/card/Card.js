@@ -8,6 +8,7 @@ const Card = props => {
     <div
       className={`card-main ${props.className} ${props.round && "round"}`}
       style={props.style}
+      onClick={props.onClick}
     >
       {props.heading && <div className={"card-heading"}>{props.heading}</div>}
       {props.children}
@@ -23,7 +24,8 @@ Card.propTypes = {
 
 Card.defaultProps = {
   style: {},
-  round: true
+  round: true,
+  onClick: () => null
 };
 
 export default Card;
