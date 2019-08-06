@@ -30,9 +30,9 @@ const menuItem = [
     icon: <AppIcon name="activity" type="feather" size={20} />
   },
   {
-    link: "/dashboard/FAQ",
-    name: "FAQ",
-    icon: <AppIcon name="messageSquare" type="feather" size={20} />
+    link: "/dashboard/help",
+    name: "Help",
+    icon: <AppIcon name="shield" type="feather" size={20} />
   }
 ];
 

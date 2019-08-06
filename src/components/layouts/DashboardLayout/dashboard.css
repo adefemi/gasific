@@ -1,5 +1,20 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Jura&display=swap");
+.help-card {
+  height: 200px;
+  cursor: pointer;
+}
+.help-card > * {
+  color: #999999;
+}
+.help-card:hover > * {
+  color: #1F96F5;
+}
+.help-card .help-text {
+  margin-top: 20px;
+  font-size: 20px;
+}
+
 .sideBar {
   position: fixed;
   width: 250px;
@@ -18,7 +33,8 @@
   font-size: 25px;
   font-weight: 600;
   color: white;
-  background-color: #ffffff;
+  background-color: #F4FAFF;
+  border-top: 5px solid #1F96F5;
 }
 .sideBar .support {
   margin: 20px auto;
@@ -123,12 +139,31 @@
   justify-content: space-between;
   box-sizing: border-box;
   padding: 0 20px;
+  border-top: 5px solid #1F96F5;
 }
 .navbar .search_input {
   height: 30px;
 }
 .navbar .search_input input {
   background-color: #F4FAFF;
+}
+.navbar .battery-guage {
+  width: 60px;
+  height: 60px;
+  margin-left: 20px;
+  position: relative;
+}
+.navbar .battery-guage img {
+  width: 100%;
+  transform: rotateZ(90deg);
+  margin-top: 7px;
+}
+.navbar .battery-guage .guage-meter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 11px;
+  transform: translate(-50%, -50%);
 }
 
 .img-con {

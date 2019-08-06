@@ -7,6 +7,7 @@ import Transactions from "../Transactions/Transactions";
 import Profile from "../Profile/Profile";
 import GasUsage from "../GasUsage/GasUsage";
 import Faq from "../FAQ/FAQ";
+import Help from "../Help/Help";
 
 function Dashboard(props) {
   return (
@@ -16,7 +17,8 @@ function Dashboard(props) {
       <Route exact path={"/dashboard/transactions"} component={Transactions} />
       <Route exact path={"/dashboard/profile"} component={Profile} />
       <Route exact path={"/dashboard/gas-usage"} component={GasUsage} />
-      <Route exact path={"/dashboard/FAQ"} component={Faq} />
+      <Route exact path={"/dashboard/help/FAQ"} component={Faq} />
+      <Route exact path={"/dashboard/help"} component={Help} />
     </DashboardMain>
   );
 }

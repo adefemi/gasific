@@ -136,6 +136,41 @@ function UserDashboard(props) {
     <div>
       <div className="dashboard-heading">User Dashboard</div>
       <br />
+      <div className="grid-3">
+        <Card className="card-style-1" style={{ backgroundColor: "#0984e3" }}>
+          <div className="left">
+            <div className="main">0.8 KG</div>
+            <small>TODAY, Cooking Gas Usage</small>
+          </div>
+          <div className="right">
+            <div className="main">Monday</div>
+            <small>April 14</small>
+          </div>
+        </Card>
+        <Card className="card-style-1" style={{ backgroundColor: "#6c5ce7" }}>
+          <div className="left">
+            <div className="main">11.1 KG</div>
+            <small>WEEKLY, Cooking Gas Usage</small>
+          </div>
+          <div className="right">
+            <div className="main">Week 5</div>
+            <small>April 14</small>
+          </div>
+        </Card>
+        <Card className="card-style-1" style={{ backgroundColor: "#e17055" }}>
+          <div className="left">
+            <div className="main">214.3 KG</div>
+            <small>MONTHLY, Cooking Gas Usage</small>
+          </div>
+          <div className="right">
+            <div className="main">Month 1</div>
+            <small>April 14</small>
+          </div>
+        </Card>
+      </div>
+
+      <br />
+      <br />
       <div className="grid-2-v">
         <Card heading="Usage(in grams)/Time(h)">
           <div
@@ -173,48 +208,6 @@ function UserDashboard(props) {
           </div>
         </Card>
       </div>
-      <br />
-
-      <div className="grid-3">
-        <Card className="card-style-1" style={{ backgroundColor: "#0984e3" }}>
-          <div className="left">
-            <div className="main">0.8 KG</div>
-            <small>TODAY, Cooking Gas Usage</small>
-          </div>
-          <div className="right">
-            <div className="main">Monday</div>
-            <small>April 14</small>
-          </div>
-        </Card>
-        <Card className="card-style-1" style={{ backgroundColor: "#6c5ce7" }}>
-          <div className="left">
-            <div className="main">11.1 KG</div>
-            <small>WEEKLY, Cooking Gas Usage</small>
-          </div>
-          <div className="right">
-            <div className="main">Week 5</div>
-            <small>April 14</small>
-          </div>
-        </Card>
-        <Card className="card-style-1" style={{ backgroundColor: "#e17055" }}>
-          <div className="left">
-            <div className="main">214.3 KG</div>
-            <small>MONTHLY, Cooking Gas Usage</small>
-          </div>
-          <div className="right">
-            <div className="main">Month 1</div>
-            <small>April 14</small>
-          </div>
-        </Card>
-      </div>
-
-      <br />
-      <br />
-      <div className="dashboard-heading-2">Recent Gas Usage Logs</div>
-      <p />
-      <Card>
-        <Table dataSource={dataSource} columns={columns} />
-      </Card>
     </div>
   );
 }
