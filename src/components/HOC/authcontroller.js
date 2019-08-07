@@ -14,9 +14,14 @@ const AuthController = component => {
     const onFetchData = (status, payload) => {
       if (status) {
         setCanView(true);
+        localStorage.removeItem("gasific_redirect");
       } else {
         localStorage.removeItem(USERTOKEN);
         localStorage.removeItem(USERDATA);
+        localStorage.setItem(
+          "gasific_redirect",
+          `redirect=${encodeURIComponent(props.location.pathname)}`
+        );
         props.history.push(`/login?redirect=${props.location.pathname}`);
 
         return null;
@@ -27,10 +32,15 @@ const AuthController = component => {
       if (!token) {
         localStorage.removeItem(USERTOKEN);
         localStorage.removeItem(USERDATA);
+        localStorage.setItem(
+          "gasific_redirect",
+          `redirect=${encodeURIComponent(props.location.pathname)}`
+        );
         props.history.push(
           `/login?redirect=${encodeURIComponent(props.location.pathname)}`
         );
       } else {
+        localStorage.removeItem("gasific_redirect");
         setCanView(true);
         // axiosFunc("get", baseURL("hardware"), null, "yes", onFetchData);
       }

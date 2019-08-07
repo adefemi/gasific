@@ -18,16 +18,20 @@ function Router(props) {
         <Route path="/register" exact component={Register} />
         <Route path="/login" exact component={Login} />
         <Route path="/forgot-password" exact component={ForgotPassword} />
-        <Route path="/payment" exact component={Payment} />
+        <Route path="/payment" exact component={AuthController(Payment)} />
         <Route path="/verification" exact component={AuthController(Verify)} />
+        <Route path="/dashboard" component={AuthController(DashboardMain)} />
 
-        <DashboardController>
-          <Dashboard />
-        </DashboardController>
         <Route path={"*"} render={() => <h1>Not Found!!!</h1>} />
       </Switch>
     </BrowserRouter>
   );
 }
+
+const DashboardMain = () => (
+  <DashboardController>
+    <Dashboard />
+  </DashboardController>
+);
 
 export default Router;

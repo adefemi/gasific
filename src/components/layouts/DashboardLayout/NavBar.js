@@ -1,9 +1,16 @@
 import React from "react";
-import { Input } from "../../common";
+import { DropDown, Input } from "../../common";
 import AppIcon from "../../common/icons/Icon";
 import battery from "../../../assets/battery.png";
+import { NavLink } from "react-router-dom";
+import { USERDATA, USERTOKEN } from "../../utils/data";
 
 function NavBar(props) {
+  const onLogout = () => {
+    localStorage.removeItem(USERDATA);
+    localStorage.removeItem(USERTOKEN);
+    window.location.href = window.location.origin + "/login";
+  };
   return (
     <div className="navbar">
       <div className="nav-left dflex align-center">
@@ -18,10 +25,28 @@ function NavBar(props) {
         </div>
       </div>
       <div className="nav-right dflex align-center">
-        <div className="user-name">Admin</div>
-        <div className="img-con">
-          <img src="" alt="" />
-        </div>
+        <DropDown
+          staticContent={true}
+          onChange={() => null}
+          active={
+            <>
+              <div className="user-name">Admin</div>
+              <div className="img-con">
+                <img src="" alt="" />
+              </div>
+            </>
+          }
+          options={[
+            {
+              id: 1,
+              content: <NavLink to="/dashboard/profile">Profile</NavLink>
+            },
+            {
+              id: 1,
+              content: <span onClick={onLogout}>Logout</span>
+            }
+          ]}
+        />
       </div>
     </div>
   );
