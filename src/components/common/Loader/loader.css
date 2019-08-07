@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto_thin:100,100i,300,300i,400,400i,500,500i&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto_thick:700,700i,900,900i&display=swap");
+.loader-main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+}
+.loader-main img {
+  width: 100px;
+}
+
+/*# sourceMappingURL=loader.css.map */

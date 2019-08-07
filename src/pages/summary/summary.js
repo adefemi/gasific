@@ -3,10 +3,10 @@ import {
   Card,
   DropDown,
   Button,
-  Icon,
   FormGroup,
   Input,
-  Select
+  Select,
+  Notification
 } from "../../components/common";
 import "./summary.css";
 import verve from "./images/verve2.png";
@@ -27,6 +27,8 @@ import { NavLink } from "react-router-dom";
 import { getPlanUrl } from "../../components/utils/api";
 import { Switch } from "antd";
 
+import hardwareImg from "../../assets/hardware.jpg";
+
 const opt = [
   { value: 0, content: "Onyx" },
   { value: 1, content: "Sapphire" },
@@ -35,6 +37,7 @@ const opt = [
 const basicImage = premium;
 const premiumImage = basic;
 const platinumImage = platinum;
+
 class Summary extends React.Component {
   constructor(props) {
     super(props);
@@ -43,9 +46,10 @@ class Summary extends React.Component {
       name: "",
       productQuantity: 1,
       price: 0,
+      loading: false,
       availablePlans: [],
       deliveryData: {},
-      referralSwitch: true,
+      referralSwitch: false,
       states: []
     };
   }
@@ -79,16 +83,6 @@ class Summary extends React.Component {
     }
   };
 
-  adder() {
-    this.setState({ productQuantity: this.state.productQuantity + 1 });
-  }
-
-  reducer() {
-    if (this.state.productQuantity > 0) {
-      this.setState({ productQuantity: this.state.productQuantity - 1 });
-    }
-  }
-
   productChanger = active => {
     if (active.value === 1) {
       this.setState({
@@ -114,9 +108,19 @@ class Summary extends React.Component {
     }
   };
 
-  onSubmit = () => {
-    localStorage.setItem("gas_plan", this.state.plan_id);
-    this.props.history.push("/payment");
+  onSubmit = e => {
+    e.preventDefault();
+    localStorage.setItem(
+      "user_info",
+      JSON.stringify({
+        ...this.state.deliveryData,
+        plan_id: this.state.plan_id
+      })
+    );
+    this.setState({ loading: true });
+    setTimeout(() => {
+      this.props.history.push("/payment");
+    }, 2000);
   };
 
   onChange = e => {
@@ -165,189 +169,251 @@ class Summary extends React.Component {
         </div>
 
         <div className="padding-20 dflex justify-center max-width-1400">
-          <div className="grid-2-v">
+          <form onSubmit={this.onSubmit} className="grid-2-v">
             <div>
-              <Card
-                heading={
-                  <div className="dflex align-center">
-                    <div style={{ flex: "3" }}>Product</div>{" "}
-                    <div style={{ flex: "1", textAlign: "center" }}>
-                      Item Price
-                    </div>
-                  </div>
-                }
-              >
-                <div className="dflex padding-20">
-                  <div className="dflex align-center" style={{ flex: 3 }}>
-                    <img
-                      style={{
-                        width: "100px",
-                        height: "100px"
-                      }}
-                      src={this.state.image}
-                    />
-
-                    <div style={{ paddingLeft: "20px" }}>
-                      <DropDown
-                        dropLogo
-                        dropDownWidth={"120px"}
-                        onChange={this.productChanger}
-                        active={0}
-                        options={opt}
-                      />{" "}
-                      {this.state.name}
-                    </div>
-                  </div>
-
-                  <div
-                    className="dflex justify-center align-center flex-d-v"
-                    style={{ flex: 1 }}
-                  >
-                    ₦ {numberWithCommas(this.state.price)} <br />
-                  </div>
-                </div>
-              </Card>
+              <ProductList
+                state={this.state}
+                productChanger={this.productChanger}
+              />
               <br />
-              <Card style={{ width: "100%" }}>
-                <div className="padding-20">
-                  <div className="heading">Delivery Information</div>
-
-                  <FormGroup title="Home Address">
-                    <Input
-                      required
-                      name="address"
-                      value={this.state.deliveryData.address || ""}
-                      type="text"
-                      onChange={this.onChange}
-                    />
-                  </FormGroup>
-                  <div className="grid-2">
-                    <FormGroup title="City">
-                      <Input
-                        required
-                        name="city"
-                        value={this.state.deliveryData.city || ""}
-                        type="text"
-                        onChange={this.onChange}
-                      />
-                    </FormGroup>
-                    <FormGroup title="State">
-                      <Select
-                        required
-                        name="state"
-                        value={this.state.deliveryData.state || ""}
-                        onChange={this.onChange}
-                      >
-                        {this.state.states.length > 1 &&
-                          this.state.states.map((item, ind) => {
-                            return (
-                              <Select.Option key={ind} value={item.value}>
-                                {item.name}
-                              </Select.Option>
-                            );
-                          })}
-                      </Select>
-                    </FormGroup>
-                  </div>
-
-                  <div className="grid-2">
-                    <FormGroup
-                      title={
-                        <div className="dflex align-center">
-                          <span> Referral/Discount Code</span>
-                          <div className="margin-left-10" />
-                          <Switch
-                            defaultChecked
-                            onChange={this.onChangeSwitch}
-                          />
-                        </div>
-                      }
-                    >
-                      {this.state.referralSwitch && (
-                        <Input
-                          name="referral"
-                          value={this.state.deliveryData.referral || ""}
-                          type="text"
-                          onChange={this.onChange}
-                        />
-                      )}
-                    </FormGroup>
-                  </div>
-                </div>
-              </Card>
+              <Delivery
+                state={this.state}
+                onChange={this.onChange}
+                onChangeSwitch={this.onChangeSwitch}
+              />
             </div>
             <div>
-              <Card
-                heading={
-                  <div className="dflex align-center justify-between padding-10">
-                    <div>Checkout</div>
-                    <div>{this.state.productQuantity} items</div>
-                  </div>
-                }
-              >
-                <div className="dflex align-center justify-between padding-20">
-                  <div className="">
-                    <span>Delivery:</span>
-                  </div>
-                  <div>₦ {numberWithCommas(500)}</div>
-                </div>
-                <div className="dflex align-center justify-between padding-20">
-                  <div className="">
-                    <span>Hardware:</span>
-                  </div>
-                  <div>₦ {numberWithCommas(5000)}</div>
-                </div>
-
-                <div className="divider" />
-
-                <div className="dflex align-center justify-between padding-20">
-                  <div className="bolder-text">Total </div>
-                  <div>₦ {numberWithCommas(5500)}</div>
-                </div>
-                <div className="divider" />
-                <div className="padding-20">
-                  <div
-                    style={{
-                      color: "#b87300",
-                      fontSize: ".6875rem"
-                    }}
-                  >
-                    Excluding delivery charges
-                  </div>
-                  <p />
-                  <Button block color={"success"} onClick={this.onSubmit}>
-                    Continue to Payment
-                  </Button>
-                </div>
-
-                <div className="divider" />
-
-                <div className="dflex align-center padding-10">
-                  <span className="security-text ">We accept</span>
-                  <div className="margin-left-10">
-                    <img width={50} src={verve} alt="fin-service" />
-                  </div>
-                  <div className="margin-left-10">
-                    <img width={50} src={master} alt="fin-service" />
-                  </div>
-                  <div className="margin-left-10">
-                    <img width={50} src={visa} alt="fin-service" />
-                  </div>
-                </div>
-
-                <div className="dflex align-center padding-10">
-                  <img width={30} height={30} src={lock} alt="fin-service" />
-                  <span className="security-text">
-                    Transactions are 100% Safe and Secure
-                  </span>
-                </div>
-              </Card>
+              <CheckOutCard state={this.state} loading={this.state.loading} />
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
   }
 }
+
+export const Delivery = props => {
+  let { state, onChange, onChangeSwitch } = props;
+  return (
+    <Card style={{ width: "100%" }}>
+      <div className="padding-20">
+        <div className="heading">Delivery Information</div>
+
+        <FormGroup title="Home Address">
+          <Input
+            required
+            name="address"
+            value={state.deliveryData.address || ""}
+            type="text"
+            onChange={onChange}
+          />
+        </FormGroup>
+        <div className="grid-2">
+          <FormGroup title="City">
+            <Input
+              required
+              name="city"
+              value={state.deliveryData.city || ""}
+              type="text"
+              onChange={onChange}
+            />
+          </FormGroup>
+          <FormGroup title="State">
+            <Select
+              required
+              name="state"
+              value={state.deliveryData.state || ""}
+              onChange={onChange}
+            >
+              {state.states.length > 1 &&
+                state.states.map((item, ind) => {
+                  return (
+                    <Select.Option key={ind} value={item.value}>
+                      {item.name}
+                    </Select.Option>
+                  );
+                })}
+            </Select>
+          </FormGroup>
+        </div>
+
+        <div className="grid-2">
+          <FormGroup
+            title={
+              <div className="dflex align-center">
+                <span> Referral/Discount Code</span>
+                <div className="margin-left-10" />
+                <Switch
+                  checked={state.referralSwitch}
+                  onChange={onChangeSwitch}
+                />
+              </div>
+            }
+          >
+            {state.referralSwitch && (
+              <Input
+                name="referral"
+                value={state.deliveryData.referral || ""}
+                type="text"
+                onChange={onChange}
+              />
+            )}
+          </FormGroup>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+export const ProductList = props => {
+  const { state, productChanger } = props;
+  return (
+    <Card
+      heading={
+        <div className="dflex align-center">
+          <div style={{ flex: "3" }}>Product</div>{" "}
+          <div style={{ flex: "1", textAlign: "center" }}>Item Price</div>
+        </div>
+      }
+    >
+      <div className="dflex padding-20">
+        <div className="dflex align-center" style={{ flex: 3 }}>
+          <img
+            style={{
+              width: "100px",
+              height: "100px"
+            }}
+            src={state.image}
+          />
+
+          <div style={{ paddingLeft: "20px" }}>
+            <DropDown
+              dropLogo
+              dropDownWidth={"120px"}
+              onChange={productChanger}
+              active={0}
+              options={opt}
+            />{" "}
+            {state.name}
+          </div>
+        </div>
+
+        <div
+          className="dflex justify-center align-center flex-d-v"
+          style={{ flex: 1 }}
+        >
+          ₦ {numberWithCommas(state.price)} <br />
+        </div>
+      </div>
+      <div className="divider" />
+      <div className="dflex padding-20">
+        <div className="dflex align-center" style={{ flex: 3 }}>
+          <img
+            style={{
+              width: "100px",
+              height: "100px"
+            }}
+            src={hardwareImg}
+          />
+
+          <div className="padding-20 bolder-text">Hardware</div>
+        </div>
+
+        <div
+          className="dflex justify-center align-center flex-d-v"
+          style={{ flex: 1 }}
+        >
+          ₦ {numberWithCommas(5000)} <br />
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+export const CheckOutCard = props => {
+  const { state, loading } = props;
+
+  return (
+    <Card
+      heading={
+        <div className="dflex align-center justify-between padding-10">
+          <div>Checkout</div>
+          <div>{state.productQuantity} items</div>
+        </div>
+      }
+    >
+      <div className="dflex align-center justify-between padding-20">
+        <div className="">
+          <span>Delivery:</span>
+        </div>
+        <div>₦ {numberWithCommas(500)}</div>
+      </div>
+      <div className="dflex align-center justify-between padding-20">
+        <div className="">
+          <span>Hardware:</span>
+        </div>
+        <div>₦ {numberWithCommas(5000)}</div>
+      </div>
+      {state.referralSwitch && (
+        <div className="dflex align-center justify-between padding-20">
+          <div className="">
+            <span>Discount:</span>
+          </div>
+          <div>-0.0</div>
+        </div>
+      )}
+
+      <div className="divider" />
+
+      <div className="dflex align-center justify-between padding-20">
+        <div className="bolder-text">Total </div>
+        <div className="bolder-text">₦ {numberWithCommas(5500)}</div>
+      </div>
+      <div className="divider" />
+      <div className="padding-20">
+        <div
+          style={{
+            color: "#b87300",
+            fontSize: ".6875rem"
+          }}
+        >
+          Excluding delivery charges
+        </div>
+        <p />
+        <Button
+          block
+          color={"success"}
+          type="submit"
+          disabled={loading}
+          loading={loading}
+        >
+          Continue to Payment
+        </Button>
+      </div>
+
+      <div className="divider" />
+
+      <div className="dflex align-center padding-10">
+        <span className="security-text ">We accept</span>
+        <div className="margin-left-10">
+          <img width={50} src={verve} alt="fin-service" />
+        </div>
+        <div className="margin-left-10">
+          <img width={50} src={master} alt="fin-service" />
+        </div>
+        <div className="margin-left-10">
+          <img width={50} src={visa} alt="fin-service" />
+        </div>
+      </div>
+
+      <div className="dflex align-center padding-10">
+        <img width={30} height={30} src={lock} alt="fin-service" />
+        <span className="security-text">
+          Transactions are 100% Safe and Secure
+        </span>
+      </div>
+    </Card>
+  );
+};
 
 export default Summary;

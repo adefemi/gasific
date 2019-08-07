@@ -1,38 +1,31 @@
 import React, { useEffect, useState } from "react";
 
-import { USERTOKEN, USERDATA } from "../utils/data";
-import { axiosFunc } from "../utils/helper";
+import { axiosFunc, errorHandler } from "../utils/helper";
 import { hardwareUrl } from "../utils/api";
-import { Spinner } from "../common/spinner";
 import { withRouter } from "react-router";
+import { Notification, Loader } from "../common";
 
 const DashboardController = props => {
   const RenderComponent = props.children;
-  // const token = localStorage.getItem(USERTOKEN);
-  // const [canView, setCanView] = useState(false);
-  //
-  // const onFetchData = status => {
-  //   if (status) {
-  //     setCanView(true);
-  //   } else {
-  //     props.history.push(`/delivery`);
-  //     return null;
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   if (!token) {
-  //     localStorage.removeItem(USERTOKEN);
-  //     localStorage.removeItem(USERDATA);
-  //     props.history.push(
-  //       `/login?redirect=${encodeURIComponent(props.location.pathname)}`
-  //     );
-  //   } else {
-  //     axiosFunc("get", hardwareUrl(), null, "yes", onFetchData);
-  //   }
-  // }, [RenderComponent]);
-  //
-  // if (!canView) return <Spinner color={"#666"} />;
+  const [canView, setCanView] = useState(false);
+
+  const onGetHardware = (status, data) => {
+    setCanView(true);
+    if (status) {
+      console.log(data);
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(data)
+      });
+    }
+  };
+
+  useEffect(() => {
+    axiosFunc("get", hardwareUrl(), null, "yes", onGetHardware);
+  }, [RenderComponent]);
+
+  if (!canView) return <Loader />;
 
   return RenderComponent;
 };
