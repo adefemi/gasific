@@ -1,11 +1,11 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900|Roboto:300,300i,400,400i,500,500i,700,700i,900,900i&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Jura&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto_thin:100,100i,300,300i,400,400i,500,500i&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto_thick:700,700i,900,900i&display=swap");
 .Radio[type=radio]:checked {
   position: absolute;
   left: -9999px;
 }
 .Radio[type=radio]:checked + label {
-  font-family: "adineue PRO Cyr Light Web", sans-serif;
+  font-family: "Roboto_thin", sans-serif;
   font-size: 16px;
   position: relative;
   padding-left: 28px;
@@ -45,7 +45,7 @@
   left: -9999px;
 }
 .Radio[type=radio]:not(:checked) + label {
-  font-family: "adineue PRO Cyr Light Web", sans-serif;
+  font-family: "Roboto_thin", sans-serif;
   font-size: 16px;
   position: relative;
   padding-left: 28px;

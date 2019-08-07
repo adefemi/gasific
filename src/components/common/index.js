@@ -11,3 +11,4 @@ export { FormGroup } from "./formGroup";
 export { Notification } from "./notification";
 export { DropDown } from "./dropdown";
 export { Modal } from "./modal";
+export { Loader } from "./Loader/Loader";

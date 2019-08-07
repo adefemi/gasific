@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Card,
   FormGroup,
   Input,
-  Select
+  Select,
+  Notification,
+  Spinner
 } from "../../components/common";
 import { Divider, Table, Tag } from "antd";
 import userAvatar from "../../assets/sub.png";
+import {
+  axiosFunc,
+  errorHandler,
+  getAllStates
+} from "../../components/utils/helper";
+import { UserUrl } from "../../components/utils/api";
+import { cloneDeep } from "@babel/types";
 
 const columns = [
   {
@@ -85,6 +94,71 @@ const data = [
 
 function Profile(props) {
   const [activeTab, setActiveTab] = useState(1);
+  const [userInfoMain, setUserInfoMain] = useState({});
+  const [fetching, setFetching] = useState(true);
+  const [updating, setUpdating] = useState(false);
+
+  const onGetUserInfo = (status, data) => {
+    if (status) {
+      let meta = {};
+      let data1 = data.data.data.user;
+      for (let i = 0; i < data1.meta.length; i++) {
+        meta[data1.meta[i].meta_key] = data1.meta[i].meta_value;
+      }
+      setUserInfoMain({ ...data1, meta });
+      setFetching(false);
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(data)
+      });
+    }
+  };
+
+  useEffect(() => {
+    axiosFunc("get", UserUrl(), null, "yes", onGetUserInfo);
+  }, []);
+
+  const onChange = e => {
+    setUserInfoMain({
+      ...userInfoMain,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const onMetaChange = e => {
+    let meta = {};
+    if (userInfoMain.meta) {
+      meta = userInfoMain.meta;
+    }
+    meta[e.target.name] = e.target.value;
+    setUserInfoMain({
+      ...userInfoMain,
+      meta
+    });
+  };
+
+  const onUpdateComplete = (status, data) => {
+    setUpdating(false);
+    if (status) {
+      Notification.bubble({
+        type: "success",
+        content: "Profile Updated"
+      });
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(data)
+      });
+    }
+  };
+
+  const onSubmit = e => {
+    e.preventDefault();
+    setUpdating(true);
+    axiosFunc("post", UserUrl(), userInfoMain, "yes", onUpdateComplete);
+  };
+
   return (
     <div>
       <div className="dashboard-heading">User Profile</div>
@@ -103,23 +177,38 @@ function Profile(props) {
             </div>
           }
         >
-          <div className="padding-20">
-            <p>
-              <small className="black-text bolder-text">Email Address</small>
-              <div>email@email.com</div>
-            </p>
-            <p>
-              <small className="black-text bolder-text">Phone Number</small>
-              <div>93030939393</div>
-            </p>
-            <p>
-              <small className="black-text bolder-text">Address</small>
-              <div>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi
-                beatae corporis ea eius facilis porro quam quis rem sunt velit?
-              </div>
-            </p>
-          </div>
+          {fetching ? (
+            <div className="padding-20">
+              <Spinner color="#999999" />
+            </div>
+          ) : (
+            <div className="padding-20">
+              {userInfoMain.email && (
+                <p>
+                  <small className="black-text bolder-text">
+                    Email Address
+                  </small>
+                  <br />
+                  <span>{userInfoMain.email}</span>
+                </p>
+              )}
+
+              {userInfoMain.phone && (
+                <p>
+                  <small className="black-text bolder-text">Phone Number</small>
+                  <br />
+                  <span>{userInfoMain.phone}</span>
+                </p>
+              )}
+              {userInfoMain.address && (
+                <p>
+                  <small className="black-text bolder-text">Address</small>
+                  <br />
+                  <span>{userInfoMain.address}</span>
+                </p>
+              )}
+            </div>
+          )}
         </Card>
         <Card>
           <div className="tab-heading">
@@ -147,13 +236,31 @@ function Profile(props) {
               className={`tab-item ${activeTab === 1 && "active"}`}
               id={"tab-category"}
             >
-              <UserInfo />
+              {fetching ? (
+                <Spinner color="#999" />
+              ) : (
+                <UserInfo
+                  onChange={onChange}
+                  state={userInfoMain}
+                  onSubmit={onSubmit}
+                  updating={updating}
+                />
+              )}
             </div>
             <div
               className={`tab-item ${activeTab === 2 && "active"}`}
               id={"tab-category"}
             >
-              <UserKYC />
+              {fetching ? (
+                <Spinner color="#999" />
+              ) : (
+                <UserKYC
+                  state={userInfoMain.meta || {}}
+                  onChange={onMetaChange}
+                  onSubmit={onSubmit}
+                  updating={updating}
+                />
+              )}
             </div>
             <div
               className={`tab-item ${activeTab === 3 && "active"}`}
@@ -187,55 +294,90 @@ function Profile(props) {
 }
 
 const UserInfo = props => {
+  const { state, onChange, onSubmit, updating } = props;
   return (
-    <form action="">
-      <div className="grid-2 grid-s-mobile-0">
-        <FormGroup title="First Name">
-          <Input />
-        </FormGroup>
-        <FormGroup title="Last Name">
-          <Input />
+    <form onSubmit={onSubmit}>
+      <div>
+        <FormGroup title="Name">
+          <Input
+            name="name"
+            value={state.name || ""}
+            required
+            onChange={onChange}
+          />
         </FormGroup>
       </div>
       <div className="grid-2 grid-s-mobile-0">
         <FormGroup title="Email Address">
-          <Input type="email" />
+          <Input
+            type="email"
+            name="email"
+            value={state.email || ""}
+            required
+            onChange={onChange}
+          />
         </FormGroup>
         <FormGroup title="Phone Number">
-          <Input />
+          <Input
+            type="number"
+            name="phone"
+            value={state.phone || ""}
+            required
+            onChange={onChange}
+          />
         </FormGroup>
       </div>
       <div className="grid-2 grid-s-mobile-0">
         <FormGroup title="Home Address">
-          <Input />
+          <Input
+            name="address"
+            value={state.address || ""}
+            onChange={onChange}
+          />
         </FormGroup>
         <FormGroup title="State">
-          <Input />
+          <Select name="state" value={state.state || ""} onChange={onChange}>
+            {getAllStates("nigeria", true).map((item, id) => (
+              <Select.Option key={id} value={item.value}>
+                {item.name}
+              </Select.Option>
+            ))}
+          </Select>
         </FormGroup>
       </div>
       <br />
-      <Button>Update</Button>
+      <Button type="submit" loading={updating} disabled={updating}>
+        Update
+      </Button>
     </form>
   );
 };
 
 const UserKYC = props => {
+  const { state, onChange, onSubmit, updating } = props;
   return (
-    <form action="">
-      <div className="grid-2 grid-s-mobile-0">
+    <form onSubmit={onSubmit}>
+      <div className="grid-auto">
         <FormGroup title="Referral Code">
-          <Input />
+          <Input
+            name="referral_code"
+            value={state.referral_code || ""}
+            onChange={onChange}
+          />
         </FormGroup>
-        <FormGroup title="Gas Cylinder Code">
-          <Input />
-        </FormGroup>
-      </div>
-      <div className="grid-2 grid-s-mobile-0">
         <FormGroup title="Family/home size">
-          <Input type="email" />
+          <Input
+            name="home_size"
+            value={state.home_size || ""}
+            onChange={onChange}
+          />
         </FormGroup>
         <FormGroup title="Gas Cylinder Code (Size)">
-          <Select>
+          <Select
+            name="cylinder_code"
+            value={state.cylinder_code}
+            onChange={onChange}
+          >
             <Select.Option value={5}>5kg</Select.Option>
             <Select.Option value={12}>12kg</Select.Option>
             <Select.Option value={25}>25kg</Select.Option>
@@ -246,7 +388,9 @@ const UserKYC = props => {
         </FormGroup>
       </div>
       <br />
-      <Button>Update</Button>
+      <Button type="submit" loading={updating} disabled={updating}>
+        Update
+      </Button>
     </form>
   );
 };

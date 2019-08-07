@@ -13,9 +13,6 @@ import { authUrl } from "../../components/utils/api";
 function Register(props) {
   const [submit, setSubmit] = useState(false);
   const [registerData, setRegisterData] = useState({});
-  if (!localStorage.getItem("gas_plan")) {
-    props.history.push("/");
-  }
 
   const onChange = e => {
     setRegisterData({
