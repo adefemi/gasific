@@ -164,131 +164,121 @@ function Profile(props) {
       <div className="dashboard-heading">User Profile</div>
       <br />
       <div className="grid-2-u">
-        <Card
-          heading={
-            <div>
-              <div className="padding-20 dflex flex-d-v justify-between align-center">
-                <div className="img-con">
-                  <img src={userAvatar} alt="" />
+        <div>
+          <Card
+            heading={
+              <div>
+                <div className="padding-20 dflex flex-d-v justify-between align-center">
+                  <div className="img-con">
+                    <img src={userAvatar} alt="" />
+                  </div>
+                  <p />
+                  <Tag>Subscription Plan: Monthly</Tag>
                 </div>
-                <p />
-                <Tag>Subscription Plan: Monthly</Tag>
+              </div>
+            }
+          >
+            {fetching ? (
+              <div className="padding-20">
+                <Spinner color="#999999" />
+              </div>
+            ) : (
+              <div className="padding-20">
+                {userInfoMain.email && (
+                  <p>
+                    <small className="black-text bolder-text">
+                      Email Address
+                    </small>
+                    <br />
+                    <span>{userInfoMain.email}</span>
+                  </p>
+                )}
+
+                {userInfoMain.phone && (
+                  <p>
+                    <small className="black-text bolder-text">
+                      Phone Number
+                    </small>
+                    <br />
+                    <span>{userInfoMain.phone}</span>
+                  </p>
+                )}
+                {userInfoMain.address && (
+                  <p>
+                    <small className="black-text bolder-text">Address</small>
+                    <br />
+                    <span>{userInfoMain.address}</span>
+                  </p>
+                )}
+              </div>
+            )}
+          </Card>
+        </div>
+        <div>
+          <Card>
+            <div className="tab-heading">
+              <li
+                className={`${activeTab === 1 && "active"}`}
+                onClick={() => setActiveTab(1)}
+              >
+                Basic Info
+              </li>
+              <li
+                className={`${activeTab === 2 && "active"}`}
+                onClick={() => setActiveTab(2)}
+              >
+                User KYC
+              </li>
+              <li
+                className={`${activeTab === 3 && "active"}`}
+                onClick={() => setActiveTab(3)}
+              >
+                Change Password
+              </li>
+            </div>
+            <div className="tab-content">
+              <div
+                className={`tab-item ${activeTab === 1 && "active"}`}
+                id={"tab-category"}
+              >
+                {fetching ? (
+                  <Spinner color="#999" />
+                ) : (
+                  <UserInfo
+                    onChange={onChange}
+                    state={userInfoMain}
+                    onSubmit={onSubmit}
+                    updating={updating}
+                  />
+                )}
+              </div>
+              <div
+                className={`tab-item ${activeTab === 2 && "active"}`}
+                id={"tab-category"}
+              >
+                {fetching ? (
+                  <Spinner color="#999" />
+                ) : (
+                  <UserKYC
+                    state={userInfoMain.meta || {}}
+                    onChange={onMetaChange}
+                    onSubmit={onSubmit}
+                    updating={updating}
+                  />
+                )}
+              </div>
+              <div
+                className={`tab-item ${activeTab === 3 && "active"}`}
+                id={"tab-category"}
+              >
+                <ChangePassword />
               </div>
             </div>
-          }
-        >
-          {fetching ? (
-            <div className="padding-20">
-              <Spinner color="#999999" />
-            </div>
-          ) : (
-            <div className="padding-20">
-              {userInfoMain.email && (
-                <p>
-                  <small className="black-text bolder-text">
-                    Email Address
-                  </small>
-                  <br />
-                  <span>{userInfoMain.email}</span>
-                </p>
-              )}
-
-              {userInfoMain.phone && (
-                <p>
-                  <small className="black-text bolder-text">Phone Number</small>
-                  <br />
-                  <span>{userInfoMain.phone}</span>
-                </p>
-              )}
-              {userInfoMain.address && (
-                <p>
-                  <small className="black-text bolder-text">Address</small>
-                  <br />
-                  <span>{userInfoMain.address}</span>
-                </p>
-              )}
-            </div>
-          )}
-        </Card>
-        <Card>
-          <div className="tab-heading">
-            <li
-              className={`${activeTab === 1 && "active"}`}
-              onClick={() => setActiveTab(1)}
-            >
-              Basic Info
-            </li>
-            <li
-              className={`${activeTab === 2 && "active"}`}
-              onClick={() => setActiveTab(2)}
-            >
-              User KYC
-            </li>
-            <li
-              className={`${activeTab === 3 && "active"}`}
-              onClick={() => setActiveTab(3)}
-            >
-              Change Password
-            </li>
-          </div>
-          <div className="tab-content">
-            <div
-              className={`tab-item ${activeTab === 1 && "active"}`}
-              id={"tab-category"}
-            >
-              {fetching ? (
-                <Spinner color="#999" />
-              ) : (
-                <UserInfo
-                  onChange={onChange}
-                  state={userInfoMain}
-                  onSubmit={onSubmit}
-                  updating={updating}
-                />
-              )}
-            </div>
-            <div
-              className={`tab-item ${activeTab === 2 && "active"}`}
-              id={"tab-category"}
-            >
-              {fetching ? (
-                <Spinner color="#999" />
-              ) : (
-                <UserKYC
-                  state={userInfoMain.meta || {}}
-                  onChange={onMetaChange}
-                  onSubmit={onSubmit}
-                  updating={updating}
-                />
-              )}
-            </div>
-            <div
-              className={`tab-item ${activeTab === 3 && "active"}`}
-              id={"tab-category"}
-            >
-              <ChangePassword />
-            </div>
-          </div>
-        </Card>
-      </div>
-      <br />
-      <br />
-      <div>
-        {" "}
-        <div className="dflex align-center justify-between">
-          <div className="dashboard-heading-2">User Activities</div>
-          <Select style={{ width: "250px" }}>
-            <Select.Option value="All">All</Select.Option>
-            <Select.Option value="Pending">Pending</Select.Option>
-            <Select.Option value="Failed">Failed</Select.Option>
-            <Select.Option value="Success">Success</Select.Option>
-          </Select>
+          </Card>
         </div>
-        <br />
-        <Card>
-          <Table dataSource={data} columns={columns} />
-        </Card>
       </div>
+      <br />
+      <br />
     </div>
   );
 }

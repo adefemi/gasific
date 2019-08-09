@@ -1,7 +1,7 @@
 @import "../../../styles/theme";
 
 .help-card{
-  height: 200px;
+  height: 300px;
   cursor: pointer;
   &>*{
     color: #999999;
@@ -37,7 +37,8 @@
     font-size: 25px;
     font-weight: 600;
     color: white;
-    background-color: $back-color;
+    background-color: $white-color;
+    height: 80px;
     border-top: 5px solid $primary-color;
   }
 
@@ -150,9 +151,9 @@
   position: fixed;
   height: 80px;
   left: 250px;
-  z-index: 10;
+  z-index: 10000;
   right: 0;
-  background-color: $back-color;
+  background-color: $white-color;
   display: flex;
   align-items: center;
   justify-content: space-between;

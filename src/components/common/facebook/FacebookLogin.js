@@ -17,6 +17,7 @@ const AppFacebookLogin = props => {
       appId="298997581049031"
       version={"v3.2"}
       autoLoad
+      fields="name,email"
       redirectUri={props.redirect}
       callback={props.callback}
       render={renderProps => (

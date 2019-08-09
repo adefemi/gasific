@@ -61,7 +61,7 @@ function UserDashboard(props) {
     <div>
       <div className="dashboard-heading">User Dashboard</div>
       <br />
-      <div className="grid-3">
+      <div className="grid-auto">
         <Card className="card-style-1" style={{ backgroundColor: "#0984e3" }}>
           <div className="left">
             <div className="main">0.8 KG</div>
@@ -90,6 +90,16 @@ function UserDashboard(props) {
           <div className="right">
             <div className="main">Month 1</div>
             <small>April 14</small>
+          </div>
+        </Card>
+        <Card className="card-style-1" style={{ backgroundColor: "#e1c74a" }}>
+          <div className="left">
+            <div className="main">5 days</div>
+            <small>Remaining Days</small>
+          </div>
+          <div className="right">
+            <div className="main">Current</div>
+            <small>15 days</small>
           </div>
         </Card>
       </div>

@@ -115,7 +115,9 @@ const removeFromDom = (parent, child) => {
   }
 
   if (!parent.hasChildNodes()) {
-    document.body.removeChild(parent);
+    if (document.body.hasChildNodes()) {
+      document.body.removeChild(parent);
+    }
   }
 };
 

@@ -2,7 +2,7 @@
 
 .dropdown-main {
     position: relative;
-    z-index: 4;
+    z-index: 2000;
 
     .dropdown-content {
         font-family: $secondary-font;
@@ -25,7 +25,7 @@
         overflow-y: auto;
         transform-origin: right top;
         opacity: 0;
-        z-index: 10;
+        z-index: 10000;
         visibility: hidden;
         transform: translateY(-20%);
         transition: .5s ease;

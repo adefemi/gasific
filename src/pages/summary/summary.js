@@ -350,6 +350,12 @@ export const CheckOutCard = props => {
       </div>
       <div className="dflex align-center justify-between padding-20">
         <div className="">
+          <span>{state.name || "Subscription"}</span>
+        </div>
+        <div>₦ {numberWithCommas(state.price || 0)}</div>
+      </div>
+      <div className="dflex align-center justify-between padding-20">
+        <div className="">
           <span>Hardware:</span>
         </div>
         <div>₦ {numberWithCommas(5000)}</div>
@@ -367,7 +373,9 @@ export const CheckOutCard = props => {
 
       <div className="dflex align-center justify-between padding-20">
         <div className="bolder-text">Total </div>
-        <div className="bolder-text">₦ {numberWithCommas(5500)}</div>
+        <div className="bolder-text">
+          ₦ {state.price && numberWithCommas(5500 + parseFloat(state.price))}
+        </div>
       </div>
       <div className="divider" />
       <div className="padding-20">
