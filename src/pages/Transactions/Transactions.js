@@ -5,40 +5,25 @@ import { Select } from "../../components/common/select";
 
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
+    title: "Reference",
+    dataIndex: "reference",
+    key: "reference",
     render: text => <a href="javascript:;">{text}</a>
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age"
+    title: "Description",
+    dataIndex: "description",
+    key: "description"
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address"
+    title: "Amount",
+    dataIndex: "amount",
+    key: "amount"
   },
   {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: tags => (
-      <span>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
-    )
+    title: "Date",
+    key: "date",
+    dataIndex: "date"
   },
   {
     title: "Action",
@@ -53,29 +38,21 @@ const columns = [
   }
 ];
 
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"]
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"]
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"]
-  }
-];
+const data = () => {
+  let data1 = [];
+  [1, 2, 3, 4].map((item, id) => {
+    data1.push({
+      key: id,
+      reference: "John Brown",
+      amount: 32,
+      description: "New York No. 1 Lake Park",
+      date: ["nice", "developer"]
+    });
+    return null;
+  });
+
+  return data1;
+};
 
 function Transactions(props) {
   return (
@@ -92,7 +69,7 @@ function Transactions(props) {
       </div>
       <br />
       <Card>
-        <Table dataSource={data} columns={columns} />
+        <Table dataSource={data()} columns={columns} />
       </Card>
     </div>
   );

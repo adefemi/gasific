@@ -4,40 +4,20 @@ import { Card } from "../../components/common/card";
 
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
+    title: "Date-Time",
+    dataIndex: "dateTime",
+    key: "dateTime",
     render: text => <a href="javascript:;">{text}</a>
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age"
+    title: "Gas Used",
+    dataIndex: "gasUsed",
+    key: "gasUsed"
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address"
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: tags => (
-      <span>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
-    )
+    title: "Remaining",
+    dataIndex: "remaining",
+    key: "remaining"
   },
   {
     title: "Action",
@@ -52,29 +32,20 @@ const columns = [
   }
 ];
 
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"]
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"]
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"]
-  }
-];
+const data = () => {
+  let data1 = [];
+  [1, 2, 3, 4].map((item, id) => {
+    data1.push({
+      key: id,
+      dateTime: "12/04/2019 - 10:18",
+      gasUsed: 32,
+      remaining: 25
+    });
+    return null;
+  });
+
+  return data1;
+};
 
 function GasUsage(props) {
   return (
@@ -83,7 +54,7 @@ function GasUsage(props) {
       <div className="dashboard-heading">Gas Usage Log</div>
       <br />
       <Card>
-        <Table dataSource={data} columns={columns} />
+        <Table dataSource={data()} columns={columns} />
       </Card>
     </div>
   );

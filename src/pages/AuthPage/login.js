@@ -18,7 +18,11 @@ function Login(props) {
     setSubmit(false);
     if (status) {
       let activeData = payload.data.data;
-      localStorage.setItem(USERTOKEN, activeData.access_token);
+      console.log(activeData);
+      localStorage.setItem(
+        USERTOKEN,
+        activeData.access_token || activeData.accessToken
+      );
       localStorage.setItem(USERDATA, JSON.stringify(activeData.user));
       let query = qs.parse(props.location.search);
       if (!query.redirect) {
@@ -43,6 +47,21 @@ function Login(props) {
     axiosFunc("post", authUrl("login"), loginData, null, onLoginCompleted);
   };
 
+  const socialAuth = (external_id, email, provider) => {
+    setSubmit(true);
+    axiosFunc(
+      "post",
+      authUrl("social"),
+      {
+        external_id,
+        provider,
+        email
+      },
+      null,
+      onLoginCompleted
+    );
+  };
+
   const onChange = e => {
     setLoginData({
       ...loginData,
@@ -57,13 +76,18 @@ function Login(props) {
       <div className="dflex">
         <AppFacebookLogin
           buttonText="Login with facebook"
-          callback={() => null}
+          callback={e => socialAuth(e.id, e.email, "facebook")}
         />
         <div style={{ width: "50px" }} />
         <AppGoogleLogin
+          clientId={
+            "862405005033-84m2joaddld6qquhmqvpqs7at23ple0f.apps.googleusercontent.com"
+          }
+          callback={e => console.log(e)}
           buttonText="Login with google"
-          clientId={""}
-          onSuccess={() => null}
+          onSuccess={e =>
+            socialAuth(e.profileObj.googleId, e.profileObj.email, "google")
+          }
         />
       </div>
       <div className="auth-seperator">OR</div>

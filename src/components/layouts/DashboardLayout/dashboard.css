@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto_thin:100,100i,300,300i,400,400i,500,500i&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Roboto_thick:700,700i,900,900i&display=swap");
 .help-card {
-  height: 200px;
+  height: 300px;
   cursor: pointer;
 }
 .help-card > * {
@@ -33,7 +33,8 @@
   font-size: 25px;
   font-weight: 600;
   color: white;
-  background-color: #F4FAFF;
+  background-color: #ffffff;
+  height: 80px;
   border-top: 5px solid #1F96F5;
 }
 .sideBar .support {
@@ -131,9 +132,9 @@
   position: fixed;
   height: 80px;
   left: 250px;
-  z-index: 10;
+  z-index: 10000;
   right: 0;
-  background-color: #F4FAFF;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -103,35 +103,6 @@ function Verify(props) {
                       onChange={onChange}
                     />
                   </FormGroup>
-                  <FormGroup
-                    title={
-                      <span>
-                        Name <sup>(optional)</sup>
-                      </span>
-                    }
-                  >
-                    <Input
-                      placeholder="Enter hardware name"
-                      name="name"
-                      value={deliveryData.name || ""}
-                      type="text"
-                      onChange={onChange}
-                    />
-                  </FormGroup>
-                  <FormGroup
-                    title={
-                      <span>
-                        Descriptions <sup>(optional)</sup>
-                      </span>
-                    }
-                  >
-                    <TextAreaField
-                      placeholder="Enter hardware description"
-                      name="description"
-                      value={deliveryData.description || ""}
-                      onChange={onChange}
-                    />
-                  </FormGroup>
 
                   <Button type="submit" disabled={submit} loading={submit}>
                     Submit
@@ -140,26 +111,24 @@ function Verify(props) {
               </div>
             </Card>
           </div>
-          <div>
-            <Card>
-              <div className="padding-10 setup-description">
-                <h3>Setup Information</h3>
-                <Slider {...settings}>
-                  {[1, 2, 3].map((i, ind) => {
-                    return (
-                      <div className="banner-con" key={ind}>
-                        <img
-                          src={""}
-                          alt=""
-                          style={{ backgroundImage: `url("${logo}")` }}
-                        />
-                      </div>
-                    );
-                  })}
-                </Slider>
-              </div>
-            </Card>
-          </div>
+          <Card>
+            <div className="padding-10 setup-description">
+              <h3>Setup Information</h3>
+              <Slider {...settings}>
+                {[1, 2, 3].map((i, ind) => {
+                  return (
+                    <div className="banner-con" key={ind}>
+                      <img
+                        src={""}
+                        alt=""
+                        style={{ backgroundImage: `url("${logo}")` }}
+                      />
+                    </div>
+                  );
+                })}
+              </Slider>
+            </div>
+          </Card>
         </div>
       </div>
     </div>
