@@ -13,7 +13,6 @@ const onLogout = () => {
 
 function NavBar(props) {
   let activeUser = JSON.parse(localStorage.getItem(USERDATA));
-  console.log(activeUser);
   return (
     <div className="navbar">
       <div className="nav-left dflex align-center">

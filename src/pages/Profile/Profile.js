@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Card,
@@ -8,7 +8,7 @@ import {
   Notification,
   Spinner
 } from "../../components/common";
-import { Divider, Table, Tag } from "antd";
+import { Badge, Tag } from "antd";
 import userAvatar from "../../assets/sub.png";
 import {
   axiosFunc,
@@ -16,87 +16,14 @@ import {
   getAllStates
 } from "../../components/utils/helper";
 import { UserUrl } from "../../components/utils/api";
-import { cloneDeep } from "@babel/types";
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: text => <a href="javascript:;">{text}</a>
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age"
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    key: "address"
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: tags => (
-      <span>
-        {tags.map(tag => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-          if (tag === "loser") {
-            color = "volcano";
-          }
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </span>
-    )
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (text, record) => (
-      <span>
-        <a href="javascript:;">Invite {record.name}</a>
-        <Divider type="vertical" />
-        <a href="javascript:;">Delete</a>
-      </span>
-    )
-  }
-];
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"]
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    tags: ["loser"]
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"]
-  }
-];
+import { MainContext } from "../../stateManagement/contextProvider";
 
 function Profile(props) {
   const [activeTab, setActiveTab] = useState(1);
   const [userInfoMain, setUserInfoMain] = useState({});
   const [fetching, setFetching] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const { state } = useContext(MainContext);
 
   const onGetUserInfo = (status, data) => {
     if (status) {
@@ -117,7 +44,8 @@ function Profile(props) {
 
   useEffect(() => {
     axiosFunc("get", UserUrl(), null, "yes", onGetUserInfo);
-  }, []);
+    console.log(state);
+  }, [state]);
 
   const onChange = e => {
     setUserInfoMain({
@@ -209,6 +137,40 @@ function Profile(props) {
                     <br />
                     <span>{userInfoMain.address}</span>
                   </p>
+                )}
+
+                {state.hardware && (
+                  <>
+                    <div className="divider" />
+                    <br />
+                    <h4>Hardware Information</h4>
+                    <br />
+                    <p>
+                      <small className="black-text bolder-text">
+                        IMEI: {state.hardware.hardwareData.imei}
+                      </small>
+                    </p>
+                    <p>
+                      <small className="black-text bolder-text">
+                        Model: {state.hardware.hardwareData.model}
+                      </small>
+                    </p>
+                    <div>
+                      <small className="black-text bolder-text">
+                        Status:{" "}
+                        {state.hardware.hardwareData.status === 1 ? (
+                          <Tag color="green">True</Tag>
+                        ) : (
+                          <Tag color="orange">False</Tag>
+                        )}
+                      </small>
+                    </div>
+                    <p>
+                      <small className="black-text bolder-text">
+                        DESC: {state.hardware.hardwareData.desc}
+                      </small>
+                    </p>
+                  </>
                 )}
               </div>
             )}

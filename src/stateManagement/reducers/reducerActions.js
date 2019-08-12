@@ -1,1 +1,2 @@
 export const SET_USER_DATA = "SET_USER_DATA";
+export const SET_HARDWARE_DATA = "SET_HARDWARE_DATA";

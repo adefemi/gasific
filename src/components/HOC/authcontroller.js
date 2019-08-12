@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-import { USERTOKEN, USERDATA, providerUrl, productUrl } from "../utils/data";
-import { axiosFunc } from "../utils/helper";
+import { USERTOKEN, USERDATA } from "../utils/data";
 import { Spinner } from "../common/spinner";
-import { baseURL } from "../utils/api";
 
 const AuthController = component => {
   const Authenticate = props => {

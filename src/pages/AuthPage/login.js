@@ -18,7 +18,6 @@ function Login(props) {
     setSubmit(false);
     if (status) {
       let activeData = payload.data.data;
-      console.log(activeData);
       localStorage.setItem(
         USERTOKEN,
         activeData.access_token || activeData.accessToken
