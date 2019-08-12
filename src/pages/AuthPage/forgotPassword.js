@@ -9,6 +9,8 @@ import {
 import { NavLink } from "react-router-dom";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
 import { passwordUrl } from "../../components/utils/api";
+import jwt from "jwt-simple";
+import { secret } from "../../components/utils/data";
 
 function ForgotPassword(props) {
   const [submit, setSubmit] = useState(false);
@@ -24,7 +26,10 @@ function ForgotPassword(props) {
   const onResetCompleted = (status, payload) => {
     setSubmit(false);
     if (status) {
-      console.log(payload);
+      Notification.bubble({
+        type: "success",
+        content: payload.data.message
+      });
     } else {
       Notification.bubble({
         type: "error",
@@ -33,13 +38,22 @@ function ForgotPassword(props) {
     }
   };
 
+  const getCallback = () => {
+    let payload = {
+      email: resetData.email
+    };
+    let token = jwt.encode(payload, secret);
+    return window.location.origin + `/reset-password/${token}`;
+  };
+
   const retrieveUser = e => {
     e.preventDefault();
     setSubmit(true);
+    let callback_url = getCallback();
     axiosFunc(
       "post",
       passwordUrl("verify"),
-      { ...resetData, callback_url: "http://web2.gasific.ng", purpose: "nill" },
+      { ...resetData, callback_url },
       null,
       onResetCompleted
     );
