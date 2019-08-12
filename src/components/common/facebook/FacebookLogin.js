@@ -14,7 +14,7 @@ const propTypes = {
 const AppFacebookLogin = props => {
   return (
     <FacebookLogin
-      appId="298997581049031"
+      appId="2111475179146714"
       version={"v3.2"}
       autoLoad
       fields="name,email"
