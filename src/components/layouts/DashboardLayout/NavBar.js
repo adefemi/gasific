@@ -5,12 +5,15 @@ import battery from "../../../assets/battery.png";
 import { NavLink } from "react-router-dom";
 import { USERDATA, USERTOKEN } from "../../utils/data";
 
+const onLogout = () => {
+  localStorage.removeItem(USERDATA);
+  localStorage.removeItem(USERTOKEN);
+  window.location.href = window.location.origin + "/login";
+};
+
 function NavBar(props) {
-  const onLogout = () => {
-    localStorage.removeItem(USERDATA);
-    localStorage.removeItem(USERTOKEN);
-    window.location.href = window.location.origin + "/login";
-  };
+  let activeUser = JSON.parse(localStorage.getItem(USERDATA));
+  console.log(activeUser);
   return (
     <div className="navbar">
       <div className="nav-left dflex align-center">
@@ -30,7 +33,7 @@ function NavBar(props) {
           onChange={() => null}
           active={
             <>
-              <div className="user-name">Admin</div>
+              <div className="user-name">{activeUser.name}</div>
               <div className="img-con">
                 <img src="" alt="" />
               </div>

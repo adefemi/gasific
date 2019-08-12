@@ -11,7 +11,7 @@ import {
 import logo from "../../assets/logos/logo1.png";
 import Slider from "react-slick";
 import { assingHardwareURl } from "../../components/utils/api";
-import { axiosFunc } from "../../components/utils/helper";
+import { axiosFunc, errorHandler } from "../../components/utils/helper";
 
 const settings = {
   dots: true,
@@ -41,15 +41,21 @@ function Verify(props) {
   };
 
   // callback for assigned hardware
-  const onAssigned = () => {
+  const onAssigned = (status, payload) => {
     setSubmit(false);
-    Notification.bubble({
-      type: "success",
-      content: "Whats left now is to place you hardware on you Gas Cylinder",
-      title: "Process Completed"
-    });
-
-    props.history.push("/dashboard/user");
+    if (status) {
+      Notification.bubble({
+        type: "success",
+        content: "Whats left now is to place you hardware on you Gas Cylinder",
+        title: "Process Completed"
+      });
+      props.history.push("/dashboard/user");
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(payload)
+      });
+    }
   };
 
   return (
@@ -80,24 +86,19 @@ function Verify(props) {
                 <form onSubmit={onSubmit}>
                   <FormGroup>
                     <Input
-                      placeholder="Enter ssid"
+                      placeholder="Enter IMEI"
                       required
-                      name="ssid"
-                      value={deliveryData.ssid || ""}
+                      name="imei"
+                      value={deliveryData.imei || ""}
                       type="text"
                       onChange={onChange}
                     />
                   </FormGroup>
-                  <FormGroup
-                    title={
-                      <span>
-                        Label <sup>(optional)</sup>
-                      </span>
-                    }
-                  >
+                  <FormGroup title={<span>Label</span>}>
                     <Input
                       placeholder="Provide Label"
                       name="label"
+                      required
                       value={deliveryData.label || ""}
                       type="text"
                       onChange={onChange}
