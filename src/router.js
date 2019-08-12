@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Summary from "./pages/summary/summary";
 import DashboardController from "./components/HOC/dashboardHOC";
 import AuthController from "./components/HOC/authcontroller";
+import ResetPassword from "./pages/AuthPage/resetPassword";
 
 function Router(props) {
   return (
@@ -18,6 +19,7 @@ function Router(props) {
         <Route path="/register" exact component={Register} />
         <Route path="/login" exact component={Login} />
         <Route path="/forgot-password" exact component={ForgotPassword} />
+        <Route path="/reset-password/:token" exact component={ResetPassword} />
         <Route path="/payment" exact component={AuthController(Payment)} />
         <Route path="/verification" exact component={AuthController(Verify)} />
         <Route path="/dashboard" component={AuthController(DashboardMain)} />
