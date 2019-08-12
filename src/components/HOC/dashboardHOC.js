@@ -10,14 +10,14 @@ const DashboardController = props => {
   const [canView, setCanView] = useState(false);
 
   const onGetHardware = (status, data) => {
-    setCanView(true);
     if (status) {
-      console.log(data);
+      setCanView(true);
     } else {
       Notification.bubble({
         type: "error",
         content: errorHandler(data)
       });
+      props.history.push("/login");
     }
   };
 

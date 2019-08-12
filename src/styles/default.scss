@@ -44,7 +44,7 @@ a{
 
 .grid-auto{
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+  grid-template-columns: repeat(auto-fit, minmax(300px, auto));
   grid-gap: 1em;
 }
 

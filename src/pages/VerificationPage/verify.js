@@ -11,7 +11,7 @@ import {
 import logo from "../../assets/logos/logo1.png";
 import Slider from "react-slick";
 import { assingHardwareURl } from "../../components/utils/api";
-import { axiosFunc } from "../../components/utils/helper";
+import { axiosFunc, errorHandler } from "../../components/utils/helper";
 
 const settings = {
   dots: true,
@@ -41,15 +41,21 @@ function Verify(props) {
   };
 
   // callback for assigned hardware
-  const onAssigned = () => {
+  const onAssigned = (status, payload) => {
     setSubmit(false);
-    Notification.bubble({
-      type: "success",
-      content: "Whats left now is to place you hardware on you Gas Cylinder",
-      title: "Process Completed"
-    });
-
-    props.history.push("/dashboard/user");
+    if (status) {
+      Notification.bubble({
+        type: "success",
+        content: "Whats left now is to place you hardware on you Gas Cylinder",
+        title: "Process Completed"
+      });
+      props.history.push("/dashboard/user");
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(payload)
+      });
+    }
   };
 
   return (
@@ -80,55 +86,21 @@ function Verify(props) {
                 <form onSubmit={onSubmit}>
                   <FormGroup>
                     <Input
-                      placeholder="Enter ssid"
+                      placeholder="Enter IMEI"
                       required
-                      name="ssid"
-                      value={deliveryData.ssid || ""}
+                      name="imei"
+                      value={deliveryData.imei || ""}
                       type="text"
                       onChange={onChange}
                     />
                   </FormGroup>
-                  <FormGroup
-                    title={
-                      <span>
-                        Label <sup>(optional)</sup>
-                      </span>
-                    }
-                  >
+                  <FormGroup title={<span>Label</span>}>
                     <Input
                       placeholder="Provide Label"
                       name="label"
+                      required
                       value={deliveryData.label || ""}
                       type="text"
-                      onChange={onChange}
-                    />
-                  </FormGroup>
-                  <FormGroup
-                    title={
-                      <span>
-                        Name <sup>(optional)</sup>
-                      </span>
-                    }
-                  >
-                    <Input
-                      placeholder="Enter hardware name"
-                      name="name"
-                      value={deliveryData.name || ""}
-                      type="text"
-                      onChange={onChange}
-                    />
-                  </FormGroup>
-                  <FormGroup
-                    title={
-                      <span>
-                        Descriptions <sup>(optional)</sup>
-                      </span>
-                    }
-                  >
-                    <TextAreaField
-                      placeholder="Enter hardware description"
-                      name="description"
-                      value={deliveryData.description || ""}
                       onChange={onChange}
                     />
                   </FormGroup>
@@ -140,26 +112,24 @@ function Verify(props) {
               </div>
             </Card>
           </div>
-          <div>
-            <Card>
-              <div className="padding-10 setup-description">
-                <h3>Setup Information</h3>
-                <Slider {...settings}>
-                  {[1, 2, 3].map((i, ind) => {
-                    return (
-                      <div className="banner-con" key={ind}>
-                        <img
-                          src={""}
-                          alt=""
-                          style={{ backgroundImage: `url("${logo}")` }}
-                        />
-                      </div>
-                    );
-                  })}
-                </Slider>
-              </div>
-            </Card>
-          </div>
+          <Card>
+            <div className="padding-10 setup-description">
+              <h3>Setup Information</h3>
+              <Slider {...settings}>
+                {[1, 2, 3].map((i, ind) => {
+                  return (
+                    <div className="banner-con" key={ind}>
+                      <img
+                        src={""}
+                        alt=""
+                        style={{ backgroundImage: `url("${logo}")` }}
+                      />
+                    </div>
+                  );
+                })}
+              </Slider>
+            </div>
+          </Card>
         </div>
       </div>
     </div>

@@ -18,41 +18,46 @@ function Help(props) {
         <div className="dashboard-heading">Help</div>
       </div>
       <br />
-      <div className="grid-3">
-        <Card
-          round
-          className="padding-20 dflex flex-d-v align-center justify-center help-card"
-        >
-          <div className="help-icon">
-            <AppIcon name="arrows_circle_check" type="linea" size={80} />
-          </div>
-          <div className="help-text">Contact Us</div>
-        </Card>
-        <Card
-          round
-          className="padding-20 dflex flex-d-v align-center justify-center help-card"
-          onClick={onChatClick}
-        >
-          <div className="help-icon">
-            <AppIcon
-              name="basic_elaboration_message_check"
-              type="linea"
-              size={80}
-            />
-          </div>
-          <div className="help-text">Chat Us</div>
-        </Card>
-        <NavLink to="/dashboard/help/FAQ">
+      <div
+        className="dflex justify-center align-center w-100 "
+        style={{ minHeight: "60vh" }}
+      >
+        <div className="grid-3 flex-grow-1">
           <Card
             round
             className="padding-20 dflex flex-d-v align-center justify-center help-card"
           >
             <div className="help-icon">
-              <AppIcon name="basic_todo_txt" type="linea" size={80} />
+              <AppIcon name="arrows_circle_check" type="linea" size={80} />
             </div>
-            <div className="help-text">See FAQ</div>
+            <div className="help-text">Contact Us</div>
           </Card>
-        </NavLink>
+          <Card
+            round
+            className="padding-20 dflex flex-d-v align-center justify-center help-card"
+            onClick={onChatClick}
+          >
+            <div className="help-icon">
+              <AppIcon
+                name="basic_elaboration_message_check"
+                type="linea"
+                size={80}
+              />
+            </div>
+            <div className="help-text">Chat Us</div>
+          </Card>
+          <NavLink to="/dashboard/help/FAQ">
+            <Card
+              round
+              className="padding-20 dflex flex-d-v align-center justify-center help-card"
+            >
+              <div className="help-icon">
+                <AppIcon name="basic_todo_txt" type="linea" size={80} />
+              </div>
+              <div className="help-text">See FAQ</div>
+            </Card>
+          </NavLink>
+        </div>
       </div>
     </div>
   );
