@@ -278,6 +278,12 @@ a{
   font-weight: 600;
 }
 
+.label-inline{
+  label{
+    display: inline-block !important;
+  }
+}
+
 .merchantRadio{
   position: absolute;
   top: 20px;
