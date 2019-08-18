@@ -1,308 +1,194 @@
-import React from "react";
-import {
-  Card,
-  DropDown,
-  Button,
-  FormGroup,
-  Input,
-  Select,
-  Notification
-} from "../../components/common";
+import React, { useState, useEffect } from "react";
+import { Card, DropDown, Notification } from "../../components/common";
 import "./summary.css";
-import verve from "./images/verve2.png";
-import master from "./images/mastercard-icon-png-5a3556c6e81b34.5328243515134450629507.jpg";
-import visa from "./images/visa3.png";
-import lock from "./images/lock.ico";
 import basic from "./images/saphire.jpg";
 import premium from "./images/onyx1.jpg";
 import platinum from "./images/gold.jpg";
 import {
-  numberWithCommas,
   axiosFunc,
   errorHandler,
-  getAllStates
+  getAllStates,
+  numberWithCommas
 } from "../../components/utils/helper";
-import logo from "../../assets/logos/logo1.png";
-import { NavLink } from "react-router-dom";
-import { getPlanUrl } from "../../components/utils/api";
-import { Switch } from "antd";
 
 import hardwareImg from "../../assets/hardware.jpg";
+import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout";
+import { Delivery } from "./delivery";
+import { CheckOutCard } from "./checkout";
+import { getPlanUrl } from "../../components/utils/api";
 
-const opt = [
-  { value: 0, content: "Onyx" },
-  { value: 1, content: "Sapphire" },
-  { value: 2, content: "Gold" }
-];
-const basicImage = premium;
-const premiumImage = basic;
-const platinumImage = platinum;
+const Summary = props => {
+  const [plans, setPlans] = useState({
+    data: [],
+    fetching: true
+  });
+  const [activePlan, setActivePlan] = useState(null);
+  const [states, setStates] = useState(null);
+  const [referralSwitch, setReferral] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [deliveryData, setDeliveryData] = useState({});
 
-class Summary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      image: basicImage,
-      name: "",
-      productQuantity: 1,
-      price: 0,
-      loading: false,
-      availablePlans: [],
-      deliveryData: {},
-      referralSwitch: false,
-      states: []
-    };
-  }
-
-  // for when components mount
-  componentDidMount() {
-    this.getPlans();
-    this.setState({ states: getAllStates("nigeria", true) });
-  }
-
-  // function to get plans
-  getPlans() {
-    axiosFunc("GET", getPlanUrl, {}, {}, this.onGetPlans);
-  }
-
-  // callback for getting plans
-  onGetPlans = (status, data) => {
+  const onGetPlans = (status, payload) => {
     if (status) {
-      this.setState({ availablePlans: data.data.data.plans });
-      // let plans = data.data.data.plans
-      this.setState({
-        plan_id: this.state.availablePlans[1].id,
-        name: this.state.availablePlans[1].name,
-        price: this.state.availablePlans[1].price
-      });
+      try {
+        setActivePlan(payload.data.data.plans[0]);
+        setPlans({
+          data: payload.data.data.plans,
+          fetching: false
+        });
+      } catch (e) {
+        Notification.bubble({
+          type: "error",
+          content: e
+        });
+      }
     } else {
       Notification.bubble({
         type: "error",
-        content: errorHandler(data)
+        content: errorHandler(payload)
       });
     }
   };
 
-  productChanger = active => {
-    if (active.value === 1) {
-      this.setState({
-        plan_id: this.state.availablePlans[0].id,
-        name: this.state.availablePlans[0].name,
-        image: premiumImage,
-        price: this.state.availablePlans[0].price
-      });
-    } else if (active.value === 2) {
-      this.setState({
-        plan_id: this.state.availablePlans[2].id,
-        image: platinumImage,
-        name: this.state.availablePlans[2].name,
-        price: this.state.availablePlans[2].price
-      });
-    } else {
-      this.setState({
-        plan_id: this.state.availablePlans[1].id,
-        image: basicImage,
-        name: this.state.availablePlans[1].name,
-        price: this.state.availablePlans[1].price
-      });
-    }
+  useEffect(() => {
+    getPlans();
+    setStates(getAllStates("nigeria", true));
+  }, []);
+
+  const getPlans = () => {
+    axiosFunc("GET", getPlanUrl, {}, {}, onGetPlans);
   };
 
-  onSubmit = e => {
+  const productChanger = obj => {
+    let activePlan = plans.data.filter(item => item.id === obj.id)[0];
+    setActivePlan(activePlan);
+  };
+
+  const onSubmit = e => {
     e.preventDefault();
     localStorage.setItem(
       "user_info",
       JSON.stringify({
-        ...this.state.deliveryData,
-        plan_id: this.state.plan_id
+        deliveryData,
+        plan_id: activePlan.id
       })
     );
-    this.setState({ loading: true });
+    setLoading(true);
     setTimeout(() => {
-      this.props.history.push("/payment");
+      props.history.push("/payment");
     }, 2000);
   };
 
-  onChange = e => {
-    const { deliveryData } = this.state;
-    deliveryData[e.target.name] = e.target.value;
-    this.setState({
-      deliveryData
+  const onChange = e => {
+    setDeliveryData({
+      ...deliveryData,
+      [e.target.name]: e.target.value
     });
   };
 
-  onChangeSwitch = checked => {
-    this.setState({ referralSwitch: checked });
+  const onChangeSwitch = checked => {
+    setReferral(checked);
   };
 
-  render() {
-    return (
-      <div
-        style={{
-          backgroundColor: "#f2f2f2",
-          height: "100vh"
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: "#3486eb",
-            paddingTop: "1rem",
-            paddingLeft: "5rem",
-            paddingBottom: "1rem"
-          }}
-        />
-        <div
-          style={{
-            backgroundColor: "#ffffff",
-            paddingTop: "1rem",
-            paddingLeft: "5rem",
-            paddingBottom: "1rem"
-          }}
-        >
-          <div className="max-width-1400">
-            <div className="dflex align-center">
-              <NavLink to="/">
-                <img src={logo} width={100} alt="" />
-              </NavLink>
-            </div>
-          </div>
-        </div>
-
-        <div className="padding-20 dflex justify-center max-width-1400">
-          <form onSubmit={this.onSubmit} className="grid-2-v">
-            <div>
-              <ProductList
-                state={this.state}
-                productChanger={this.productChanger}
-              />
-              <br />
-              <Delivery
-                state={this.state}
-                onChange={this.onChange}
-                onChangeSwitch={this.onChangeSwitch}
-              />
-            </div>
-            <div>
-              <CheckOutCard state={this.state} loading={this.state.loading} />
-            </div>
-          </form>
-        </div>
-      </div>
-    );
-  }
-}
-
-export const Delivery = props => {
-  let { state, onChange, onChangeSwitch } = props;
   return (
-    <Card style={{ width: "100%" }}>
-      <div className="padding-20">
-        <div className="heading">Delivery Information</div>
-
-        <FormGroup title="Home Address">
-          <Input
-            required
-            name="address"
-            value={state.deliveryData.address || ""}
-            type="text"
-            onChange={onChange}
-          />
-        </FormGroup>
-        <div className="grid-2">
-          <FormGroup title="City">
-            <Input
-              required
-              name="city"
-              value={state.deliveryData.city || ""}
-              type="text"
-              onChange={onChange}
+    <RegularLayout title="Summary" {...props}>
+      <br />
+      <br />
+      <form onSubmit={onSubmit} className="grid-2-v">
+        <div>
+          {plans.fetching ? (
+            "Please wait..."
+          ) : (
+            <ProductList
+              plans={plans.data}
+              activePlan={activePlan}
+              productChanger={productChanger}
             />
-          </FormGroup>
-          <FormGroup title="State">
-            <Select
-              required
-              name="state"
-              value={state.deliveryData.state || ""}
-              onChange={onChange}
-            >
-              {state.states.length > 1 &&
-                state.states.map((item, ind) => {
-                  return (
-                    <Select.Option key={ind} value={item.value}>
-                      {item.name}
-                    </Select.Option>
-                  );
-                })}
-            </Select>
-          </FormGroup>
+          )}
+          <br />
+          <Delivery
+            state={deliveryData}
+            referralSwitch={referralSwitch}
+            onChange={onChange}
+            onChangeSwitch={onChangeSwitch}
+            states={states}
+          />
         </div>
-
-        <div className="grid-2">
-          <FormGroup
-            title={
-              <div className="dflex align-center">
-                <span> Referral/Discount Code</span>
-                <div className="margin-left-10" />
-                <Switch
-                  checked={state.referralSwitch}
-                  onChange={onChangeSwitch}
-                />
-              </div>
-            }
-          >
-            {state.referralSwitch && (
-              <Input
-                name="referral"
-                value={state.deliveryData.referral || ""}
-                type="text"
-                onChange={onChange}
-              />
-            )}
-          </FormGroup>
+        <div>
+          <CheckOutCard
+            referralSwitch={referralSwitch}
+            activePlan={activePlan}
+            loading={loading}
+          />
         </div>
-      </div>
-    </Card>
+      </form>
+    </RegularLayout>
   );
 };
 
+const formatPlans = plans => {
+  let newPlans = [];
+
+  plans.map(item => {
+    newPlans.push({
+      id: item.id,
+      value: item.id,
+      content: item.name,
+      price: item.price
+    });
+    return null;
+  });
+  return newPlans;
+};
+
 export const ProductList = props => {
-  const { state, productChanger } = props;
+  const { plans, activePlan, productChanger } = props;
+  let image = basic;
+
+  if (activePlan.name.toLowerCase().includes("onyx")) {
+    image = basic;
+  } else if (activePlan.name.toLowerCase().includes("gold")) {
+    image = platinum;
+  } else {
+    image = premium;
+  }
+
   return (
     <Card
       heading={
         <div className="dflex align-center">
-          <div style={{ flex: "3" }}>Product</div>{" "}
-          <div style={{ flex: "1", textAlign: "center" }}>Item Price</div>
+          <div className="heading-2" style={{ flex: 3 }}>
+            Product
+          </div>
+          <div className="heading-2 text-center" style={{ flex: 1 }}>
+            Item Price
+          </div>
         </div>
       }
     >
-      <div className="dflex padding-20">
+      <div className="dflex align-center padding-20">
         <div className="dflex align-center" style={{ flex: 3 }}>
           <img
             style={{
               width: "100px",
               height: "100px"
             }}
-            src={state.image}
+            src={image}
           />
 
           <div style={{ paddingLeft: "20px" }}>
             <DropDown
               dropLogo
-              dropDownWidth={"120px"}
+              dropDownWidth={"200px"}
               onChange={productChanger}
-              active={0}
-              options={opt}
-            />{" "}
-            {state.name}
+              active={activePlan.id}
+              options={formatPlans(plans)}
+            />
           </div>
         </div>
 
-        <div
-          className="dflex justify-center align-center flex-d-v"
-          style={{ flex: 1 }}
-        >
-          ₦ {numberWithCommas(state.price)} <br />
+        <div className="text-center" style={{ flex: 1 }}>
+          ₦ {numberWithCommas(activePlan.price)} <br />
         </div>
       </div>
       <div className="divider" />
@@ -319,106 +205,9 @@ export const ProductList = props => {
           <div className="padding-20 bolder-text">Hardware</div>
         </div>
 
-        <div
-          className="dflex justify-center align-center flex-d-v"
-          style={{ flex: 1 }}
-        >
+        <div className="text-center" style={{ flex: 1 }}>
           ₦ {numberWithCommas(5000)} <br />
         </div>
-      </div>
-    </Card>
-  );
-};
-
-export const CheckOutCard = props => {
-  const { state, loading } = props;
-
-  return (
-    <Card
-      heading={
-        <div className="dflex align-center justify-between padding-10">
-          <div>Checkout</div>
-          <div>{state.productQuantity} items</div>
-        </div>
-      }
-    >
-      <div className="dflex align-center justify-between padding-20">
-        <div className="">
-          <span>Delivery:</span>
-        </div>
-        <div>₦ {numberWithCommas(500)}</div>
-      </div>
-      <div className="dflex align-center justify-between padding-20">
-        <div className="">
-          <span>{state.name || "Subscription"}</span>
-        </div>
-        <div>₦ {numberWithCommas(state.price || 0)}</div>
-      </div>
-      <div className="dflex align-center justify-between padding-20">
-        <div className="">
-          <span>Hardware:</span>
-        </div>
-        <div>₦ {numberWithCommas(5000)}</div>
-      </div>
-      {state.referralSwitch && (
-        <div className="dflex align-center justify-between padding-20">
-          <div className="">
-            <span>Discount:</span>
-          </div>
-          <div>-0.0</div>
-        </div>
-      )}
-
-      <div className="divider" />
-
-      <div className="dflex align-center justify-between padding-20">
-        <div className="bolder-text">Total </div>
-        <div className="bolder-text">
-          ₦ {state.price && numberWithCommas(5500 + parseFloat(state.price))}
-        </div>
-      </div>
-      <div className="divider" />
-      <div className="padding-20">
-        <div
-          style={{
-            color: "#b87300",
-            fontSize: ".6875rem"
-          }}
-        >
-          Excluding delivery charges
-        </div>
-        <p />
-        <Button
-          block
-          color={"success"}
-          type="submit"
-          disabled={loading}
-          loading={loading}
-        >
-          Continue to Payment
-        </Button>
-      </div>
-
-      <div className="divider" />
-
-      <div className="dflex align-center padding-10">
-        <span className="security-text ">We accept</span>
-        <div className="margin-left-10">
-          <img width={50} src={verve} alt="fin-service" />
-        </div>
-        <div className="margin-left-10">
-          <img width={50} src={master} alt="fin-service" />
-        </div>
-        <div className="margin-left-10">
-          <img width={50} src={visa} alt="fin-service" />
-        </div>
-      </div>
-
-      <div className="dflex align-center padding-10">
-        <img width={30} height={30} src={lock} alt="fin-service" />
-        <span className="security-text">
-          Transactions are 100% Safe and Secure
-        </span>
       </div>
     </Card>
   );

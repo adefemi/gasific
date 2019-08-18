@@ -75,7 +75,7 @@ function Payment(props) {
         onSubmitCompleted(response);
       },
       onClose: function() {
-        props.history.goBack();
+        props.history.push("/");
       }
     });
     handler.openIframe();

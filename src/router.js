@@ -10,18 +10,33 @@ import Summary from "./pages/summary/summary";
 import DashboardController from "./components/HOC/dashboardHOC";
 import AuthController from "./components/HOC/authcontroller";
 import ResetPassword from "./pages/AuthPage/resetPassword";
+import LoginController from "./components/HOC/logicHOC";
+import ChooseMerchant from "./pages/VerificationPage/chooseMerchant";
 
 function Router(props) {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Summary} />
-        <Route path="/register" exact component={Register} />
-        <Route path="/login" exact component={Login} />
-        <Route path="/forgot-password" exact component={ForgotPassword} />
-        <Route path="/reset-password/:token" exact component={ResetPassword} />
+        <Route path="/register" exact component={LoginController(Register)} />
+        <Route path="/login" exact component={LoginController(Login)} />
+        <Route
+          path="/forgot-password"
+          exact
+          component={LoginController(ForgotPassword)}
+        />
+        <Route
+          path="/reset-password/:token"
+          exact
+          component={LoginController(ResetPassword)}
+        />
         <Route path="/payment" exact component={AuthController(Payment)} />
         <Route path="/verification" exact component={AuthController(Verify)} />
+        <Route
+          path="/select-merchant"
+          exact
+          component={AuthController(ChooseMerchant)}
+        />
         <Route path="/dashboard" component={AuthController(DashboardMain)} />
 
         <Route path={"*"} render={() => <h1>Not Found!!!</h1>} />

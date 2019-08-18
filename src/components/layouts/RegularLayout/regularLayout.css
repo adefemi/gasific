@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto_thin:100,100i,300,300i,400,400i,500,500i&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto_thick:700,700i,900,900i&display=swap");
+.regular-container .regular-nav {
+  width: 100%;
+  min-height: 100px;
+  background: linear-gradient(150deg, #0a5dd3, #24a7ff);
+  padding: 0 20px;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
+.regular-container .regular-nav .navbar-reg {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.regular-container .regular-nav .nav-right {
+  display: flex;
+  align-items: center;
+}
+.regular-container .regular-nav .nav-right .nav-content-reg {
+  display: flex;
+  align-items: center;
+}
+.regular-container .regular-nav .nav-right .nav-content-reg a {
+  color: white;
+  font-weight: 600;
+  margin: 0 15px;
+  transition: 0.3s ease;
+  font-size: 14px;
+}
+.regular-container .regular-nav .nav-right .nav-content-reg a:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+.regular-container .regular-nav .nav-right .nav-content-reg a:hover.opt {
+  color: white;
+}
+.regular-container .regular-nav .nav-right .opt {
+  cursor: pointer;
+  padding: 9px 30px;
+  border-radius: 10px;
+  background-color: #0d65d8;
+  color: white;
+}
+.regular-container .regular-nav .reg-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
+  padding: 100px 0 30px 0;
+  text-align: center;
+}
+.regular-container .regular-nav .brand img {
+  width: 110px;
+}
+.regular-container .content-reg {
+  background-color: #f5f5f5;
+  width: 100%;
+  min-height: calc(100vh - 230px);
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+/*# sourceMappingURL=regularLayout.css.map */
