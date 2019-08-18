@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Icon } from "../icons";
 
 import "./Select.css";
 import { getNewProps } from "../input/Input";
@@ -40,20 +39,6 @@ export const addClass = (el, className) => {
   el.classList.add(className);
 };
 
-const removeSelectList = () => {
-  let selectList = document.querySelectorAll(".select-list");
-  let selectIconUp = document.querySelectorAll(".select-icon-up");
-  let selectIconDown = document.querySelectorAll(".select-icon-down");
-
-  for (let i = 0; i < selectList.length; i++) {
-    if (!hasClass(selectList[parseInt(i, 10)], "closed")) {
-      addClass(selectList[parseInt(i, 10)], "closed");
-      addClass(selectIconUp[parseInt(i, 10)], "closed");
-      removeClass(selectIconDown[parseInt(i, 10)], "closed");
-    }
-  }
-};
-
 // function to remove a class from an element
 export const removeClass = (ele, cls) => {
   if (!ele) {
@@ -62,126 +47,6 @@ export const removeClass = (ele, cls) => {
   if (hasClass(ele, cls)) {
     ele.classList.remove(cls);
   }
-};
-
-const removeAllClass = e => {
-  let target = e.target;
-
-  if (
-    target.classList.contains("select-button") ||
-    (target.parentElement &&
-      target.parentElement.classList.contains("select-button"))
-  ) {
-    return;
-  }
-
-  removeSelectList();
-};
-
-// function to get active value and label for the select component
-const getActive = (props, value, children, setLabel, setValue, displayed) => {
-  if (!children || children.length < 1) {
-    setLabel(props.placeholder);
-    return;
-  }
-  let child = children;
-  if (!children.length) {
-    child = [children];
-  }
-  let checkValue = child.filter((item, ind) => item.props.value === value)[0];
-
-  if (checkValue) {
-    setLabel(displayed || checkValue.props.children);
-    setValue(checkValue.props.value);
-  } else {
-    setLabel(props.placeholder);
-  }
-};
-
-const removeSpecificClass = count => {
-  let selectList = document.querySelectorAll(".select-list");
-  let selectIconUp = document.querySelectorAll(".select-icon-up");
-  let selectIconDown = document.querySelectorAll(".select-icon-down");
-  for (let i = 0; i < selectList.length; i++) {
-    if (!hasClass(selectList[parseInt(i, 10)], `.select${count}`)) {
-      addClass(selectList[parseInt(i, 10)], "closed");
-      addClass(selectIconUp[parseInt(i, 10)], "closed");
-      removeClass(selectIconDown[parseInt(i, 10)], "closed");
-    }
-  }
-};
-
-// function to toggle select options list
-const toggleSelect = count => {
-  let mainSelectCon = document.querySelector(`.select-control.select${count}`);
-  let selectCon = document.querySelector(`.select-list.select${count}`);
-  let selectIconUp = document.querySelector(`.select-icon-up.select${count}`);
-  let selectIconDown = document.querySelector(
-    `.select-icon-down.select${count}`
-  );
-
-  if (hasClass(selectCon, "closed")) {
-    removeSpecificClass(count);
-    removeClass(selectCon, "closed");
-    removeClass(selectIconUp, "closed");
-    addClass(selectIconDown, "closed");
-  } else {
-    addClass(selectCon, "closed");
-    addClass(selectIconUp, "closed");
-    removeClass(selectIconDown, "closed");
-  }
-
-  let space =
-    window.innerHeight - mainSelectCon.offsetTop + mainSelectCon.offsetHeight;
-
-  let allSelectControl = document.getElementsByClassName("select-control");
-  for (let i = 0; i < allSelectControl.length; i++) {
-    allSelectControl[parseInt(i, 10)].style.zIndex = "1000";
-  }
-
-  if (space < 450) {
-    mainSelectCon.style.zIndex = "10000";
-    selectCon.style.bottom = "0";
-    selectCon.style.top = "unset";
-  } else {
-    mainSelectCon.style.zIndex = "10000";
-  }
-};
-
-const getOptionList = (props, setLabel, setValue, count, children) => {
-  if (!children || children.length < 1) {
-    return;
-  }
-  let contents = children;
-  if (!children.length) {
-    contents = [children];
-  }
-
-  return (
-    contents &&
-    contents.map((item, ind) => (
-      <li
-        key={ind}
-        onClick={() => {
-          getActive(
-            props,
-            item.props.value,
-            contents,
-            setLabel,
-            setValue,
-            item.props.displayed
-          );
-          const input = document.querySelector(`.selectInput${count}`);
-          input.value = item.props.value;
-          props.onChange({
-            target: input
-          });
-        }}
-      >
-        {item.props.children || item.props.value || item.props.children}
-      </li>
-    ))
-  );
 };
 
 const fixChildren = children => {
@@ -219,25 +84,17 @@ const Select = props => {
   let newProps = getNewProps(props, defaultPropList);
   let children = fixChildren(props.children);
 
-  const [label, setLabel] = useState("");
-  const [value, setValue] = useState("");
   const [count, setCount] = useState(selectCount);
+  const [value, setValue] = useState(props.value || "");
 
   useEffect(() => {
     setCount(selectCount++);
-    document.onclick = e => removeAllClass(e);
-    getActive(
-      props,
-      props.value,
-      children,
-      setLabel,
-      setValue,
-      props.displayed
-    );
-    // eslint-disable-next-line
   }, []);
 
-  let input = {};
+  const onChange = e => {
+    setValue(e.target.value);
+    props.onChange(e);
+  };
 
   return (
     <div
@@ -251,47 +108,30 @@ const Select = props => {
       style={{ ...props.style }}
     >
       <div
-        onClick={() => (!props.disabled ? toggleSelect(count) : null)}
         className={`select-button select${count} ${
           props.disabled ? "disabled" : ""
         } ${props.secondary && "secondary"}`}
       >
         <span className="left-icon">{props.iconLeft}</span>
-        <input
-          type="text"
+        <select
           className={`selectInput${count} ${props.disabled ? "disabled" : ""}`}
-          onChange={() => {}}
+          onChange={onChange}
           disabled={props.disabled}
-          readOnly={props.disabled}
-          placeholder={label}
-          value={value && label}
+          placeholder={props.placeholder || ""}
+          value={value}
           name={props.name}
           autoComplete={"new"}
-          ref={ref => (input = ref)}
           {...newProps}
-        />
-        {props.showDropDown && (
-          <div
-            onClick={() => toggleSelect(count)}
-            className={`select-icon-up select${count} closed`}
-          >
-            <Icon type="md" name="ic_arrow_drop_up" size={20} />
-          </div>
-        )}
-
-        {props.showDropDown && (
-          <div
-            onClick={() => null}
-            className={`select-icon-down select${count}`}
-          >
-            <Icon type="md" name="ic_arrow_drop_down" size={20} />
-          </div>
-        )}
+        >
+          {children &&
+            children.length > 0 &&
+            children.map((item, key) => (
+              <option key={key} value={item.props.value}>
+                {item.props.children}
+              </option>
+            ))}
+        </select>
       </div>
-
-      <ul className={`select-list select${count} closed`}>
-        {getOptionList(props, setLabel, setValue, count, children)}
-      </ul>
 
       {props.error && (
         <div className={`select-error-text select${count}`}>

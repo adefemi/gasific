@@ -32,7 +32,7 @@ function NavBar(props) {
           onChange={() => null}
           active={
             <>
-              <div className="user-name">{activeUser.name}</div>
+              <div className="user-name bolder-text">{activeUser.name}</div>
               <div className="img-con">
                 <img src="" alt="" />
               </div>

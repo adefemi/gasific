@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
 import { Card } from "../../components/common/card";
 import {
   Button,
   FormGroup,
   Input,
-  Notification,
-  TextAreaField
+  Notification
 } from "../../components/common";
 import logo from "../../assets/logos/logo1.png";
 import Slider from "react-slick";
 import { assingHardwareURl } from "../../components/utils/api";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
+import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout";
+import Pickup from "./pickup";
+import AppIcon from "../../components/common/icons/Icon";
 
 const settings = {
-  dots: true,
+  dots: false,
   infinite: true,
   autoplay: true,
   speed: 300,
@@ -26,6 +27,7 @@ const settings = {
 function Verify(props) {
   const [submit, setSubmit] = useState(false);
   const [deliveryData, setDeliveryData] = useState({});
+  const [activePage, setActivePage] = useState(1);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -40,6 +42,10 @@ function Verify(props) {
     });
   };
 
+  const goNext = () => {
+    setActivePage(2);
+  };
+
   // callback for assigned hardware
   const onAssigned = (status, payload) => {
     setSubmit(false);
@@ -49,7 +55,7 @@ function Verify(props) {
         content: "Whats left now is to place you hardware on you Gas Cylinder",
         title: "Process Completed"
       });
-      props.history.push("/dashboard/user");
+      props.history.push("/select-merchant");
     } else {
       Notification.bubble({
         type: "error",
@@ -59,17 +65,16 @@ function Verify(props) {
   };
 
   return (
-    <div className="container" style={{ backgroundColor: "#f5f5f5" }}>
-      <NavLink to="/" className="fixed-brand">
-        <img src={logo} height="40px" alt="" />
-      </NavLink>
-
-      <div
-        className="center-content-main max-width-1400"
-        style={{ padding: "100px 0" }}
-      >
-        <div className="max-width-1000 grid-2-v">
-          <div>
+    <RegularLayout
+      {...props}
+      title={activePage === 1 ? "Pickup Device" : "Activate Hardware"}
+    >
+      <br />
+      <br />
+      {activePage === 1 && <Pickup goNext={goNext} />}
+      {activePage === 2 && (
+        <div>
+          <div className="max-width-1000 grid-2-v">
             <Card heading="Hardware Information" className="min-width-300">
               <div className="padding-20">
                 <div className="heading">
@@ -86,20 +91,10 @@ function Verify(props) {
                 <form onSubmit={onSubmit}>
                   <FormGroup>
                     <Input
-                      placeholder="Enter IMEI"
+                      placeholder="Enter SSID"
                       required
-                      name="imei"
-                      value={deliveryData.imei || ""}
-                      type="text"
-                      onChange={onChange}
-                    />
-                  </FormGroup>
-                  <FormGroup title={<span>Label</span>}>
-                    <Input
-                      placeholder="Provide Label"
-                      name="label"
-                      required
-                      value={deliveryData.label || ""}
+                      name="ssid"
+                      value={deliveryData.ssid || ""}
                       type="text"
                       onChange={onChange}
                     />
@@ -111,28 +106,36 @@ function Verify(props) {
                 </form>
               </div>
             </Card>
+            <Card>
+              <div className="padding-10 setup-description">
+                <h3>Setup Information</h3>
+                <Slider {...settings}>
+                  {[1, 2, 3].map((i, ind) => {
+                    return (
+                      <div className="banner-con" key={ind}>
+                        <img
+                          src={""}
+                          alt=""
+                          style={{ backgroundImage: `url("${logo}")` }}
+                        />
+                      </div>
+                    );
+                  })}
+                </Slider>
+              </div>
+            </Card>
           </div>
-          <Card>
-            <div className="padding-10 setup-description">
-              <h3>Setup Information</h3>
-              <Slider {...settings}>
-                {[1, 2, 3].map((i, ind) => {
-                  return (
-                    <div className="banner-con" key={ind}>
-                      <img
-                        src={""}
-                        alt=""
-                        style={{ backgroundImage: `url("${logo}")` }}
-                      />
-                    </div>
-                  );
-                })}
-              </Slider>
-            </div>
-          </Card>
+          <br />
+          <br />
+          <div className="max-width-1000 dflex align-center justify-between">
+            <div />
+            <Button onClick={() => setActivePage(1)}>
+              Back <AppIcon name="chevronsLeft" type="feather" />{" "}
+            </Button>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </RegularLayout>
   );
 }
 

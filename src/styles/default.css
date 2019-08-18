@@ -165,12 +165,28 @@ a {
   font-weight: bold;
 }
 
+.heading-2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+}
+
 .text-info {
   font-size: 14px;
 }
 
 .max-width-1400 {
   max-width: 1400px;
+  margin: 0 auto;
+}
+
+.max-width-1200 {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.max-width-1000 {
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -262,10 +278,16 @@ a {
 }
 
 .link-btn {
-  width: fit-content;
   background: none;
   color: #1F96F5;
   cursor: pointer;
+  font-weight: 600;
+}
+
+.merchantRadio {
+  position: absolute;
+  top: 20px;
+  right: 10px;
 }
 
 .flex-no-wrap {
@@ -309,13 +331,6 @@ a {
 .form-group.radio-group label {
   padding: 0 !important;
   padding-left: 28px !important;
-}
-
-.link-btn {
-  background: none !important;
-  font-weight: bold;
-  margin: 15px 0;
-  color: #1F96F5;
 }
 
 .font-12 {

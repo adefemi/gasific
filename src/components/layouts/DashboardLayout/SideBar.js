@@ -36,6 +36,16 @@ const menuItem = [
   }
 ];
 
+export const setUpTawkTo = () => {
+  let s1 = document.createElement("script");
+  let s0 = document.getElementsByTagName("script")[0];
+  s1.async = true;
+  s1.src = "https://embed.tawk.to/5d4569f3e5ae967ef80e4176/default";
+  s1.charset = "UTF-8";
+  s1.setAttribute("crossorigin", "*");
+  s0.parentNode.insertBefore(s1, s0);
+};
+
 function SideBar(props) {
   const splitLocation = () => {
     return props.location.pathname;
@@ -45,13 +55,17 @@ function SideBar(props) {
 
   useEffect(() => {
     setActiveTab(splitLocation());
+
+    setUpTawkTo();
   }, [props.location]);
 
   return (
     <div className="sideBar">
       <div>
         <div className="brand">
-          <img src={logo} height="40px" alt="" />
+          <NavLink to="/">
+            <img src={logo} height="40px" alt="" />
+          </NavLink>
         </div>
         <ul>
           {menuItem.map((item, key) => (
