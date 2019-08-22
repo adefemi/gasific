@@ -30,7 +30,7 @@ function UserMerchant(props) {
       <br />
       <br />
       <div className="dflex align-center justify-between">
-        <div />
+        <Button color="danger">Report Merchant</Button>
         <NavLink to="/select-merchant">
           <Button>Change Merchant</Button>
         </NavLink>

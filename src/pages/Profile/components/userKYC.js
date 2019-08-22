@@ -31,6 +31,35 @@ const UserKYC = props => {
           </Select>
         </FormGroup>
       </div>
+      <div className="grid-auto">
+        <FormGroup title="Gender">
+          <Select name="gender" value={state.gender || ""} onChange={onChange}>
+            <Select.Option value="male">Male</Select.Option>
+            <Select.Option value="female">Female</Select.Option>
+            <Select.Option value="prefer_not_to_say">
+              Prefer not to say
+            </Select.Option>
+          </Select>
+        </FormGroup>
+        <FormGroup title="Date of birth">
+          <Input
+            name="dob"
+            value={state.dob || ""}
+            onChange={onChange}
+            type="date"
+          />
+        </FormGroup>
+        <FormGroup title="Type of use">
+          <Select
+            name="type_of_use"
+            value={state.type_of_use}
+            onChange={onChange}
+          >
+            <Select.Option value={"commercial"}>Commercial</Select.Option>
+            <Select.Option value={"household"}>Household</Select.Option>
+          </Select>
+        </FormGroup>
+      </div>
       <br />
       <Button type="submit" loading={updating} disabled={updating}>
         Update
