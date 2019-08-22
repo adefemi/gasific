@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Button, Card } from "../../components/common";
 import AppIcon from "../../components/common/icons/Icon";
 import { getAllStates } from "../../components/utils/helper";
-import AnimateHeight from "react-animate-height";
 import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout";
-import { Radio, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { CustomAddress } from "./pickup";
+import Checkbox from "../../components/common/checkbox/Checkbox";
 
 function ChooseMerchant(props) {
-  const array = [1, 1, 1, 1, 1, 1, 1, 1, 1];
-  const [showAddress, setShowAddress] = useState(false);
+  const array = [1, 2, 3, 4, 5, 6];
   const [addressData, setAddressData] = useState({});
   const [states, setStates] = useState(null);
+  const [checked, setChecked] = useState(null);
+
   useEffect(() => {
     setStates(getAllStates("nigeria", true));
   }, []);
@@ -25,7 +26,6 @@ function ChooseMerchant(props) {
 
   const onSubmit = e => {
     e.preventDefault();
-    setShowAddress(false);
   };
 
   return (
@@ -54,31 +54,33 @@ function ChooseMerchant(props) {
           </h3>
           <div className="link-btn">
             <AppIcon name="mapPin" type="feather" />
-            Use current location |{" "}
-            <span onClick={() => setShowAddress(!showAddress)}>
-              Custom Address
-            </span>
+            Use current location
           </div>
         </div>
         <br />
-        <AnimateHeight height={showAddress ? "auto" : 0}>
-          <div className="dflex align-center justify-between">
-            <div />
-            <div className="max-width-500" style={{ margin: 0 }}>
-              <div className="divider" />
-              <CustomAddress
-                states={states}
-                onSubmit={onSubmit}
-                onChange={onChange}
-                addressData={addressData}
-              />
-            </div>
+        <Card round className="padding-10" heading="Home Address">
+          <br />
+          <div className="max-width-500" style={{ margin: 0 }}>
+            <CustomAddress
+              states={states}
+              onSubmit={onSubmit}
+              onChange={onChange}
+              addressData={addressData}
+            />
           </div>
-        </AnimateHeight>
+        </Card>
         <br />
         <div className="grid-auto">
           {array.map((item, key) => (
-            <Card round className="padding-20 position-relative" key={key}>
+            <Card
+              round
+              className={
+                checked === item
+                  ? "padding-20 position-relative card-active"
+                  : "padding-20 position-relative"
+              }
+              key={key}
+            >
               <div className="padding-bottom-10 bolder-text link-btn">
                 TOTAL FILLING STATION
               </div>
@@ -96,7 +98,14 @@ function ChooseMerchant(props) {
               </div>
 
               <div className="merchantRadio">
-                <Radio name="merchant" id="merchant" />
+                <Checkbox
+                  name="merchant"
+                  id={key}
+                  checked={checked === item}
+                  onClick={() =>
+                    checked === item ? setChecked(null) : setChecked(item)
+                  }
+                />
               </div>
             </Card>
           ))}
@@ -105,7 +114,10 @@ function ChooseMerchant(props) {
         <br />
         <div className="dflex align-center justify-between">
           <div className="link-btn">See More</div>
-          <Button onClick={() => props.history.push("/dashboard/user")}>
+          <Button
+            disabled={!checked}
+            onClick={() => props.history.push("/dashboard/user")}
+          >
             Submit
           </Button>
         </div>

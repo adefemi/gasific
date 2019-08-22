@@ -8,7 +8,6 @@ import {
 } from "../../components/common";
 import AppIcon from "../../components/common/icons/Icon";
 import { getAllStates } from "../../components/utils/helper";
-import AnimateHeight from "react-animate-height";
 
 export const CustomAddress = props => (
   <form onSubmit={props.onSubmit}>
@@ -58,8 +57,7 @@ export const CustomAddress = props => (
 );
 
 function Pickup(props) {
-  const array = [1, 1, 1, 1, 1, 1, 1, 1, 1];
-  const [showAddress, setShowAddress] = useState(false);
+  const array = [1, 2, 3, 4, 5, 6];
   const [addressData, setAddressData] = useState({});
   const [states, setStates] = useState(null);
   useEffect(() => {
@@ -75,7 +73,6 @@ function Pickup(props) {
 
   const onSubmit = e => {
     e.preventDefault();
-    setShowAddress(false);
   };
 
   return (
@@ -84,27 +81,21 @@ function Pickup(props) {
         <h3>Pickup centers near you</h3>
         <div className="link-btn">
           <AppIcon name="mapPin" type="feather" />
-          Use current location |{" "}
-          <span onClick={() => setShowAddress(!showAddress)}>
-            Custom Address
-          </span>
+          Use current location
         </div>
       </div>
       <br />
-      <AnimateHeight height={showAddress ? "auto" : 0}>
-        <div className="dflex align-center justify-between">
-          <div />
-          <div className="max-width-500" style={{ margin: 0 }}>
-            <div className="divider" />
-            <CustomAddress
-              states={states}
-              onSubmit={onSubmit}
-              onChange={onChange}
-              addressData={addressData}
-            />
-          </div>
+      <Card round className="padding-10" heading="Home Address">
+        <br />
+        <div className="max-width-500" style={{ margin: 0 }}>
+          <CustomAddress
+            states={states}
+            onSubmit={onSubmit}
+            onChange={onChange}
+            addressData={addressData}
+          />
         </div>
-      </AnimateHeight>
+      </Card>
       <br />
       <div className="grid-auto">
         {array.map((item, key) => (
