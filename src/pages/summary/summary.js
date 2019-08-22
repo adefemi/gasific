@@ -17,6 +17,10 @@ import { Delivery } from "./delivery";
 import { CheckOutCard } from "./checkout";
 import { getPlanUrl } from "../../components/utils/api";
 
+export const getPlans = callBack => {
+  axiosFunc("GET", getPlanUrl, {}, {}, callBack);
+};
+
 const Summary = props => {
   const [plans, setPlans] = useState({
     data: [],
@@ -51,13 +55,9 @@ const Summary = props => {
   };
 
   useEffect(() => {
-    getPlans();
+    getPlans(onGetPlans);
     setStates(getAllStates("nigeria", true));
   }, []);
-
-  const getPlans = () => {
-    axiosFunc("GET", getPlanUrl, {}, {}, onGetPlans);
-  };
 
   const productChanger = obj => {
     let activePlan = plans.data.filter(item => item.id === obj.id)[0];
@@ -126,7 +126,7 @@ const Summary = props => {
   );
 };
 
-const formatPlans = plans => {
+export const formatPlans = plans => {
   let newPlans = [];
 
   plans.map(item => {

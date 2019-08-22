@@ -48,6 +48,10 @@ a{
   grid-gap: 1em;
 }
 
+.user-card-grid{
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
 .card-style-1{
   height: 200px;
   padding: 20px;
@@ -286,7 +290,7 @@ a{
 
 .merchantRadio{
   position: absolute;
-  top: 20px;
+  top: 10px;
   right: 10px;
 }
 
@@ -639,6 +643,11 @@ a{
 .position-relative {
   position: relative;
 }
+
+.card-active{
+  box-shadow: 0 0 5px rgba($primary-color, 0.8) !important;
+}
+
 .space-top-0 {
   padding-top: 0;
   margin-top: 0;

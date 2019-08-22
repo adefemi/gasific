@@ -1,29 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  FormGroup,
-  Input,
-  Select,
-  Notification,
-  Spinner
-} from "../../components/common";
-import { Badge, Tag } from "antd";
+import { Card, Notification, Spinner, DropDown } from "../../components/common";
+import { Tag } from "antd";
 import userAvatar from "../../assets/sub.png";
-import {
-  axiosFunc,
-  errorHandler,
-  getAllStates
-} from "../../components/utils/helper";
+import { axiosFunc, errorHandler } from "../../components/utils/helper";
 import { UserUrl } from "../../components/utils/api";
 import { MainContext } from "../../stateManagement/contextProvider";
+import UserInfo from "./components/userInfo";
+import UserKYC from "./components/userKYC";
+import ChangePassword from "./components/changePassword";
+import HardwareInfo from "./components/hardwareInfo";
+import UserBilling from "./components/userBilling";
+import UserMerchant from "./components/userMerchant";
+import { formatPlans, getPlans } from "../summary/summary";
+import { USERDATA } from "../../components/utils/data";
 
 function Profile(props) {
   const [activeTab, setActiveTab] = useState(1);
   const [userInfoMain, setUserInfoMain] = useState({});
   const [fetching, setFetching] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [plans, setPlans] = useState({
+    data: [],
+    fetching: true
+  });
   const { state } = useContext(MainContext);
+  const [activePlan, setActivePlan] = useState(null);
 
   const onGetUserInfo = (status, data) => {
     if (status) {
@@ -42,9 +43,35 @@ function Profile(props) {
     }
   };
 
+  const onGetPlans = (status, payload) => {
+    if (status) {
+      try {
+        let activeData = payload.data.data.plans;
+        let activeUser = JSON.parse(localStorage.getItem(USERDATA));
+        setActivePlan(
+          parseInt(activeUser.plan_id) === 1 ? 2 : activeUser.plan_id
+        );
+        setPlans({
+          data: activeData,
+          fetching: false
+        });
+      } catch (e) {
+        Notification.bubble({
+          type: "error",
+          content: e
+        });
+      }
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(payload)
+      });
+    }
+  };
+
   useEffect(() => {
+    getPlans(onGetPlans);
     axiosFunc("get", UserUrl(), null, "yes", onGetUserInfo);
-    console.log(state);
   }, [state]);
 
   const onChange = e => {
@@ -97,11 +124,23 @@ function Profile(props) {
             heading={
               <div>
                 <div className="padding-20 dflex flex-d-v justify-between align-center">
-                  <div className="img-con">
+                  <div className="img-con profile-image">
                     <img src={userAvatar} alt="" />
                   </div>
+                  <small className="text-center link-btn">
+                    Change profile picture
+                  </small>
                   <p />
-                  <Tag>Subscription Plan: Monthly</Tag>
+                  {!plans.fetching && (
+                    <Tag className="user-profile-tag">
+                      <DropDown
+                        dropDownWidth={"200px"}
+                        onChange={() => null}
+                        active={activePlan}
+                        options={formatPlans(plans.data)}
+                      />
+                    </Tag>
+                  )}
                 </div>
               </div>
             }
@@ -138,41 +177,17 @@ function Profile(props) {
                     <span>{userInfoMain.address}</span>
                   </p>
                 )}
-
-                {state.hardware && (
-                  <>
-                    <div className="divider" />
-                    <br />
-                    <h4>Hardware Information</h4>
-                    <br />
-                    <p>
-                      <small className="black-text bolder-text">
-                        IMEI: {state.hardware.hardwareData.imei}
-                      </small>
-                    </p>
-                    <p>
-                      <small className="black-text bolder-text">
-                        Model: {state.hardware.hardwareData.model}
-                      </small>
-                    </p>
-                    <div>
-                      <small className="black-text bolder-text">
-                        Status:{" "}
-                        {state.hardware.hardwareData.status === 1 ? (
-                          <Tag color="green">True</Tag>
-                        ) : (
-                          <Tag color="orange">False</Tag>
-                        )}
-                      </small>
-                    </div>
-                    <p>
-                      <small className="black-text bolder-text">
-                        DESC: {state.hardware.hardwareData.desc}
-                      </small>
-                    </p>
-                  </>
-                )}
               </div>
+            )}
+          </Card>
+          <br />
+          <Card round heading="Hardware Information">
+            {fetching ? (
+              <div className="padding-20">
+                <Spinner color="#999999" />
+              </div>
+            ) : (
+              state.hardware && <HardwareInfo state={state} />
             )}
           </Card>
         </div>
@@ -196,6 +211,18 @@ function Profile(props) {
                 onClick={() => setActiveTab(3)}
               >
                 Change Password
+              </li>
+              <li
+                className={`${activeTab === 4 && "active"}`}
+                onClick={() => setActiveTab(4)}
+              >
+                Billing
+              </li>
+              <li
+                className={`${activeTab === 5 && "active"}`}
+                onClick={() => setActiveTab(5)}
+              >
+                Merchant
               </li>
             </div>
             <div className="tab-content">
@@ -235,6 +262,18 @@ function Profile(props) {
               >
                 <ChangePassword />
               </div>
+              <div
+                className={`tab-item ${activeTab === 4 && "active"}`}
+                id={"tab-category"}
+              >
+                <UserBilling />
+              </div>
+              <div
+                className={`tab-item ${activeTab === 5 && "active"}`}
+                id={"tab-category"}
+              >
+                <UserMerchant />
+              </div>
             </div>
           </Card>
         </div>
@@ -244,128 +283,5 @@ function Profile(props) {
     </div>
   );
 }
-
-const UserInfo = props => {
-  const { state, onChange, onSubmit, updating } = props;
-  return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <FormGroup title="Name">
-          <Input
-            name="name"
-            value={state.name || ""}
-            required
-            onChange={onChange}
-          />
-        </FormGroup>
-      </div>
-      <div className="grid-2 grid-s-mobile-0">
-        <FormGroup title="Email Address">
-          <Input
-            type="email"
-            name="email"
-            value={state.email || ""}
-            required
-            onChange={onChange}
-          />
-        </FormGroup>
-        <FormGroup title="Phone Number">
-          <Input
-            type="number"
-            name="phone"
-            value={state.phone || ""}
-            required
-            onChange={onChange}
-          />
-        </FormGroup>
-      </div>
-      <div className="grid-2 grid-s-mobile-0">
-        <FormGroup title="Home Address">
-          <Input
-            name="address"
-            value={state.address || ""}
-            onChange={onChange}
-          />
-        </FormGroup>
-        <FormGroup title="State">
-          <Select name="state" value={state.state || ""} onChange={onChange}>
-            {getAllStates("nigeria", true).map((item, id) => (
-              <Select.Option key={id} value={item.value}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </FormGroup>
-      </div>
-      <br />
-      <Button type="submit" loading={updating} disabled={updating}>
-        Update
-      </Button>
-    </form>
-  );
-};
-
-const UserKYC = props => {
-  const { state, onChange, onSubmit, updating } = props;
-  return (
-    <form onSubmit={onSubmit}>
-      <div className="grid-auto">
-        <FormGroup title="Referral Code">
-          <Input
-            name="referral_code"
-            value={state.referral_code || ""}
-            onChange={onChange}
-          />
-        </FormGroup>
-        <FormGroup title="Family/home size">
-          <Input
-            name="home_size"
-            value={state.home_size || ""}
-            onChange={onChange}
-          />
-        </FormGroup>
-        <FormGroup title="Gas Cylinder Code (Size)">
-          <Select
-            name="cylinder_code"
-            value={state.cylinder_code}
-            onChange={onChange}
-          >
-            <Select.Option value={5}>5kg</Select.Option>
-            <Select.Option value={12}>12kg</Select.Option>
-            <Select.Option value={25}>25kg</Select.Option>
-            <Select.Option value={50}>50kg</Select.Option>
-            <Select.Option value={75}>75kg</Select.Option>
-            <Select.Option value={100}>100kg</Select.Option>
-          </Select>
-        </FormGroup>
-      </div>
-      <br />
-      <Button type="submit" loading={updating} disabled={updating}>
-        Update
-      </Button>
-    </form>
-  );
-};
-
-const ChangePassword = props => {
-  return (
-    <form action="">
-      <div className="max-width-600">
-        <FormGroup title="Old Password">
-          <Input type="password" />
-        </FormGroup>
-        <FormGroup title="New Password">
-          <Input type="password" />
-        </FormGroup>
-        <FormGroup title="Confirm Password">
-          <Input type="password" />
-        </FormGroup>
-
-        <br />
-        <Button>Update</Button>
-      </div>
-    </form>
-  );
-};
 
 export default Profile;
