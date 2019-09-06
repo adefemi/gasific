@@ -5,5 +5,8 @@ export const getPlanUrl = baseUrl + `plans`;
 export const assingHardwareURl = baseUrl + `hardware/assign`;
 export const passwordUrl = (type = "") => baseUrl + `password/${type}`;
 export const hardwareUrl = (type = "") => baseUrl + `hardware${type}`;
+export const transactionUrl = (type = "") => baseUrl + `transactions${type}`;
 export const UserUrl = (type = "") => baseUrl + `user${type}`;
 export const baseURL = (type = "") => baseUrl + type;
+export const PaymentUrl = (type = "") => baseUrl + `pay/${type}`;
+export const merchantUrl = (type = "") => baseUrl + `merchant${type}`;

@@ -12,6 +12,8 @@ import AuthController from "./components/HOC/authcontroller";
 import ResetPassword from "./pages/AuthPage/resetPassword";
 import LoginController from "./components/HOC/logicHOC";
 import ChooseMerchant from "./pages/VerificationPage/chooseMerchant";
+import PaymentController from "./components/HOC/PaymentController";
+import VerificationController from "./components/HOC/VerificationController";
 
 function Router(props) {
   return (
@@ -30,14 +32,18 @@ function Router(props) {
           exact
           component={LoginController(ResetPassword)}
         />
-        <Route path="/payment" exact component={AuthController(Payment)} />
-        <Route path="/verification" exact component={AuthController(Verify)} />
+        <Route path="/payment" exact component={PaymentController(Payment)} />
+        <Route
+          path="/verification"
+          exact
+          component={VerificationController(Verify)}
+        />
         <Route
           path="/select-merchant"
           exact
           component={AuthController(ChooseMerchant)}
         />
-        <Route path="/dashboard" component={AuthController(DashboardMain)} />
+        <Route path="/dashboard" component={DashboardMain} />
 
         <Route path={"*"} render={() => <h1>Not Found!!!</h1>} />
       </Switch>

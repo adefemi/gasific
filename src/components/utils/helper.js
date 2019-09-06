@@ -227,3 +227,7 @@ export const getAllStates = (countryName, shouldReturn = false) => {
     return stateArray;
   }
 };
+
+export const goTop = () => {
+  window.scrollTo(0, 0);
+};

@@ -7,7 +7,7 @@ import visa from "./images/visa3.png";
 import lock from "./images/lock.ico";
 
 export const CheckOutCard = props => {
-  const { activePlan, loading, referralSwitch } = props;
+  const { activePlan, loading, referralSwitch, total } = props;
 
   return (
     <Card
@@ -52,10 +52,7 @@ export const CheckOutCard = props => {
       <div className="dflex align-center justify-between padding-20">
         <div className="bolder-text">Total </div>
         <div className="bolder-text">
-          ₦{" "}
-          {activePlan
-            ? numberWithCommas(5500 + parseFloat(activePlan.price))
-            : null}
+          ₦ {activePlan ? numberWithCommas(total) : null}
         </div>
       </div>
       <div className="divider" />

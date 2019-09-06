@@ -47,7 +47,7 @@ a {
 
 .grid-auto {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, auto));
+  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
   grid-gap: 1em;
 }
 
@@ -130,7 +130,6 @@ a {
   z-index: 10000;
   top: 0;
   right: 0;
-  bottom: 0;
 }
 
 .capitalize {

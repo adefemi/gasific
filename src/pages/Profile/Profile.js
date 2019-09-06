@@ -3,7 +3,7 @@ import { Card, Notification, Spinner, DropDown } from "../../components/common";
 import { Tag } from "antd";
 import userAvatar from "../../assets/sub.png";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
-import { UserUrl } from "../../components/utils/api";
+import { hardwareUrl, UserUrl } from "../../components/utils/api";
 import { MainContext } from "../../stateManagement/contextProvider";
 import UserInfo from "./components/userInfo";
 import UserKYC from "./components/userKYC";
@@ -17,6 +17,7 @@ import { USERDATA } from "../../components/utils/data";
 function Profile(props) {
   const [activeTab, setActiveTab] = useState(1);
   const [userInfoMain, setUserInfoMain] = useState({});
+  const [hardware, setHardware] = useState(null);
   const [fetching, setFetching] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [plans, setPlans] = useState({
@@ -41,6 +42,19 @@ function Profile(props) {
         content: errorHandler(data)
       });
     }
+  };
+
+  const getHardWare = () => {
+    axiosFunc("get", hardwareUrl(), null, "yes", (status, data) => {
+      if (status) {
+        setHardware(data.data.data.user_hardware);
+      } else {
+        Notification.bubble({
+          type: "error",
+          content: errorHandler(data)
+        });
+      }
+    });
   };
 
   const onGetPlans = (status, payload) => {
@@ -71,8 +85,9 @@ function Profile(props) {
 
   useEffect(() => {
     getPlans(onGetPlans);
+    getHardWare();
     axiosFunc("get", UserUrl(), null, "yes", onGetUserInfo);
-  }, [state]);
+  }, []);
 
   const onChange = e => {
     setUserInfoMain({
@@ -187,7 +202,7 @@ function Profile(props) {
                 <Spinner color="#999999" />
               </div>
             ) : (
-              state.hardware && <HardwareInfo state={state} />
+              hardware && <HardwareInfo state={hardware} />
             )}
           </Card>
         </div>

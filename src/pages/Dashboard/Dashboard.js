@@ -8,17 +8,42 @@ import Profile from "../Profile/Profile";
 import GasUsage from "../GasUsage/GasUsage";
 import Faq from "../FAQ/FAQ";
 import Help from "../Help/Help";
+import UserAuthController from "../../components/HOC/userAuthController";
 
 function Dashboard(props) {
   return (
     <DashboardMain {...props}>
       <Route exact path={"/dashboard/merchant"} component={MerchantDashboard} />
-      <Route exact path={"/dashboard/user"} component={UserDashboard} />
-      <Route exact path={"/dashboard/transactions"} component={Transactions} />
-      <Route exact path={"/dashboard/profile"} component={Profile} />
-      <Route exact path={"/dashboard/gas-usage"} component={GasUsage} />
-      <Route exact path={"/dashboard/help/FAQ"} component={Faq} />
-      <Route exact path={"/dashboard/help"} component={Help} />
+      <Route
+        exact
+        path={"/dashboard/user"}
+        component={UserAuthController(UserDashboard)}
+      />
+      <Route
+        exact
+        path={"/dashboard/transactions"}
+        component={UserAuthController(Transactions)}
+      />
+      <Route
+        exact
+        path={"/dashboard/profile"}
+        component={UserAuthController(Profile)}
+      />
+      <Route
+        exact
+        path={"/dashboard/gas-usage"}
+        component={UserAuthController(GasUsage)}
+      />
+      <Route
+        exact
+        path={"/dashboard/help/FAQ"}
+        component={UserAuthController(Faq)}
+      />
+      <Route
+        exact
+        path={"/dashboard/help"}
+        component={UserAuthController(Help)}
+      />
     </DashboardMain>
   );
 }

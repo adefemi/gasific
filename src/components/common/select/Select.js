@@ -20,7 +20,8 @@ const defaultPropList = {
   showDropDown: PropTypes.bool,
   displayed: PropTypes.any,
   children: PropTypes.any,
-  secondary: PropTypes.bool
+  secondary: PropTypes.bool,
+  defaultOption: PropTypes.bool
 };
 
 // function to check if an element has a class
@@ -49,7 +50,7 @@ export const removeClass = (ele, cls) => {
   }
 };
 
-const fixChildren = children => {
+const fixChildren = (children, props) => {
   if (typeof children !== "object") {
     return null;
   }
@@ -62,6 +63,13 @@ const fixChildren = children => {
   if (!children.length) {
     newChildren = [children];
   }
+
+  if (props.defaultOption) {
+    let defaultOpt = newChildren[0];
+    newChildren = newChildren[1];
+    newChildren.unshift(defaultOpt);
+  }
+
   newChildren = newChildren.filter(item => {
     if (typeof item !== "object") {
       return null;
@@ -82,7 +90,7 @@ const fixChildren = children => {
 // base functional component for select, makes use of react hooks...
 const Select = props => {
   let newProps = getNewProps(props, defaultPropList);
-  let children = fixChildren(props.children);
+  let children = fixChildren(props.children, props);
 
   const [count, setCount] = useState(selectCount);
   const [value, setValue] = useState(props.value || "");
@@ -112,7 +120,8 @@ const Select = props => {
           props.disabled ? "disabled" : ""
         } ${props.secondary && "secondary"}`}
       >
-        <span className="left-icon">{props.iconLeft}</span>
+        {props.iconLeft && <span className="left-icon">{props.iconLeft}</span>}
+
         <select
           className={`selectInput${count} ${props.disabled ? "disabled" : ""}`}
           onChange={onChange}
@@ -126,7 +135,11 @@ const Select = props => {
           {children &&
             children.length > 0 &&
             children.map((item, key) => (
-              <option key={key} value={item.props.value}>
+              <option
+                key={key}
+                value={item.props.value}
+                data-order={item.props.order}
+              >
                 {item.props.children}
               </option>
             ))}

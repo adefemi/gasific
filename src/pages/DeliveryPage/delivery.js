@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Notification, Loader } from "../../components/common";
+import { Notification, Loader, Modal, Spinner } from "../../components/common";
 import logo from "../../assets/logos/logo1.png";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
-import { UserUrl } from "../../components/utils/api";
-import { USERDATA } from "../../components/utils/data";
+import { PaymentUrl, UserUrl } from "../../components/utils/api";
+import { MainContext } from "../../stateManagement/contextProvider";
 
 function Payment(props) {
   const [loading, setLoading] = useState(true);
-
-  const onSubmit = e => {
-    setLoading(false);
-    payWithPaystack();
-  };
+  const { state } = useContext(MainContext);
+  const [showVerify, setShowVerify] = useState(false);
 
   const onProfileUpdated = (status, data) => {
     if (status) {
@@ -29,69 +26,120 @@ function Payment(props) {
     }
   };
 
-  const onSubmitCompleted = () => {
-    let user_info = localStorage.getItem("user_info");
-    if (user_info) {
-      let userData = JSON.parse(user_info);
-      let userInfo = JSON.parse(localStorage.getItem(USERDATA));
-      let meta = {
-        delivery_address: userData.address,
-        delivery_city: userData.city,
-        delivery_state: userData.state,
-        plan_id: userData.plan_id
-      };
-      let data = {
-        ...userInfo,
-        meta
-      };
-      setLoading(true);
-      axiosFunc("post", UserUrl(), data, "yes", onProfileUpdated);
+  const verifyPayment = (response, data) => {
+    setShowVerify(true);
+    axiosFunc(
+      "get",
+      PaymentUrl(`verify?reference=${data.reference}`),
+      null,
+      "yes",
+      onSubmitCompleted
+    );
+  };
+
+  const onSubmitCompleted = (status, data) => {
+    if (status) {
+      let user_info = localStorage.getItem("user_info");
+      if (user_info) {
+        let userData = JSON.parse(user_info);
+        let meta = {
+          delivery_address: userData.delivery_address,
+          delivery_city: userData.delivery_city,
+          delivery_state: userData.delivery_state,
+          plan_id: userData.plan_id
+        };
+        let data = {
+          ...state.user,
+          meta
+        };
+        setLoading(true);
+        axiosFunc("post", UserUrl(), data, "yes", onProfileUpdated);
+      } else {
+        Notification.bubble({
+          type: "success",
+          content: "Payment successful"
+        });
+        props.history.push("/verification");
+      }
     } else {
       Notification.bubble({
-        type: "success",
-        content: "Payment successful"
+        type: "error",
+        content: errorHandler(data)
       });
-      props.history.push("/verification");
     }
   };
 
-  const payWithPaystack = () => {
-    var handler = window.PaystackPop.setup({
-      key: "pk_test_3f76b7ddac49c6e97f490292425c14708df96c68",
-      email: "customer@email.com",
-      amount: 5500 * 100,
+  const payWithPaystack = data => {
+    let handler = window.PaystackPop.setup({
+      key: data.paystack_key,
+      email: state.user.email,
+      amount: data.total * 100,
       currency: "NGN",
-      ref: "" + Math.floor(Math.random() * 1000000000 + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+      ref: data.reference,
       metadata: {
         custom_fields: [
           {
-            display_name: "Mobile Number",
-            variable_name: "mobile_number",
-            value: "+2348012345678"
+            display_name: state.user.name,
+            variable_name: state.user.name,
+            value: state.phone
           }
         ]
       },
       callback: function(response) {
-        onSubmitCompleted(response);
+        verifyPayment(response, data);
       },
       onClose: function() {
         props.history.push("/");
       }
     });
+
     handler.openIframe();
   };
 
   useEffect(() => {
-    onSubmit();
+    initializePayment();
   }, []);
+
+  const onPaymentInitialized = (status, data) => {
+    if (status) {
+      payWithPaystack(data.data.data);
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(data)
+      });
+    }
+  };
+
+  const initializePayment = () => {
+    axiosFunc(
+      "get",
+      PaymentUrl(`init?callback_url=${window.location.href}`),
+      null,
+      "yes",
+      onPaymentInitialized
+    );
+  };
 
   return (
     <div className="container" style={{ backgroundColor: "#f5f5f5" }}>
+      <Modal
+        visible={showVerify}
+        closable={false}
+        footer={false}
+        onClose={() => null}
+      >
+        <center>
+          <Spinner color="#999999" size={30} />
+          <br />
+          <span>Verifying payment, please wait...</span>
+        </center>
+      </Modal>
       <NavLink to="/" className="fixed-brand">
         <img src={logo} height="40px" alt="" />
       </NavLink>
 
-      {loading && <Loader />}
+      {loading && !showVerify && <Loader />}
     </div>
   );
 }

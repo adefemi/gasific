@@ -15,7 +15,6 @@ const DashboardController = props => {
   const onGetHardware = (status, data) => {
     if (status) {
       setCanView(true);
-      console.log(data.data.data.hardware);
       dispatch({ type: SET_HARDWARE_DATA, payload: data.data.data.hardware });
     } else {
       Notification.bubble({

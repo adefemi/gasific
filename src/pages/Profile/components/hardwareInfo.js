@@ -9,18 +9,16 @@ const HardwareInfo = props => {
       <br />
       <p>
         <small className="black-text bolder-text">
-          SSID: {state.hardware.hardwareData.ssid || "N/A"}
+          SSID: {state.ssid || "N/A"}
         </small>
       </p>
       <p>
-        <small className="black-text bolder-text">
-          Model: {state.hardware.hardwareData.model}
-        </small>
+        <small className="black-text bolder-text">Model: {state.model}</small>
       </p>
       <div>
         <small className="black-text bolder-text">
           Status:{" "}
-          {state.hardware.hardwareData.status === 1 ? (
+          {state.status === 1 ? (
             <Tag color="green">True</Tag>
           ) : (
             <Tag color="orange">False</Tag>
@@ -28,9 +26,7 @@ const HardwareInfo = props => {
         </small>
       </div>
       <p>
-        <small className="black-text bolder-text">
-          DESC: {state.hardware.hardwareData.desc}
-        </small>
+        <small className="black-text bolder-text">DESC: {state.desc}</small>
       </p>
     </div>
   );

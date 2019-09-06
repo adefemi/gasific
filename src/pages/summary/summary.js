@@ -15,7 +15,8 @@ import hardwareImg from "../../assets/hardware.jpg";
 import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout";
 import { Delivery } from "./delivery";
 import { CheckOutCard } from "./checkout";
-import { getPlanUrl } from "../../components/utils/api";
+import { getPlanUrl, hardwareUrl } from "../../components/utils/api";
+import { defaultVersion } from "../../components/utils/data";
 
 export const getPlans = callBack => {
   axiosFunc("GET", getPlanUrl, {}, {}, callBack);
@@ -31,11 +32,13 @@ const Summary = props => {
   const [referralSwitch, setReferral] = useState(false);
   const [loading, setLoading] = useState(false);
   const [deliveryData, setDeliveryData] = useState({});
+  const [totalPrice, setTotalPrice] = useState(5500);
 
   const onGetPlans = (status, payload) => {
     if (status) {
       try {
         setActivePlan(payload.data.data.plans[0]);
+        setTotalPrice(5500 + parseFloat(payload.data.data.plans[0].price));
         setPlans({
           data: payload.data.data.plans,
           fetching: false
@@ -61,22 +64,45 @@ const Summary = props => {
 
   const productChanger = obj => {
     let activePlan = plans.data.filter(item => item.id === obj.id)[0];
+    setTotalPrice(5500 + parseFloat(activePlan.price));
     setActivePlan(activePlan);
+  };
+
+  const onInitHardware = (status, data) => {
+    if (status) {
+      props.history.push("/payment");
+    } else {
+      setLoading(false);
+      Notification.bubble({
+        type: "error",
+        content: errorHandler(data)
+      });
+    }
   };
 
   const onSubmit = e => {
     e.preventDefault();
+    let user_meta = {
+      ...deliveryData,
+      plan_id: activePlan.id
+    };
     localStorage.setItem(
       "user_info",
       JSON.stringify({
-        deliveryData,
-        plan_id: activePlan.id
+        user_meta
       })
     );
+    axiosFunc(
+      "post",
+      hardwareUrl("/request"),
+      {
+        amount: totalPrice,
+        version: defaultVersion
+      },
+      "yes",
+      onInitHardware
+    );
     setLoading(true);
-    setTimeout(() => {
-      props.history.push("/payment");
-    }, 2000);
   };
 
   const onChange = e => {
@@ -119,6 +145,7 @@ const Summary = props => {
             referralSwitch={referralSwitch}
             activePlan={activePlan}
             loading={loading}
+            total={totalPrice}
           />
         </div>
       </form>

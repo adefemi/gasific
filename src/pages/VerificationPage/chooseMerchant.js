@@ -1,20 +1,46 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card } from "../../components/common";
+import { Button, Card, Notification } from "../../components/common";
 import AppIcon from "../../components/common/icons/Icon";
-import { getAllStates } from "../../components/utils/helper";
+import {
+  axiosFunc,
+  errorHandler,
+  getAllStates
+} from "../../components/utils/helper";
 import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout";
 import { Tooltip } from "antd";
 import { CustomAddress } from "./pickup";
 import Checkbox from "../../components/common/checkbox/Checkbox";
+import { merchantUrl } from "../../components/utils/api";
 
 function ChooseMerchant(props) {
-  const array = [1, 2, 3, 4, 5, 6];
   const [addressData, setAddressData] = useState({});
   const [states, setStates] = useState(null);
+  const [submit, setSubmit] = useState(false);
   const [checked, setChecked] = useState(null);
+  const [merchants, setMerchants] = useState({
+    data: [],
+    fetching: true
+  });
+  const [nextUrl, setNextUrl] = useState(null);
+
+  const onGetMerchant = (status, payload) => {
+    if (status) {
+      setNextUrl(payload.data.data.merchants.next_page_url);
+      setMerchants({
+        data: payload.data.data.merchants.data,
+        fetching: false
+      });
+    } else {
+      Notification.bubble({
+        type: "error",
+        content: payload
+      });
+    }
+  };
 
   useEffect(() => {
     setStates(getAllStates("nigeria", true));
+    axiosFunc("get", merchantUrl("s"), null, "yes", onGetMerchant);
   }, []);
 
   const onChange = e => {
@@ -24,8 +50,29 @@ function ChooseMerchant(props) {
     });
   };
 
-  const onSubmit = e => {
-    e.preventDefault();
+  const onSubmit = () => {
+    setSubmit(true);
+    axiosFunc(
+      "post",
+      merchantUrl("/assign"),
+      { merchant_id: checked.id },
+      "yes",
+      (status, data) => {
+        setSubmit(false);
+        if (status) {
+          Notification.bubble({
+            type: "success",
+            content: "Mechant assigned successfully"
+          });
+          props.history.push("/dashboard/user");
+        } else {
+          Notification.bubble({
+            type: "error",
+            content: errorHandler(data)
+          });
+        }
+      }
+    );
   };
 
   return (
@@ -71,52 +118,76 @@ function ChooseMerchant(props) {
         </Card>
         <br />
         <div className="grid-auto">
-          {array.map((item, key) => (
-            <Card
-              round
-              className={
-                checked === item
-                  ? "padding-20 position-relative card-active"
-                  : "padding-20 position-relative"
-              }
-              key={key}
-            >
-              <div className="padding-bottom-10 bolder-text link-btn">
-                TOTAL FILLING STATION
-              </div>
-              <div className="padding-bottom-5">
-                <AppIcon name="user" type="feather" /> &nbsp;&nbsp;{" "}
-                <span className="link-btn">Mr Lateef Lawal</span>{" "}
-              </div>
-              <div className="padding-bottom-5">
-                <AppIcon name="phoneCall" type="feather" /> &nbsp;&nbsp;{" "}
-                <span className="link-btn">+234 803 3333</span>{" "}
-              </div>
-              <div>
-                <AppIcon name="mapPin" type="feather" /> &nbsp;&nbsp;{" "}
-                <span className="link-btn">6, fatai street, ikeja</span>{" "}
-              </div>
+          {merchants.data.map((item, key) => {
+            let metaData = {};
+            item.meta.map(j => {
+              metaData[j.meta_key] = j.meta_value;
+              return null;
+            });
+            return (
+              <Card
+                round
+                className={
+                  checked === item
+                    ? "padding-20 position-relative card-active"
+                    : "padding-20 position-relative"
+                }
+                key={key}
+              >
+                <div
+                  className="padding-bottom-10 bolder-text link-btn"
+                  style={{ textTransform: "capitalize" }}
+                >
+                  {metaData.businessName || ""}
+                </div>
+                <div className="padding-bottom-5">
+                  <AppIcon name="user" type="feather" /> &nbsp;&nbsp;{" "}
+                  <span
+                    className="link-btn"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {item.name || ""}
+                  </span>{" "}
+                </div>
+                <div className="padding-bottom-5">
+                  <AppIcon name="phoneCall" type="feather" /> &nbsp;&nbsp;{" "}
+                  <span className="link-btn">{item.phone || ""}</span>{" "}
+                </div>
+                <div>
+                  <AppIcon name="mapPin" type="feather" /> &nbsp;&nbsp;{" "}
+                  <span className="link-btn">{`${metaData.address ||
+                    ""}, ${metaData.city || ""}, ${metaData.state ||
+                    ""}`}</span>{" "}
+                </div>
 
-              <div className="merchantRadio">
-                <Checkbox
-                  name="merchant"
-                  id={key}
-                  checked={checked === item}
-                  onClick={() =>
-                    checked === item ? setChecked(null) : setChecked(item)
-                  }
-                />
-              </div>
-            </Card>
-          ))}
+                <div className="merchantRadio">
+                  <Checkbox
+                    name="merchant"
+                    id={key}
+                    checked={checked === item}
+                    onClick={() =>
+                      checked === item ? setChecked(null) : setChecked(item)
+                    }
+                  />
+                </div>
+              </Card>
+            );
+          })}
         </div>
         <br />
         <br />
         <div className="dflex align-center justify-between">
-          <div className="link-btn">See More</div>
+          {nextUrl ? (
+            <div className="link-btn" onClick={() => null}>
+              See More
+            </div>
+          ) : (
+            <div />
+          )}
           <Button
-            disabled={!checked}
-            onClick={() => props.history.push("/dashboard/user")}
+            disabled={!checked || submit}
+            onClick={onSubmit}
+            loading={submit}
           >
             Submit
           </Button>
