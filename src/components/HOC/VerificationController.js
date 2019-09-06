@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { USERTOKEN, USERDATA } from "../utils/data";
 import { Spinner } from "../common/spinner";
-import { MainContext } from "../../stateManagement/contextProvider";
+import { axiosFunc } from "../utils/helper";
+import { hardwareUrl } from "../utils/api";
+import { USERDATA, USERTOKEN } from "../utils/data";
 import { SET_USER_DATA } from "../../stateManagement/reducers/reducerActions";
+import { MainContext } from "../../stateManagement/contextProvider";
 
-const AuthController = component => {
+const VerificationController = component => {
   const Authenticate = props => {
     const RenderComponent = props.component;
-    const token = localStorage.getItem(USERTOKEN);
     const [canView, setCanView] = useState(false);
     const { dispatch } = useContext(MainContext);
+    const token = localStorage.getItem(USERTOKEN);
 
     useEffect(() => {
       if (!token) {
@@ -30,8 +32,15 @@ const AuthController = component => {
         });
         setCanView(true);
         localStorage.removeItem("gasific_redirect");
+        axiosFunc("get", hardwareUrl(), null, "yes", status => {
+          if (status) {
+            setCanView(true);
+          } else {
+            props.history.push("/");
+          }
+        });
       }
-    }, [RenderComponent]);
+    }, []);
     if (!canView) return <Spinner color={"#666"} />;
     return <RenderComponent {...props} />;
   };
@@ -43,4 +52,4 @@ const AuthController = component => {
   return Authenticate;
 };
 
-export default AuthController;
+export default VerificationController;

@@ -12,8 +12,8 @@ export const Delivery = props => {
         <FormGroup title="Home Address">
           <Input
             required
-            name="address"
-            value={state.address || ""}
+            name="delivery_address"
+            value={state.delivery_address || ""}
             type="text"
             onChange={onChange}
           />
@@ -22,8 +22,8 @@ export const Delivery = props => {
           <FormGroup title="City">
             <Input
               required
-              name="city"
-              value={state.city || ""}
+              name="delivery_city"
+              value={state.delivery_city || ""}
               type="text"
               onChange={onChange}
             />
@@ -31,19 +31,21 @@ export const Delivery = props => {
           <FormGroup title="State">
             <Select
               required
-              name="state"
-              value={state.state || ""}
+              name="delivery_state"
+              value={state.delivery_state || ""}
               onChange={onChange}
+              defaultOption
             >
-              {states &&
-                states.length > 1 &&
-                states.map((item, ind) => {
-                  return (
-                    <Select.Option key={ind} value={item.value}>
-                      {item.name}
-                    </Select.Option>
-                  );
-                })}
+              <Select.Option value="">--select state--</Select.Option>
+              {states && states.length > 1
+                ? states.map((item, ind) => {
+                    return (
+                      <Select.Option key={ind} value={item.value}>
+                        {item.name}
+                      </Select.Option>
+                    );
+                  })
+                : []}
             </Select>
           </FormGroup>
         </div>

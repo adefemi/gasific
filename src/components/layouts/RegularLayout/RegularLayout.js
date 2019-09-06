@@ -42,9 +42,14 @@ function RegularLayout(props) {
 
             <div className="nav-right">
               {status ? (
-                <NavLink to="/" className="opt" onClick={onLogout}>
-                  Logout
-                </NavLink>
+                <>
+                  <div className="nav-content-reg">
+                    <NavLink to="/dashboard/user">Dashboard</NavLink>
+                  </div>
+                  <NavLink to="/" className="opt" onClick={onLogout}>
+                    Logout
+                  </NavLink>
+                </>
               ) : (
                 <>
                   <div className="nav-content-reg">

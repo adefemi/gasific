@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import { FormGroup, Input, Button } from "../../components/common";
 import AppFacebookLogin from "../../components/common/facebook/FacebookLogin";
@@ -9,10 +9,13 @@ import { axiosFunc, errorHandler } from "../../components/utils/helper";
 import { authUrl } from "../../components/utils/api";
 import { USERDATA, USERTOKEN } from "../../components/utils/data";
 import qs from "query-string";
+import { MainContext } from "../../stateManagement/contextProvider";
+import { SET_USER_DATA } from "../../stateManagement/reducers/reducerActions";
 
 function Login(props) {
   const [submit, setSubmit] = useState(false);
   const [loginData, setLoginData] = useState({});
+  const { dispatch } = useContext(MainContext);
 
   const onLoginCompleted = (status, payload) => {
     setSubmit(false);
@@ -23,6 +26,10 @@ function Login(props) {
         activeData.access_token || activeData.accessToken
       );
       localStorage.setItem(USERDATA, JSON.stringify(activeData.user));
+      dispatch({
+        type: SET_USER_DATA,
+        payload: activeData.user
+      });
       let query = qs.parse(props.location.search);
       if (!query.redirect) {
         query = qs.parse(localStorage.getItem("gasific_redirect"));
@@ -82,7 +89,7 @@ function Login(props) {
           clientId={
             "862405005033-84m2joaddld6qquhmqvpqs7at23ple0f.apps.googleusercontent.com"
           }
-          callback={e => console.log(e)}
+          callback={e => null}
           buttonText="Login with google"
           onSuccess={e =>
             socialAuth(e.profileObj.googleId, e.profileObj.email, "google")

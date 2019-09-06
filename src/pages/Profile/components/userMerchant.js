@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AppIcon from "../../../components/common/icons/Icon";
-import { Button } from "../../../components/common/button";
+import { Button, Notification } from "../../../components/common";
 import { NavLink } from "react-router-dom";
+import { axiosFunc, errorHandler } from "../../../components/utils/helper";
+import { merchantUrl } from "../../../components/utils/api";
 
 function UserMerchant(props) {
+  const [merchants, setMerchant] = useState(null);
+  const [fetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    axiosFunc("get", merchantUrl(), null, "yes", (status, data) => {
+      if (status) {
+        console.log(data.data.data);
+      } else {
+        Notification.bubble({
+          type: "error",
+          content: errorHandler(data)
+        });
+      }
+    });
+  }, []);
   return (
     <div>
       <div className="heading-2">Active Merchant</div>

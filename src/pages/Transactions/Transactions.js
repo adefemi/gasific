@@ -1,7 +1,10 @@
-import React from "react";
-import { Divider, Table, Tag } from "antd";
+import React, { useEffect, useState } from "react";
+import { Pagination, Table, Tag } from "antd";
 import { Card } from "../../components/common/card";
 import { Select } from "../../components/common/select";
+import { axiosFunc, errorHandler, goTop } from "../../components/utils/helper";
+import { transactionUrl } from "../../components/utils/api";
+import moment from "moment";
 
 const columns = [
   {
@@ -11,9 +14,9 @@ const columns = [
     render: text => <a href="javascript:;">{text}</a>
   },
   {
-    title: "Description",
-    dataIndex: "description",
-    key: "description"
+    title: "Created at",
+    dataIndex: "created_at",
+    key: "created_at"
   },
   {
     title: "Amount",
@@ -21,32 +24,39 @@ const columns = [
     key: "amount"
   },
   {
-    title: "Date",
-    key: "date",
-    dataIndex: "date"
+    title: "Status",
+    key: "status",
+    dataIndex: "status"
   },
   {
     title: "Action",
     key: "action",
-    render: (text, record) => (
-      <span>
-        <a href="javascript:;">Invite {record.name}</a>
-        <Divider type="vertical" />
-        <a href="javascript:;">Delete</a>
-      </span>
-    )
+    dataIndex: "action"
   }
 ];
 
-const data = () => {
+const data = payload => {
   let data1 = [];
-  [1, 2, 3, 4].map((item, id) => {
+  payload.map((item, id) => {
     data1.push({
       key: id,
-      reference: "John Brown",
-      amount: 32,
-      description: "New York No. 1 Lake Park",
-      date: ["nice", "developer"]
+      reference: item.reference,
+      amount: <span>₦ {parseFloat(item.amount).toFixed(2)}</span>,
+      status: (
+        <Tag
+          color={
+            item.status === "pending"
+              ? "orange"
+              : item.status === "success"
+              ? "green"
+              : "red"
+          }
+        >
+          {item.status}
+        </Tag>
+      ),
+      created_at: moment(new Date(item.created_at)).format("MM-DD-YYYY"),
+      action: <a href="#">Delete</a>
     });
     return null;
   });
@@ -55,6 +65,39 @@ const data = () => {
 };
 
 function Transactions(props) {
+  const [transactions, setTransactions] = useState([]);
+  const [fetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    getTransaction(1);
+  }, []);
+
+  const getTransaction = page => {
+    setFetching(true);
+    axiosFunc(
+      "get",
+      transactionUrl(`?page=${page}`),
+      null,
+      "yes",
+      (status, data) => {
+        if (status) {
+          setTransactions(data.data.data.transactions);
+          setFetching(false);
+          goTop();
+        } else {
+          Notification.bubble({
+            type: "error",
+            content: errorHandler(data)
+          });
+        }
+      }
+    );
+  };
+
+  const changePage = page => {
+    getTransaction(page);
+  };
+
   return (
     <div>
       {" "}
@@ -69,7 +112,22 @@ function Transactions(props) {
       </div>
       <br />
       <Card>
-        <Table dataSource={data()} columns={columns} />
+        <Table
+          loading={fetching}
+          dataSource={transactions.data && data(transactions.data)}
+          columns={columns}
+          pagination={false}
+        />
+        <br />
+        <div className="dflex align-center justify-between">
+          <div />
+          <Pagination
+            current={!fetching && transactions.current_page}
+            total={!fetching && transactions.total}
+            onChange={changePage}
+          />
+        </div>
+        <br />
       </Card>
     </div>
   );
