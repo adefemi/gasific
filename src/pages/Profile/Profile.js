@@ -3,7 +3,11 @@ import { Card, Notification, Spinner, DropDown } from "../../components/common";
 import { Tag } from "antd";
 import userAvatar from "../../assets/sub.png";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
-import { hardwareUrl, UserUrl } from "../../components/utils/api";
+import {
+  hardwareUrl,
+  subscriptionUrl,
+  UserUrl
+} from "../../components/utils/api";
 import { MainContext } from "../../stateManagement/contextProvider";
 import UserInfo from "./components/userInfo";
 import UserKYC from "./components/userKYC";
@@ -24,7 +28,9 @@ function Profile(props) {
     data: [],
     fetching: true
   });
-  const { state } = useContext(MainContext);
+  const {
+    state: { user }
+  } = useContext(MainContext);
   const [activePlan, setActivePlan] = useState(null);
 
   const onGetUserInfo = (status, data) => {
@@ -47,7 +53,8 @@ function Profile(props) {
   const getHardWare = () => {
     axiosFunc("get", hardwareUrl(), null, "yes", (status, data) => {
       if (status) {
-        setHardware(data.data.data.user_hardware);
+        console.log(data.data.data.user_hardware.hardware);
+        setHardware(data.data.data.user_hardware.hardware);
       } else {
         Notification.bubble({
           type: "error",
@@ -59,22 +66,7 @@ function Profile(props) {
 
   const onGetPlans = (status, payload) => {
     if (status) {
-      try {
-        let activeData = payload.data.data.plans;
-        let activeUser = JSON.parse(localStorage.getItem(USERDATA));
-        setActivePlan(
-          parseInt(activeUser.plan_id) === 1 ? 2 : activeUser.plan_id
-        );
-        setPlans({
-          data: activeData,
-          fetching: false
-        });
-      } catch (e) {
-        Notification.bubble({
-          type: "error",
-          content: e
-        });
-      }
+      console.log(payload.data.data);
     } else {
       Notification.bubble({
         type: "error",
@@ -84,7 +76,13 @@ function Profile(props) {
   };
 
   useEffect(() => {
-    getPlans(onGetPlans);
+    axiosFunc(
+      "get",
+      subscriptionUrl("?status=active"),
+      null,
+      "yes",
+      onGetPlans
+    );
     getHardWare();
     axiosFunc("get", UserUrl(), null, "yes", onGetUserInfo);
   }, []);
@@ -148,6 +146,7 @@ function Profile(props) {
                   <p />
                   {!plans.fetching && (
                     <Tag className="user-profile-tag">
+                      {console.log(activePlan)}
                       <DropDown
                         dropDownWidth={"200px"}
                         onChange={() => null}
@@ -250,6 +249,7 @@ function Profile(props) {
                 ) : (
                   <UserInfo
                     onChange={onChange}
+                    onMetaChange={onMetaChange}
                     state={userInfoMain}
                     onSubmit={onSubmit}
                     updating={updating}

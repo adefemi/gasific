@@ -40,8 +40,11 @@ class DropDown extends Component {
     }
 
     let activeOption = options.filter(option => option.value === active)[0];
-    return;
-    return <div className="dropdown-content">{activeOption.content}</div>;
+    return (
+      <div className="dropdown-content">
+        {activeOption && activeOption.content}
+      </div>
+    );
   };
 
   getOptions = () => {

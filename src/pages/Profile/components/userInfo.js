@@ -6,7 +6,7 @@ import { Button } from "../../../components/common/button";
 import React from "react";
 
 const UserInfo = props => {
-  const { state, onChange, onSubmit, updating } = props;
+  const { state, onChange, onSubmit, updating, onMetaChange } = props;
   return (
     <form onSubmit={onSubmit}>
       <div>
@@ -43,12 +43,18 @@ const UserInfo = props => {
         <FormGroup title="Home Address">
           <Input
             name="address"
-            value={state.address || ""}
-            onChange={onChange}
+            value={state.meta.address || ""}
+            onChange={onMetaChange}
           />
         </FormGroup>
         <FormGroup title="State">
-          <Select name="state" value={state.state || ""} onChange={onChange}>
+          <Select
+            name="state"
+            value={state.meta.state || ""}
+            onChange={onMetaChange}
+            defaultOption
+          >
+            <Select.Option value="">--select state--</Select.Option>
             {getAllStates("nigeria", true).map((item, id) => (
               <Select.Option key={id} value={item.value}>
                 {item.name}
@@ -57,13 +63,6 @@ const UserInfo = props => {
           </Select>
         </FormGroup>
       </div>
-      <FormGroup title="Referral Code">
-        <Input
-          name="referral_code"
-          value={state.referral_code || ""}
-          onChange={onChange}
-        />
-      </FormGroup>
       <br />
       <Button type="submit" loading={updating} disabled={updating}>
         Update

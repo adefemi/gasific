@@ -4,6 +4,7 @@ import AppIcon from "../../common/icons/Icon";
 import battery from "../../../assets/battery.png";
 import { NavLink } from "react-router-dom";
 import { USERDATA, USERTOKEN } from "../../utils/data";
+import { Tag } from "antd";
 
 const onLogout = () => {
   localStorage.removeItem(USERDATA);
@@ -16,17 +17,18 @@ function NavBar(props) {
   return (
     <div className="navbar">
       <div className="nav-left dflex align-center">
-        <Input
-          placeholder="search"
-          className="search_input"
-          iconRight={<AppIcon name="search" type="feather" />}
-        />
         <div className="battery-guage">
           <img src={battery} alt="battery_guage" />
           <div className="guage-meter">40%</div>
         </div>
       </div>
       <div className="nav-right dflex align-center">
+        <div
+          className="nav-content-reg black-text bolder-text "
+          style={{ margin: "0 10px" }}
+        >
+          <Tag> ₦ 20.00</Tag>
+        </div>
         <DropDown
           staticContent={true}
           onChange={() => null}

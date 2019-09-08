@@ -56,7 +56,7 @@ const data = payload => {
         </Tag>
       ),
       created_at: moment(new Date(item.created_at)).format("MM-DD-YYYY"),
-      action: <a href="#">Delete</a>
+      action: <a href="#">View</a>
     });
     return null;
   });

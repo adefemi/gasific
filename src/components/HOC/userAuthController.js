@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Spinner, Notification } from "../common";
 import { axiosFunc, errorHandler } from "../utils/helper";
-import { hardwareUrl } from "../utils/api";
+import { hardwareUrl, UserUrl } from "../utils/api";
 import { USERDATA, USERTOKEN } from "../utils/data";
 
 const UserAuthController = component => {
@@ -23,6 +23,11 @@ const UserAuthController = component => {
           `/login?redirect=${encodeURIComponent(props.location.pathname)}`
         );
       } else {
+        axiosFunc("get", UserUrl(), null, "yes", (status, data) => {
+          if (status) {
+            console.log(data.data.data);
+          }
+        });
         axiosFunc("get", hardwareUrl(), null, "yes", (status, data) => {
           if (status) {
             if (data.data.data.user_hardware.hardware_id) {

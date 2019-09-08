@@ -15,7 +15,7 @@ const HardwareInfo = props => {
       <p>
         <small className="black-text bolder-text">Model: {state.model}</small>
       </p>
-      <div>
+      <div style={{ marginBottom: 10 }}>
         <small className="black-text bolder-text">
           Status:{" "}
           {state.status === 1 ? (
@@ -27,6 +27,9 @@ const HardwareInfo = props => {
       </div>
       <p>
         <small className="black-text bolder-text">DESC: {state.desc}</small>
+      </p>
+      <p>
+        <small className="black-text bolder-text">MSISDN: {state.msisdn}</small>
       </p>
     </div>
   );

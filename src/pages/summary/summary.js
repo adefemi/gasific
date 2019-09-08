@@ -77,6 +77,7 @@ const Summary = props => {
         type: "error",
         content: errorHandler(data)
       });
+      props.history.push("/login?redirect=/");
     }
   };
 
