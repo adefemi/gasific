@@ -231,3 +231,30 @@
   font-family: $secondary-font;
   font-size: 20px;
 }
+
+.activate-subscription{
+  position: fixed;
+  z-index: 1000;
+  top: 80px; left: 250px;
+  bottom: 0; right: 0;
+  background-color: rgba(white, 70%);
+
+  .sub-headline{
+    padding: 20px;
+    background-color: rgb(245, 232, 217);
+    color: #c1a24c;
+  }
+
+  button{
+    background-color: transparent;
+    color: #c1a24c;
+    border-color: #c1a24c;
+    margin-left: 10px;
+
+    &:hover{
+      color: #947a3c;
+      border-color: #947a3c;
+      background-color: transparent;
+    }
+  }
+}

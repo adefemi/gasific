@@ -63,7 +63,7 @@ function SideBar(props) {
     <div className="sideBar">
       <div>
         <div className="brand">
-          <NavLink to="/">
+          <NavLink to="/dashboard/user">
             <img src={logo} height="40px" alt="" />
           </NavLink>
         </div>

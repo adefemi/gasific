@@ -15,7 +15,11 @@ import hardwareImg from "../../assets/hardware.jpg";
 import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout";
 import { Delivery } from "./delivery";
 import { CheckOutCard } from "./checkout";
-import { getPlanUrl, hardwareUrl } from "../../components/utils/api";
+import {
+  getPlanUrl,
+  hardwareUrl,
+  subscriptionUrl
+} from "../../components/utils/api";
 import { defaultVersion } from "../../components/utils/data";
 
 export const getPlans = callBack => {
@@ -70,7 +74,15 @@ const Summary = props => {
 
   const onInitHardware = (status, data) => {
     if (status) {
-      props.history.push("/payment");
+      axiosFunc(
+        "post",
+        subscriptionUrl(),
+        { plan_id: activePlan.id },
+        "yes",
+        () => {
+          props.history.push("/payment");
+        }
+      );
     } else {
       setLoading(false);
       Notification.bubble({

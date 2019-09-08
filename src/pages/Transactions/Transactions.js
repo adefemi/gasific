@@ -122,8 +122,8 @@ function Transactions(props) {
         <div className="dflex align-center justify-between">
           <div />
           <Pagination
-            current={!fetching && transactions.current_page}
-            total={!fetching && transactions.total}
+            current={!fetching ? transactions.current_page : 0}
+            total={!fetching ? transactions.total : 0}
             onChange={changePage}
           />
         </div>

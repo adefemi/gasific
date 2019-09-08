@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card, Notification, Spinner, DropDown } from "../../components/common";
-import { Tag } from "antd";
+import { Tag, Badge } from "antd";
 import userAvatar from "../../assets/sub.png";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
 import {
@@ -16,7 +16,6 @@ import HardwareInfo from "./components/hardwareInfo";
 import UserBilling from "./components/userBilling";
 import UserMerchant from "./components/userMerchant";
 import { formatPlans, getPlans } from "../summary/summary";
-import { USERDATA } from "../../components/utils/data";
 
 function Profile(props) {
   const [activeTab, setActiveTab] = useState(1);
@@ -29,7 +28,7 @@ function Profile(props) {
     fetching: true
   });
   const {
-    state: { user }
+    state: { user, subscriptions }
   } = useContext(MainContext);
   const [activePlan, setActivePlan] = useState(null);
 
@@ -53,7 +52,6 @@ function Profile(props) {
   const getHardWare = () => {
     axiosFunc("get", hardwareUrl(), null, "yes", (status, data) => {
       if (status) {
-        console.log(data.data.data.user_hardware.hardware);
         setHardware(data.data.data.user_hardware.hardware);
       } else {
         Notification.bubble({
@@ -64,25 +62,7 @@ function Profile(props) {
     });
   };
 
-  const onGetPlans = (status, payload) => {
-    if (status) {
-      console.log(payload.data.data);
-    } else {
-      Notification.bubble({
-        type: "error",
-        content: errorHandler(payload)
-      });
-    }
-  };
-
   useEffect(() => {
-    axiosFunc(
-      "get",
-      subscriptionUrl("?status=active"),
-      null,
-      "yes",
-      onGetPlans
-    );
     getHardWare();
     axiosFunc("get", UserUrl(), null, "yes", onGetUserInfo);
   }, []);
@@ -131,6 +111,20 @@ function Profile(props) {
     <div>
       <div className="dashboard-heading">User Profile</div>
       <br />
+      <style jsx>
+        {`
+          .badge-profile {
+            padding: 0 !important;
+            margin: 0 !important;
+            border: none !important;
+          }
+          .badge-profile > * {
+            padding: 0 !important;
+            border: none !important;
+            font-size: 12px;
+          }
+        `}
+      </style>
       <div className="grid-2-u">
         <div>
           <Card
@@ -143,6 +137,22 @@ function Profile(props) {
                   <small className="text-center link-btn">
                     Change profile picture
                   </small>
+                  <div>
+                    <br />
+                    <Tag>
+                      {subscriptions && (
+                        <Badge
+                          className="badge-profile"
+                          status={
+                            subscriptions[0].status === 1
+                              ? "success"
+                              : "processing"
+                          }
+                          text={subscriptions[0].plan.name}
+                        />
+                      )}
+                    </Tag>
+                  </div>
                   <p />
                   {!plans.fetching && (
                     <Tag className="user-profile-tag">
