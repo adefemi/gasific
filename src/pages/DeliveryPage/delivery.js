@@ -5,6 +5,7 @@ import logo from "../../assets/logos/logo1.png";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
 import { PaymentUrl, UserUrl } from "../../components/utils/api";
 import { MainContext } from "../../stateManagement/contextProvider";
+import qs from "query-string";
 
 function Payment(props) {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,12 @@ function Payment(props) {
         type: "success",
         content: "Payment successful"
       });
-      props.history.push("/verification");
+      let queryData = qs.parse(props.location.search);
+      if (queryData.redirect) {
+        props.history.push(queryData.redirect);
+      } else {
+        props.history.push("/verification");
+      }
     } else {
       Notification.bubble({
         type: "error",

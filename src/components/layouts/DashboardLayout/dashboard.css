@@ -202,4 +202,30 @@
   font-size: 20px;
 }
 
+.activate-subscription {
+  position: fixed;
+  z-index: 1000;
+  top: 80px;
+  left: 250px;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.activate-subscription .sub-headline {
+  padding: 20px;
+  background-color: #f5e8d9;
+  color: #c1a24c;
+}
+.activate-subscription button {
+  background-color: transparent;
+  color: #c1a24c;
+  border-color: #c1a24c;
+  margin-left: 10px;
+}
+.activate-subscription button:hover {
+  color: #947a3c;
+  border-color: #947a3c;
+  background-color: transparent;
+}
+
 /*# sourceMappingURL=dashboard.css.map */
