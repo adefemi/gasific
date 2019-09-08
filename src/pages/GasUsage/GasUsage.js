@@ -4,20 +4,46 @@ import { Card } from "../../components/common/card";
 
 const columns = [
   {
-    title: "Date-Time",
-    dataIndex: "dateTime",
-    key: "dateTime",
+    title: "Start Time",
+    dataIndex: "startTime",
+    key: "startTime",
     render: text => <a href="javascript:;">{text}</a>
   },
   {
-    title: "Gas Used",
-    dataIndex: "gasUsed",
-    key: "gasUsed"
+    title: "End Time",
+    dataIndex: "endTime",
+    key: "endTime",
+    render: text => <a href="javascript:;">{text}</a>
   },
   {
-    title: "Remaining",
-    dataIndex: "remaining",
-    key: "remaining"
+    title: "Usage Duration",
+    dataIndex: "usageDuration",
+    key: "usageDuration",
+    render: text => <a href="javascript:;">{text}</a>
+  },
+  {
+    title: (
+      <span>
+        Volume Used{" "}
+        <sup>
+          (cm<sup>3</sup>)
+        </sup>
+      </span>
+    ),
+    dataIndex: "volumeUsed",
+    key: "volumeUsed"
+  },
+  {
+    title: (
+      <span>
+        Volume Remaining{" "}
+        <sup>
+          (cm<sup>3</sup>)
+        </sup>
+      </span>
+    ),
+    dataIndex: "volumeRemaining",
+    key: "volumeRemaining"
   },
   {
     title: "Action",
@@ -34,12 +60,14 @@ const columns = [
 
 const data = () => {
   let data1 = [];
-  [1, 2, 3, 4].map((item, id) => {
+  [1, 2, 3, 4, 1, 1, 1, 1, 1].map((item, id) => {
     data1.push({
       key: id,
-      dateTime: "12/04/2019 - 10:18",
-      gasUsed: 32,
-      remaining: 25
+      startTime: "12/04/2019 - 10:18",
+      endTime: "12/04/2019 - 10:18",
+      usageDuration: "12/04/2019 to 12/04/2019 ",
+      volumeUsed: 32.25,
+      volumeRemaining: 25.25
     });
     return null;
   });
