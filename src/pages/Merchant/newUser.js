@@ -14,7 +14,10 @@ function NewUser(props) {
       [e.target.name]: e.target.value
     });
   };
-  const onSubmit = () => {};
+  const onSubmit = e => {
+    e.preventDefault();
+    props.history.push("/dashboard/merchant/user-config");
+  };
 
   return (
     <div>
