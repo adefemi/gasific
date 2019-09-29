@@ -4,6 +4,8 @@ import AppIcon from "../../components/common/icons/Icon";
 import {
   axiosFunc,
   errorHandler,
+  getActiveAddress,
+  getActivePosition,
   getAllStates
 } from "../../components/utils/helper";
 import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout";
@@ -75,6 +77,23 @@ function ChooseMerchant(props) {
     );
   };
 
+  const useCurrentLocation = async () => {
+    getActivePosition((data, status) => {
+      if (status) {
+        getActiveAddress(
+          data.lat,
+          data.lng,
+          (data, status) => {
+            if (status) {
+              setAddressData({ ...data });
+            }
+          },
+          "single"
+        );
+      }
+    });
+  };
+
   return (
     <RegularLayout title="Choose Merchant" {...props}>
       <br />
@@ -99,15 +118,14 @@ function ChooseMerchant(props) {
               </span>
             </Tooltip>
           </h3>
-          <div className="link-btn">
+          <div className="link-btn" onClick={useCurrentLocation}>
             <AppIcon name="mapPin" type="feather" />
             Use current location
           </div>
         </div>
         <br />
-        <Card round className="padding-10" heading="Home Address">
-          <br />
-          <div className="max-width-500" style={{ margin: 0 }}>
+        <Card round className="padding-10">
+          <div style={{ margin: 0, padding: "0 10px" }}>
             <CustomAddress
               states={states}
               onSubmit={onSubmit}

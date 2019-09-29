@@ -3,20 +3,26 @@ import AppIcon from "../../common/icons/Icon";
 import { NavLink } from "react-router-dom";
 import logo from "../../../assets/logos/logo1.png";
 
-const menuItem = [
-  // {
-  //   link: "/dashboard/merchant",
-  //   name: "Merchant Dashboard",
-  //   icon: <AppIcon name="home" type="feather" size={20} />
-  // },
+const menuItem = activeUser => [
   {
-    link: "/dashboard/user",
-    name: "User Dashboard",
-    icon: <AppIcon name="user" type="feather" size={20} />
+    link: `/dashboard/${activeUser === "customer" ? "user" : "merchant"}`,
+    name: "Dashboard",
+    icon: (
+      <AppIcon
+        name={activeUser === "customer" ? "user" : "home"}
+        type="feather"
+        size={20}
+      />
+    )
+  },
+  {
+    link: "/dashboard/merchant/users",
+    name: "Users",
+    icon: <AppIcon name="users" type="feather" size={20} />
   },
   {
     link: "/dashboard/transactions",
-    name: "Transactions",
+    name: activeUser === "customer" ? "Transactions" : "Finance",
     icon: <AppIcon name="trendingUp" type="feather" size={20} />
   },
   {
@@ -68,14 +74,28 @@ function SideBar(props) {
           </NavLink>
         </div>
         <ul>
-          {menuItem.map((item, key) => (
-            <NavLink to={item.link} key={key}>
-              <li className={activeTab.includes(item.link) ? "active" : ""}>
-                <div className="icon">{item.icon}</div>
-                <div className="name">{item.name}</div>
-              </li>
-            </NavLink>
-          ))}
+          {menuItem(props.activeUser).map((item, key) => {
+            if (
+              props.activeUser === "customer" &&
+              item.link === "/dashboard/merchant/users"
+            ) {
+              return null;
+            } else if (
+              props.activeUser !== "customer" &&
+              item.link === "/dashboard/gas-usage"
+            ) {
+              return null;
+            } else {
+              return (
+                <NavLink to={item.link} key={key}>
+                  <li className={activeTab.includes(item.link) ? "active" : ""}>
+                    <div className="icon">{item.icon}</div>
+                    <div className="name">{item.name}</div>
+                  </li>
+                </NavLink>
+              );
+            }
+          })}
         </ul>
       </div>
     </div>

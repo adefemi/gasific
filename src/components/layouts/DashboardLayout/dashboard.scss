@@ -22,6 +22,7 @@
 .sideBar{
   position: fixed;
   width: 250px;
+  z-index: 100000;
   top: 0;
   left: 0;
   bottom: 0;
@@ -150,6 +151,7 @@
 .navbar{
   position: fixed;
   height: 80px;
+  box-shadow: 0 2px 5px rgba(black, 0.05);
   left: 250px;
   z-index: 10000;
   right: 0;
@@ -169,16 +171,22 @@
   }
 
   .battery-guage{
-    width: 40px;
-    height: 55px;
+    width: 50px;
+    height: 25px;
     margin-left: 20px;
     position: relative;
+    border: 1px solid black;
+    border-radius: 2px;
 
-    img{
-      width: 100%;
-      transform: rotateZ(90deg);
-      margin-top: 7px;
-      //height: 100%;
+    &:after{
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 15px;
+      background-color: black;
+      right: -6px;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
     .guage-meter{
@@ -187,7 +195,51 @@
       left: 50%;
       font-size: 11px;
       transform: translate(-50%, -50%);
+      color: black;
     }
+
+    &.danger{
+      border-color: $danger-color;
+      animation: alertAnim infinite ease 2s;
+      &:after{
+        background-color: $danger-color;
+      }
+      .guage-meter{
+        color: $danger-color;
+      }
+    }
+  }
+}
+
+.navbar-status{
+  position: fixed;
+  top: 80px;
+  height: 50px;
+  box-shadow: 0 2px 5px rgba(black, 0.05);
+  left: 250px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  right: 0;
+  background-color: rgba($warning-color, 0.5);
+  box-sizing: border-box;
+  padding: 0 20px;
+  font-size: 18px;
+  color: darken($warning-color, 30%);
+  justify-content: flex-end;
+  font-weight: 600;
+
+}
+
+@keyframes alertAnim {
+  0%{
+    transform: scale(0.9);
+  }
+  50%{
+    transform: scale(1.1);
+  }
+  100%{
+    transform: scale(0.9);
   }
 }
 
@@ -215,7 +267,7 @@
 
 }
 
-.user-profile-tag{
+.user-profile-tag{navbar
   .dropdown-content {
     font-size: 11px;
     font-weight: 400;

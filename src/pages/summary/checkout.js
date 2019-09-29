@@ -12,7 +12,7 @@ export const CheckOutCard = props => {
   return (
     <Card
       heading={
-        <div className="dflex align-center justify-between padding-10">
+        <div className="dflex align-center justify-between">
           <div className="heading-2">Checkout</div>
           <div className="heading-2">Items</div>
         </div>

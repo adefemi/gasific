@@ -11,7 +11,7 @@ import { getPlanUrl, subscriptionUrl } from "../../utils/api";
 
 function DashboardMain(props) {
   const {
-    state: { subscriptions }
+    state: { subscriptions, activeUser }
   } = useContext(MainContext);
 
   const checkActive = sub => {
@@ -27,9 +27,13 @@ function DashboardMain(props) {
 
   return (
     <div className="dashboard-main">
-      <SideBar {...props} />
+      <SideBar {...props} activeUser={activeUser} />
       <div className="mainContainer">
-        <NavBar {...props} />
+        <NavBar
+          {...props}
+          showStatus={!(subscriptions && checkActive(subscriptions))}
+          activeUser={activeUser}
+        />
         <div className="contentMain">
           {props.children}
           <br />

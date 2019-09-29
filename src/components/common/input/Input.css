@@ -12,7 +12,7 @@
 }
 .input-control .input-error-text {
   margin-top: 5px;
-  color: #da4e6a;
+  color: #da2124;
 }
 .input-control .dropdown-control {
   height: 50px;
@@ -84,14 +84,14 @@
 }
 
 .input-control.error .input-field {
-  border-color: #da4e6a;
+  border-color: #da2124;
 }
 .input-control.error .input-field input {
-  color: #da4e6a;
+  color: #da2124;
 }
 .input-control.error .input-field:focus-within {
-  border-color: #da4e6a;
-  box-shadow: 0 5px 10px rgba(218, 78, 106, 0.3);
+  border-color: #da2124;
+  box-shadow: 0 5px 10px rgba(218, 33, 36, 0.3);
 }
 
 .input-control.small .input-field {

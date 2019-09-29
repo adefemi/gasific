@@ -1,6 +1,12 @@
 import Axios from "axios";
 import { USERTOKEN } from "./data";
 import countryCheck from "country-state-city";
+import Geocode from "react-geocode";
+
+// Geocode setup
+Geocode.setApiKey("AIzaSyBrqRLhZHSwGnXMDa6Z8FAgncCMoLY8qnA");
+Geocode.setLanguage("en");
+Geocode.setRegion("es");
 
 export const axiosFunc = (
   method,
@@ -99,20 +105,28 @@ export const getActivePosition = callback => {
 const addressFormatType = Object.freeze({ full: "full", single: "single" });
 
 const formatAddress = data => {
-  let addressComp = data[0].address_components;
+  let max = data[0].address_components.length;
+  let activeIndex = 0;
+  for (let i = 1; i <= data.length - 1; i++) {
+    if (data[i].address_components.length > max) {
+      max = data[i].address_components.length;
+      activeIndex = i;
+    }
+  }
+  let addressComp = data[activeIndex].address_components;
   let addresSetup = {};
   for (let i in addressComp) {
     if (addressComp[parseInt(i, 10)].types.includes("route")) {
-      addresSetup.street = addressComp[parseInt(i, 10)].long_name;
+      addresSetup.address = addressComp[parseInt(i, 10)].long_name;
     } else if (
       addressComp[parseInt(i, 10)].types.includes("neighborhood") ||
       addressComp[parseInt(i, 10)].types.includes("administrative_area_level_2")
     ) {
-      addresSetup.city = addressComp[parseInt(i, 10)].long_name;
+      addresSetup.town = addressComp[parseInt(i, 10)].long_name;
     } else if (
       addressComp[parseInt(i, 10)].types.includes("administrative_area_level_1")
     ) {
-      addresSetup.state = addressComp[parseInt(i, 10)].long_name;
+      addresSetup.state = addressComp[parseInt(i, 10)].long_name.toLowerCase();
     } else if (addressComp[parseInt(i, 10)].types.includes("country")) {
       addresSetup.country = addressComp[parseInt(i, 10)].long_name;
     }

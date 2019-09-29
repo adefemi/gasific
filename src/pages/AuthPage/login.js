@@ -6,11 +6,14 @@ import AppGoogleLogin from "../../components/common/google/GoogleLogin";
 import { NavLink } from "react-router-dom";
 import { Notification } from "../../components/common";
 import { axiosFunc, errorHandler } from "../../components/utils/helper";
-import { authUrl } from "../../components/utils/api";
+import { authUrl, UserUrl } from "../../components/utils/api";
 import { USERDATA, USERTOKEN } from "../../components/utils/data";
 import qs from "query-string";
 import { MainContext } from "../../stateManagement/contextProvider";
-import { SET_USER_DATA } from "../../stateManagement/reducers/reducerActions";
+import {
+  SET_ACTIVE_USER,
+  SET_USER_DATA
+} from "../../stateManagement/reducers/reducerActions";
 
 function Login(props) {
   const [submit, setSubmit] = useState(false);
@@ -30,15 +33,29 @@ function Login(props) {
         type: SET_USER_DATA,
         payload: activeData.user
       });
-      let query = qs.parse(props.location.search);
-      if (!query.redirect) {
-        query = qs.parse(localStorage.getItem("gasific_redirect"));
-      }
-      if (query.redirect) {
-        props.history.push(`${query.redirect}`);
-      } else {
-        props.history.push("/dashboard/user");
-      }
+
+      axiosFunc("get", UserUrl(), null, "yes", (status, payload) => {
+        if (status) {
+          dispatch({
+            type: SET_ACTIVE_USER,
+            payload: payload.data.data.user.roles[0].name
+          });
+          let query = qs.parse(props.location.search);
+          if (!query.redirect) {
+            query = qs.parse(localStorage.getItem("gasific_redirect"));
+          }
+          if (query.redirect) {
+            props.history.push(`${query.redirect}`);
+          } else {
+            props.history.push("/dashboard/user");
+          }
+        } else {
+          Notification.bubble({
+            type: "error",
+            content: errorHandler(payload)
+          });
+        }
+      });
     } else {
       Notification.bubble({
         type: "error",

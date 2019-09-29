@@ -4,7 +4,8 @@ import mainReducer from "./reducers";
 export const initialReduxState = {
   user: {},
   hardware: {},
-  subscriptions: null
+  subscriptions: null,
+  activeUser: "customer"
 };
 export const MainContext = createContext(initialReduxState);
 

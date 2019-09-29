@@ -73,7 +73,7 @@
 }
 .select-control .select-error-text {
   margin-top: 5px;
-  color: #da4e6a;
+  color: #da2124;
 }
 .select-control ul {
   position: absolute;
@@ -125,10 +125,10 @@
 }
 
 .select-control.error .select-button {
-  border-color: #da4e6a;
+  border-color: #da2124;
 }
 .select-control.error .select-button input {
-  color: #da4e6a;
+  color: #da2124;
 }
 
 .select-control.small {

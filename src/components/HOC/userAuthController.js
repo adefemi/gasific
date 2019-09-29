@@ -5,7 +5,11 @@ import { axiosFunc, errorHandler } from "../utils/helper";
 import { hardwareUrl, subscriptionUrl, UserUrl } from "../utils/api";
 import { USERDATA, USERTOKEN } from "../utils/data";
 import { MainContext } from "../../stateManagement/contextProvider";
-import { SET_SUBSCRIPTION_DATA } from "../../stateManagement/reducers/reducerActions";
+import {
+  SET_ACTIVE_USER,
+  SET_SUBSCRIPTION_DATA
+} from "../../stateManagement/reducers/reducerActions";
+import qs from "query-string";
 
 const UserAuthController = component => {
   const Authenticate = props => {
