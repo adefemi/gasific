@@ -17,7 +17,10 @@ function ActivateHardware(props) {
       [e.target.name]: e.target.value
     });
   };
-  const onSubmit = () => {};
+  const onSubmit = e => {
+    e.preventDefault();
+    props.history.push("/dashboard/merchant/users");
+  };
   return (
     <div>
       <div onClick={() => props.history.goBack()} className="link-btn">

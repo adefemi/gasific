@@ -67,6 +67,11 @@ function PaymentControl(props) {
     return image;
   };
 
+  const onSubmit = e => {
+    e.preventDefault();
+    props.history.push("/dashboard/merchant/activate-hardware");
+  };
+
   return (
     <div>
       <div className="dflex align-center">
@@ -138,11 +143,13 @@ function PaymentControl(props) {
           </Card>
         </div>
         <div style={{ flex: 2, marginLeft: "1em" }}>
-          <CheckOutCard
-            total={totalPrice}
-            activePlan={activePlan}
-            loading={loading}
-          />
+          <form onSubmit={onSubmit}>
+            <CheckOutCard
+              total={totalPrice}
+              activePlan={activePlan}
+              loading={loading}
+            />
+          </form>
         </div>
       </div>
     </div>
