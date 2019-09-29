@@ -44,7 +44,7 @@ a{
 
 .grid-auto{
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
+  grid-template-columns: repeat(auto-fill, minmax(280px, auto));
   grid-gap: 1em;
 }
 
@@ -303,6 +303,46 @@ a{
 
 .dflex {
   display: flex;
+}
+
+.wallet-title{
+  text-transform: uppercase;
+  color: #999999;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.wallet-main{
+  font-size: 40px;
+  color: $black-color;
+}
+
+.wallet-sub{
+  font-size: 13px;
+  color: $black-color;
+  font-weight: bold;
+}
+
+.wallet-topup{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.wallet-card{
+  max-width: 400px;
+  position: relative;
+  width: 100%;
+}
+
+.send-details{
+  margin-top: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: $success-color;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .dgrid {

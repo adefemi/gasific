@@ -9,21 +9,47 @@ import {
   Spinner
 } from "../../components/common";
 import AppIcon from "../../components/common/icons/Icon";
-import { axiosFunc, getAllStates } from "../../components/utils/helper";
+import {
+  axiosFunc,
+  getActiveAddress,
+  getActivePosition,
+  getAllStates
+} from "../../components/utils/helper";
 import { merchantUrl } from "../../components/utils/api";
+
+const setupOptions = (data, name, value) => {
+  let optionList = [];
+
+  data.map((item, key) => {
+    optionList.push(
+      <Select.Option key={key} value={item[value]}>
+        {item[name]}
+      </Select.Option>
+    );
+    return null;
+  });
+
+  optionList.unshift(
+    <Select.Option key={"main01"} value={""}>
+      --make a selection--
+    </Select.Option>
+  );
+
+  return optionList;
+};
 
 export const CustomAddress = props => (
   <form onSubmit={props.onSubmit}>
-    <FormGroup>
-      <Input
-        placeholder="Enter Address"
-        name="address"
-        onChange={props.onChange}
-        value={props.addressData.address || ""}
-      />
-    </FormGroup>
-    <div className="grid-2">
-      <FormGroup>
+    <div className="grid-auto" style={{ gridRowGap: 10 }}>
+      <FormGroup style={{ marginBottom: 15 }}>
+        <Input
+          placeholder="Enter Address"
+          name="address"
+          onChange={props.onChange}
+          value={props.addressData.address || ""}
+        />
+      </FormGroup>
+      <FormGroup style={{ marginBottom: 15 }}>
         <Input
           placeholder="Enter town"
           name="town"
@@ -32,7 +58,7 @@ export const CustomAddress = props => (
           value={props.addressData.town || ""}
         />
       </FormGroup>
-      <FormGroup>
+      <FormGroup style={{ marginBottom: 15 }}>
         <div className="dflex align-center justify-between">
           <Select
             required
@@ -42,16 +68,10 @@ export const CustomAddress = props => (
           >
             {props.states &&
               props.states.length > 1 &&
-              props.states.map((item, ind) => {
-                return (
-                  <Select.Option key={ind} value={item.value}>
-                    {item.name}
-                  </Select.Option>
-                );
-              })}
+              setupOptions(props.states, "name", "value")}
           </Select>
           <Button style={{ marginLeft: "10px" }} type="submit">
-            Update
+            Search
           </Button>
         </div>
       </FormGroup>
@@ -60,7 +80,6 @@ export const CustomAddress = props => (
 );
 
 function Pickup(props) {
-  const array = [1, 2, 3, 4, 5, 6];
   const [addressData, setAddressData] = useState({});
   const [states, setStates] = useState(null);
   const [merchants, setMerchants] = useState({
@@ -100,19 +119,35 @@ function Pickup(props) {
     e.preventDefault();
   };
 
+  const useCurrentLocation = async () => {
+    getActivePosition((data, status) => {
+      if (status) {
+        getActiveAddress(
+          data.lat,
+          data.lng,
+          (data, status) => {
+            if (status) {
+              setAddressData({ ...data });
+            }
+          },
+          "single"
+        );
+      }
+    });
+  };
+
   return (
     <div>
       <div className="dflex align-center justify-between">
-        <h3>Pickup centers near you</h3>
-        <div className="link-btn">
+        <h3>Pickup Address near you</h3>
+        <div className="link-btn" onClick={useCurrentLocation}>
           <AppIcon name="mapPin" type="feather" />
           Use current location
         </div>
       </div>
       <br />
-      <Card round className="padding-10" heading="Home Address">
-        <br />
-        <div className="max-width-500 padding-20" style={{ margin: 0 }}>
+      <Card round className="padding-10">
+        <div style={{ margin: 0, padding: "0 10px" }}>
           <CustomAddress
             states={states}
             onSubmit={onSubmit}
@@ -138,23 +173,30 @@ function Pickup(props) {
               return null;
             });
             return (
-              <Card round className="padding-20" key={key}>
-                <div
-                  className="text-center padding-bottom-10 bolder-text link-btn"
-                  style={{ textTransform: "capitalize" }}
-                >
-                  {metaData.businessName || ""}
-                </div>
+              <Card
+                round
+                className="padding-20 dflex flex-d-v justify-between"
+                key={key}
+              >
                 <div>
-                  <AppIcon name="phoneCall" type="feather" /> &nbsp;&nbsp;{" "}
-                  <span className="link-btn">{item.phone || ""}</span>{" "}
+                  <div
+                    className="text-center padding-bottom-10 bolder-text link-btn"
+                    style={{ textTransform: "capitalize" }}
+                  >
+                    {metaData.businessName || ""}
+                  </div>
+                  <div>
+                    <AppIcon name="phoneCall" type="feather" /> &nbsp;&nbsp;{" "}
+                    <span className="link-btn">{item.phone || ""}</span>{" "}
+                  </div>
+                  <div>
+                    <AppIcon name="mapPin" type="feather" /> &nbsp;&nbsp;{" "}
+                    <span className="link-btn">{`${metaData.address ||
+                      ""}, ${metaData.city || ""}, ${metaData.state ||
+                      ""}`}</span>{" "}
+                  </div>
                 </div>
-                <div>
-                  <AppIcon name="mapPin" type="feather" /> &nbsp;&nbsp;{" "}
-                  <span className="link-btn">{`${metaData.address ||
-                    ""}, ${metaData.city || ""}, ${metaData.state ||
-                    ""}`}</span>{" "}
-                </div>
+                <div className="send-details">Get Details</div>
               </Card>
             );
           })}

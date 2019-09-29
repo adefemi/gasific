@@ -103,31 +103,31 @@
 .btn-sml:focus.danger,
 .btn-sml:active.danger,
 .btn.danger {
-  background: #da4e6a;
-  border: 2px solid #da4e6a;
+  background: #da2124;
+  border: 2px solid #da2124;
 }
 .btn:focus.danger:hover,
 .btn:active.danger:hover,
 .btn-sml:focus.danger:hover,
 .btn-sml:active.danger:hover,
 .btn.danger:hover {
-  background: #d63958;
-  border-color: #d63958;
+  background: #c41e20;
+  border-color: #c41e20;
 }
 .btn:focus.danger.outlined,
 .btn:active.danger.outlined,
 .btn-sml:focus.danger.outlined,
 .btn-sml:active.danger.outlined,
 .btn.danger.outlined {
-  border: 2px solid #da4e6a;
-  color: #da4e6a;
+  border: 2px solid #da2124;
+  color: #da2124;
 }
 .btn:focus.danger.outlined:hover,
 .btn:active.danger.outlined:hover,
 .btn-sml:focus.danger.outlined:hover,
 .btn-sml:active.danger.outlined:hover,
 .btn.danger.outlined:hover {
-  background: #da4e6a;
+  background: #da2124;
 }
 .btn:focus.success,
 .btn:active.success,

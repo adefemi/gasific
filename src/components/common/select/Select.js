@@ -97,7 +97,8 @@ const Select = props => {
 
   useEffect(() => {
     setCount(selectCount++);
-  }, []);
+    setValue(props.value);
+  }, [props.value]);
 
   const onChange = e => {
     setValue(e.target.value);

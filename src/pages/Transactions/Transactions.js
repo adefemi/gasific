@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Pagination, Table, Tag } from "antd";
+import { Pagination, Table, Tag, Button } from "antd";
 import { Card } from "../../components/common/card";
 import { Select } from "../../components/common/select";
 import { axiosFunc, errorHandler, goTop } from "../../components/utils/helper";
@@ -100,7 +100,33 @@ function Transactions(props) {
 
   return (
     <div>
-      {" "}
+      <>
+        <div className="dashboard-heading">Wallet</div>
+        <br />
+        <div className="dflex justify-between ">
+          <Card className="padding-20 wallet-card" round>
+            <div className="wallet-topup">
+              <Button type="dashed">Top up</Button>
+            </div>
+
+            <div style={{ marginBottom: 50 }}>
+              <div className="wallet-title">balance</div>
+              <div className="wallet-main">NGN 0.00</div>
+            </div>
+            <div className="dflex justify-between align-center">
+              <div>
+                <div className="wallet-title">expenses</div>
+                <div className="wallet-sub">0.00</div>
+              </div>
+              <div>
+                <div className="wallet-title">income</div>
+                <div className="wallet-sub">0.00</div>
+              </div>
+            </div>
+          </Card>
+        </div>
+        <br />
+      </>
       <div className="dflex align-center justify-between">
         <div className="dashboard-heading">Transactions</div>
         <Select style={{ width: "250px" }}>

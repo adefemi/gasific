@@ -41,12 +41,12 @@ textarea:disabled:hover {
 .textarea-error,
 .textarea-error:hover,
 .textarea-error:focus {
-  border: 1px solid #da4e6a;
+  border: 1px solid #da2124;
   outline: none !important;
 }
 
 .error {
-  color: #da4e6a;
+  color: #da2124;
   font-size: 14px;
 }
 

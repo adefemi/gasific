@@ -58,7 +58,7 @@ const data = [
 
 function UserDashboard(props) {
   return (
-    <div>
+    <div style={{ paddingTop: 50 }}>
       <div className="dashboard-heading">User Dashboard</div>
       <br />
       <div className="grid-auto user-card-grid">

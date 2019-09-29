@@ -14,7 +14,7 @@ import RegularLayout from "../../components/layouts/RegularLayout/RegularLayout"
 import Pickup from "./pickup";
 import AppIcon from "../../components/common/icons/Icon";
 
-const settings = {
+export const sliderSettings = {
   dots: false,
   infinite: true,
   autoplay: true,
@@ -109,7 +109,7 @@ function Verify(props) {
             <Card>
               <div className="padding-10 setup-description">
                 <h3>Setup Information</h3>
-                <Slider {...settings}>
+                <Slider {...sliderSettings}>
                   {[1, 2, 3].map((i, ind) => {
                     return (
                       <div className="banner-con" key={ind}>

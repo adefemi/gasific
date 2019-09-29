@@ -9,6 +9,10 @@ import GasUsage from "../GasUsage/GasUsage";
 import Faq from "../FAQ/FAQ";
 import Help from "../Help/Help";
 import UserAuthController from "../../components/HOC/userAuthController";
+import Users from "../Merchant/users";
+import NewUser from "../Merchant/newUser";
+import PaymentControl from "../Merchant/paymentControl";
+import ActivateHardware from "../Merchant/activateHardware";
 
 function Dashboard(props) {
   return (
@@ -18,6 +22,31 @@ function Dashboard(props) {
         exact
         path={"/dashboard/user"}
         component={UserAuthController(UserDashboard)}
+      />
+      <Route
+        exact
+        path={"/dashboard/merchant/users"}
+        component={UserAuthController(Users)}
+      />
+      <Route
+        exact
+        path={"/dashboard/merchant/new-user"}
+        component={UserAuthController(NewUser)}
+      />
+      <Route
+        exact
+        path={"/dashboard/merchant/view-user/:slug"}
+        component={UserAuthController(UserDashboard)}
+      />
+      <Route
+        exact
+        path={"/dashboard/merchant/user-config"}
+        component={UserAuthController(PaymentControl)}
+      />
+      <Route
+        exact
+        path={"/dashboard/merchant/activate-hardware"}
+        component={UserAuthController(ActivateHardware)}
       />
       <Route
         exact
